@@ -47,8 +47,9 @@ public class ConnectionPool {
         if (connection.getClass() == ProxyConnection.class) {
             inUseConnections.remove(connection);
             freeConnections.offer((ProxyConnection) connection);
+        } else {
+            log.warn("Attempt to close invalid connection has occured");
         }
-        log.warn("Attempt to close invalid connection has occured");
     }
 
     public void destroyPool() {
