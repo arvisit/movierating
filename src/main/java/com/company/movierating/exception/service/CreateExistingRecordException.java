@@ -1,7 +1,9 @@
-package com.company.movierating.exception;
+package com.company.movierating.exception.service;
+
+import com.company.movierating.exception.ServiceException;
 
 @SuppressWarnings("serial")
-public class CreateExistingRecordException extends RuntimeException {
+public class CreateExistingRecordException extends ServiceException {
 
     public CreateExistingRecordException(String errorMessage) {
         super(errorMessage);

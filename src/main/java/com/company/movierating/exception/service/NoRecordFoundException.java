@@ -1,7 +1,9 @@
-package com.company.movierating.exception;
+package com.company.movierating.exception.service;
+
+import com.company.movierating.exception.ServiceException;
 
 @SuppressWarnings("serial")
-public class NoRecordFoundException extends RuntimeException {
+public class NoRecordFoundException extends ServiceException {
 
     public NoRecordFoundException(String errorMessage) {
         super(errorMessage);
