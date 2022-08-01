@@ -6,6 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,19 +19,19 @@ import lombok.extern.log4j.Log4j2;
 
 @Log4j2
 public class UserDaoImpl implements UserDao {
-    private static final String GET_BY_ID = "SELECT u.id, u.email, u.login, u.password, r.name AS role " //
+    private static final String GET_BY_ID = "SELECT u.id, u.email, u.login, u.password, u.registration, r.name AS role " //
             + "FROM users u JOIN roles r ON u.role_id = r.id " //
             + "WHERE u.id = ? AND u.deleted = FALSE";
-    private static final String GET_BY_EMAIL = "SELECT u.id, u.email, u.login, u.password, r.name AS role " //
+    private static final String GET_BY_EMAIL = "SELECT u.id, u.email, u.login, u.password, u.registration, r.name AS role " //
             + "FROM users u JOIN roles r ON u.role_id = r.id " //
             + "WHERE u.email = ? AND u.deleted = FALSE";
-    private static final String GET_BY_LOGIN = "SELECT u.id, u.email, u.login, u.password, r.name AS role " //
+    private static final String GET_BY_LOGIN = "SELECT u.id, u.email, u.login, u.password, u.registration, r.name AS role " //
             + "FROM users u JOIN roles r ON u.role_id = r.id " //
             + "WHERE u.login = ? AND u.deleted = FALSE";
-    private static final String GET_ALL = "SELECT u.id, u.email, u.login, u.password, r.role AS role " //
+    private static final String GET_ALL = "SELECT u.id, u.email, u.login, u.password, u.registration, r.name AS role " //
             + "FROM users u JOIN roles r ON u.role_id = r.id " //
             + "WHERE u.deleted = FALSE";
-    private static final String CREATE = "INSERT INTO users (email, login, password, role) " //
+    private static final String CREATE = "INSERT INTO users (email, login, password, role_id) " //
             + "VALUES (?, ?, ?, (SELECT id FROM roles WHERE name = ?))";
     private static final String UPDATE = "UPDATE users SET email = ?, login = ?, password = ?, " //
             + "role_id = (SELECT id FROM roles WHERE name = ?) " //
@@ -51,7 +52,7 @@ public class UserDaoImpl implements UserDao {
             ResultSet result = statement.executeQuery();
 
             if (result.next()) {
-                return processUser(result);
+                return process(result);
             }
         } catch (SQLException e) {
             log.error(e.getMessage(), e);
@@ -67,7 +68,7 @@ public class UserDaoImpl implements UserDao {
             ResultSet result = statement.executeQuery();
 
             if (result.next()) {
-                return processUser(result);
+                return process(result);
             }
         } catch (SQLException e) {
             log.error(e.getMessage(), e);
@@ -83,7 +84,7 @@ public class UserDaoImpl implements UserDao {
             ResultSet result = statement.executeQuery();
 
             if (result.next()) {
-                return processUser(result);
+                return process(result);
             }
         } catch (SQLException e) {
             log.error(e.getMessage(), e);
@@ -99,7 +100,7 @@ public class UserDaoImpl implements UserDao {
             ResultSet result = statement.executeQuery(GET_ALL);
 
             while (result.next()) {
-                users.add(processUser(result));
+                users.add(process(result));
             }
         } catch (SQLException e) {
             log.error(e.getMessage(), e);
@@ -160,14 +161,15 @@ public class UserDaoImpl implements UserDao {
         return false;
     }
 
-    private User processUser(ResultSet result) throws SQLException {
+    private User process(ResultSet result) throws SQLException {
         User user = new User();
         user.setId(result.getLong("id"));
-        user.setLogin(result.getString("lastname"));
+        user.setLogin(result.getString("login"));
         user.setEmail(result.getString("email"));
         user.setPassword(result.getString("password"));
         user.setRole(Role.valueOf(result.getString("role")));
-        user.setRegistration(ZonedDateTime.parse(result.getString("registration")));
+        user.setRegistration(ZonedDateTime.parse(result.getString("registration"),
+                DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSSSSSx")));
 
         return user;
     }
