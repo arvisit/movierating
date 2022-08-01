@@ -7,9 +7,6 @@ import com.company.movierating.dao.UserDao;
 import com.company.movierating.dao.connection.DataSource;
 import com.company.movierating.dao.impl.UserDaoImpl;
 
-import lombok.extern.log4j.Log4j2;
-
-@Log4j2
 public class DaoFactory {
     private final Map<Class<?>, Object> daos;
     
@@ -32,8 +29,7 @@ public class DaoFactory {
         @SuppressWarnings("unchecked")
         T dao = (T) daos.get(clazz);
         if (dao == null) {
-            log.error("Attempt to get DaoObject for unsupported class {}", clazz);
-            throw new IllegalArgumentException("Unsupported class " + clazz);
+            throw new IllegalArgumentException("Attempt to get DaoObject for unsupported class " + clazz);
         }
         return dao;
     }
