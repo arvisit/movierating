@@ -21,6 +21,12 @@ public class UserDaoImpl implements UserDao {
     private static final String GET_BY_ID = "SELECT u.id, u.email, u.login, u.password, r.name AS role " //
             + "FROM users u JOIN roles r ON u.role_id = r.id " //
             + "WHERE u.id = ? AND u.deleted = FALSE";
+    private static final String GET_BY_EMAIL = "SELECT u.id, u.email, u.login, u.password, r.name AS role " //
+            + "FROM users u JOIN roles r ON u.role_id = r.id " //
+            + "WHERE u.email = ? AND u.deleted = FALSE";
+    private static final String GET_BY_LOGIN = "SELECT u.id, u.email, u.login, u.password, r.name AS role " //
+            + "FROM users u JOIN roles r ON u.role_id = r.id " //
+            + "WHERE u.login = ? AND u.deleted = FALSE";
     private static final String GET_ALL = "SELECT u.id, u.email, u.login, u.password, r.role AS role " //
             + "FROM users u JOIN roles r ON u.role_id = r.id " //
             + "WHERE u.deleted = FALSE";
@@ -42,6 +48,38 @@ public class UserDaoImpl implements UserDao {
         try (Connection connection = dataSource.getConnection()) {
             PreparedStatement statement = connection.prepareStatement(GET_BY_ID);
             statement.setLong(1, id);
+            ResultSet result = statement.executeQuery();
+
+            if (result.next()) {
+                return processUser(result);
+            }
+        } catch (SQLException e) {
+            log.error(e.getMessage(), e);
+        }
+        return null;
+    }
+
+    @Override
+    public User getByEmail(String email) {
+        try (Connection connection = dataSource.getConnection()) {
+            PreparedStatement statement = connection.prepareStatement(GET_BY_EMAIL);
+            statement.setString(1, email);
+            ResultSet result = statement.executeQuery();
+
+            if (result.next()) {
+                return processUser(result);
+            }
+        } catch (SQLException e) {
+            log.error(e.getMessage(), e);
+        }
+        return null;
+    }
+
+    @Override
+    public User getByLogin(String login) {
+        try (Connection connection = dataSource.getConnection()) {
+            PreparedStatement statement = connection.prepareStatement(GET_BY_LOGIN);
+            statement.setString(1, login);
             ResultSet result = statement.executeQuery();
 
             if (result.next()) {
