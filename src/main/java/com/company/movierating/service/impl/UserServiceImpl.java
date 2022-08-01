@@ -4,8 +4,9 @@ import java.util.List;
 
 import com.company.movierating.dao.UserDao;
 import com.company.movierating.dao.entity.User;
-import com.company.movierating.exception.CreateExistingRecordException;
-import com.company.movierating.exception.NoRecordFoundException;
+import com.company.movierating.exception.service.CreateExistingRecordException;
+import com.company.movierating.exception.service.NoRecordFoundException;
+import com.company.movierating.exception.service.UpdateWrongRecordAttemptException;
 import com.company.movierating.service.UserService;
 import com.company.movierating.service.dto.UserDto;
 
@@ -77,11 +78,11 @@ public class UserServiceImpl implements UserService {
         log.debug("User service method _update_ was called");
         User existing = userDao.getByEmail(entity.getEmail());
         if (existing != null && existing.getId() != entity.getId()) {
-            throw new IllegalArgumentException("User with email= " + entity.getEmail() + " already exists");
+            throw new UpdateWrongRecordAttemptException("User with email= " + entity.getEmail() + " already exists");
         }
         existing = userDao.getByLogin(entity.getLogin());
         if (existing != null && existing.getId() != entity.getId()) {
-            throw new IllegalArgumentException("User with login= " + entity.getLogin() + " already exists");
+            throw new UpdateWrongRecordAttemptException("User with login= " + entity.getLogin() + " already exists");
         }
         User createdEntity = userDao.update(toEntity(entity));
         return toDto(createdEntity);
