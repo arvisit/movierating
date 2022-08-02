@@ -4,11 +4,11 @@ import java.util.List;
 
 import com.company.movierating.dao.UserDao;
 import com.company.movierating.dao.entity.User;
-import com.company.movierating.exception.service.CreateExistingRecordException;
 import com.company.movierating.exception.service.NoRecordFoundException;
 import com.company.movierating.exception.service.UpdateWrongRecordAttemptException;
 import com.company.movierating.service.UserService;
 import com.company.movierating.service.dto.UserDto;
+import com.company.movierating.service.validation.UserValidator;
 
 import lombok.extern.log4j.Log4j2;
 
@@ -61,14 +61,8 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserDto create(UserDto entity) {
         log.debug("User service method _create_ was called");
-        User existing = userDao.getByEmail(entity.getEmail());
-        if (existing != null) {
-            throw new CreateExistingRecordException("User with email= " + entity.getEmail() + " already exists");
-        }
-        existing = userDao.getByLogin(entity.getLogin());
-        if (existing != null) {
-            throw new CreateExistingRecordException("User with login= " + entity.getLogin() + " already exists");
-        }
+        UserValidator.validateUserToCreate(entity);
+        entity.setRole(UserDto.Role.USER);
         User createdEntity = userDao.create(toEntity(entity));
         return toDto(createdEntity);
     }
