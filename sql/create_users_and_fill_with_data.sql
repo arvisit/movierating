@@ -14,7 +14,7 @@ CREATE TABLE IF NOT EXISTS users (
     login VARCHAR(100) NOT NULL,
     "password" VARCHAR(32) NOT NULL,
     role_id SMALLINT NOT NULL REFERENCES roles,
-    info TEXT NOT NULL,
+    info TEXT NOT NULL DEFAULT '',
     reputation SMALLINT NOT NULL DEFAULT 0,
     registration TIMESTAMPTZ(6) NOT NULL DEFAULT NOW(),
     last_update TIMESTAMPTZ(6) NOT NULL DEFAULT NOW(),
