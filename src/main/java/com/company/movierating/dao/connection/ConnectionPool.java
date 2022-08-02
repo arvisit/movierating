@@ -57,6 +57,7 @@ public class ConnectionPool {
             try {
                 ProxyConnection proxy = (ProxyConnection) freeConnections.take();
                 proxy.reallyClose();
+                log.info("Connection was closed");
             } catch (SQLException | InterruptedException e) {
                 log.error(e.getMessage(), e);
             }
@@ -68,6 +69,7 @@ public class ConnectionPool {
         DriverManager.getDrivers().asIterator().forEachRemaining(driver -> {
             try {
                 DriverManager.deregisterDriver(driver);
+                log.info("{} was deregistered", driver);
             } catch (SQLException e) {
                 log.error(e.getMessage(), e);
             }
