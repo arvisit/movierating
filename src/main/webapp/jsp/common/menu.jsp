@@ -3,5 +3,6 @@
     <ul>
         <li><a href=".">Home</a></li>
         <li><a href="controller?command=users">Users</a></li>
+        <li><a href="controller?command=create_user_form">Sign up</a></li>
     </ul>
 </div>
