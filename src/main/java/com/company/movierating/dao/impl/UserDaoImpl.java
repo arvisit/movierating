@@ -31,8 +31,8 @@ public class UserDaoImpl implements UserDao {
     private static final String GET_ALL = "SELECT u.id, u.email, u.login, u.password, u.registration, u.info, u.reputation, r.name AS role " //
             + "FROM users u JOIN roles r ON u.role_id = r.id " //
             + "WHERE u.deleted = FALSE";
-    private static final String CREATE = "INSERT INTO users (email, login, password, role_id, info) " //
-            + "VALUES (?, ?, ?, (SELECT id FROM roles WHERE name = ?), ?)";
+    private static final String CREATE = "INSERT INTO users (email, login, password, role_id) " //
+            + "VALUES (?, ?, ?, (SELECT id FROM roles WHERE name = ?))";
     private static final String UPDATE = "UPDATE users SET email = ?, login = ?, password = ?, " //
             + "role_id = (SELECT id FROM roles WHERE name = ?), info = ?, retupation = ?, last_update = NOW()" //
             + "WHERE id = ? AND deleted = FALSE";
@@ -116,7 +116,6 @@ public class UserDaoImpl implements UserDao {
             statement.setString(2, entity.getLogin());
             statement.setString(3, entity.getPassword());
             statement.setString(4, entity.getRole().toString());
-            statement.setString(5, entity.getInfo());
             statement.executeUpdate();
 
             ResultSet keys = statement.getGeneratedKeys();
