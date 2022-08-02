@@ -17,6 +17,9 @@
             <p><b>Info:</b> ${user.info}</p>
             <p><b>Reputation:</b> ${user.reputation}</p>
         </div>
+            <c:if test="${successMessage != null}">
+                <p class="successMessage">${successMessage}</p>
+            </c:if>
         <%@ include file="/jsp/common/footer.jsp"%>
     </body>
 </html>
