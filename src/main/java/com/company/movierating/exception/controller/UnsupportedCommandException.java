@@ -1,7 +1,9 @@
-package com.company.movierating.exception;
+package com.company.movierating.exception.controller;
+
+import com.company.movierating.exception.ControllerException;
 
 @SuppressWarnings("serial")
-public class UnsupportedCommandException extends RuntimeException {
+public class UnsupportedCommandException extends ControllerException {
 
     public UnsupportedCommandException(String errorMessage) {
         super(errorMessage);
