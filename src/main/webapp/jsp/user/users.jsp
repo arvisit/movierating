@@ -18,15 +18,15 @@
                     <h2>Users</h2>
                     <table>
                         <tr>
-                        <th>Id</th>
                         <th>Login</th>
                         <th>Role</th>
+                        <th>Reputation</th>
                         </tr>
                         <c:forEach items="${users}" var="user">
                             <tr>
-                                <td><a href="controller?command=user&id=${user.id}">${user.id}</a></td>
-                                <td>${user.login}</td>
+                                <td><a href="controller?command=user&id=${user.id}">${user.login}</a></td>
                                 <td>${user.role}</td>
+                                <td>${user.reputation}</td>
                             </tr>
                         </c:forEach>
                     </table>

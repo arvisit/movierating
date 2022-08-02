@@ -102,6 +102,8 @@ public class UserServiceImpl implements UserService {
         dto.setPassword(entity.getPassword());
         dto.setRole(UserDto.Role.valueOf(entity.getRole().toString()));
         dto.setRegistration(entity.getRegistration());
+        dto.setInfo(entity.getInfo());
+        dto.setReputation(entity.getReputation());
         return dto;
     }
 
@@ -113,6 +115,8 @@ public class UserServiceImpl implements UserService {
         entity.setPassword(dto.getPassword());
         entity.setRole(User.Role.valueOf(dto.getRole().toString()));
         entity.setRegistration(dto.getRegistration());
+        entity.setInfo(dto.getInfo());
+        entity.setReputation(dto.getReputation());
         return entity;
     }
 

@@ -11,6 +11,8 @@ public class UserDto {
     private String email;
     private String password;
     private Role role;
+    private String info;
+    private Integer reputation;
     private ZonedDateTime registration;
 
     public enum Role {

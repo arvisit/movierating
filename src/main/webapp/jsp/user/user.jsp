@@ -11,10 +11,11 @@
         <%@ include file="/jsp/common/menu.jsp"%>
         <div class="main">
             <h2>The User</h2>
-            <p><b>Id:</b> ${user.id}</p>
             <p><b>Login:</b> ${user.login}</p>
             <p><b>Registration:</b> ${user.registration}</p>
             <p><b>Role:</b> ${user.role}</p>
+            <p><b>Info:</b> ${user.info}</p>
+            <p><b>Reputation:</b> ${user.reputation}</p>
         </div>
         <%@ include file="/jsp/common/footer.jsp"%>
     </body>

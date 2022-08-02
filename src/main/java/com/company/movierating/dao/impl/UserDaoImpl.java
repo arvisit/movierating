@@ -19,24 +19,24 @@ import lombok.extern.log4j.Log4j2;
 
 @Log4j2
 public class UserDaoImpl implements UserDao {
-    private static final String GET_BY_ID = "SELECT u.id, u.email, u.login, u.password, u.registration, r.name AS role " //
+    private static final String GET_BY_ID = "SELECT u.id, u.email, u.login, u.password, u.registration, u.info, u.reputation, r.name AS role " //
             + "FROM users u JOIN roles r ON u.role_id = r.id " //
             + "WHERE u.id = ? AND u.deleted = FALSE";
-    private static final String GET_BY_EMAIL = "SELECT u.id, u.email, u.login, u.password, u.registration, r.name AS role " //
+    private static final String GET_BY_EMAIL = "SELECT u.id, u.email, u.login, u.password, u.registration, u.info, u.reputation, r.name AS role " //
             + "FROM users u JOIN roles r ON u.role_id = r.id " //
             + "WHERE u.email = ? AND u.deleted = FALSE";
-    private static final String GET_BY_LOGIN = "SELECT u.id, u.email, u.login, u.password, u.registration, r.name AS role " //
+    private static final String GET_BY_LOGIN = "SELECT u.id, u.email, u.login, u.password, u.registration, u.info, u.reputation, r.name AS role " //
             + "FROM users u JOIN roles r ON u.role_id = r.id " //
             + "WHERE u.login = ? AND u.deleted = FALSE";
-    private static final String GET_ALL = "SELECT u.id, u.email, u.login, u.password, u.registration, r.name AS role " //
+    private static final String GET_ALL = "SELECT u.id, u.email, u.login, u.password, u.registration, u.info, u.reputation, r.name AS role " //
             + "FROM users u JOIN roles r ON u.role_id = r.id " //
             + "WHERE u.deleted = FALSE";
-    private static final String CREATE = "INSERT INTO users (email, login, password, role_id) " //
-            + "VALUES (?, ?, ?, (SELECT id FROM roles WHERE name = ?))";
+    private static final String CREATE = "INSERT INTO users (email, login, password, role_id, info) " //
+            + "VALUES (?, ?, ?, (SELECT id FROM roles WHERE name = ?), ?)";
     private static final String UPDATE = "UPDATE users SET email = ?, login = ?, password = ?, " //
-            + "role_id = (SELECT id FROM roles WHERE name = ?) " //
+            + "role_id = (SELECT id FROM roles WHERE name = ?), info = ?, retupation = ?, last_update = NOW()" //
             + "WHERE id = ? AND deleted = FALSE";
-    private static final String DELETE = "UPDATE users SET deleted = TRUE WHERE id = ?";
+    private static final String DELETE = "UPDATE users SET deleted = TRUE WHERE id = ?, last_update = NOW()";
 
     private DataSource dataSource;
 
@@ -116,6 +116,7 @@ public class UserDaoImpl implements UserDao {
             statement.setString(2, entity.getLogin());
             statement.setString(3, entity.getPassword());
             statement.setString(4, entity.getRole().toString());
+            statement.setString(5, entity.getInfo());
             statement.executeUpdate();
 
             ResultSet keys = statement.getGeneratedKeys();
@@ -138,6 +139,8 @@ public class UserDaoImpl implements UserDao {
             statement.setString(3, entity.getPassword());
             statement.setString(4, entity.getRole().toString());
             statement.setLong(5, entity.getId());
+            statement.setString(6, entity.getInfo());
+            statement.setInt(7, entity.getReputation());
             statement.executeUpdate();
 
             return getById(entity.getId());
@@ -168,6 +171,8 @@ public class UserDaoImpl implements UserDao {
         user.setEmail(result.getString("email"));
         user.setPassword(result.getString("password"));
         user.setRole(Role.valueOf(result.getString("role")));
+        user.setInfo(result.getString("info"));
+        user.setReputation(result.getInt("reputation"));
         user.setRegistration(ZonedDateTime.parse(result.getString("registration"),
                 DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSSSSSx")));
 

@@ -10,6 +10,7 @@
         <%@ include file="/jsp/common/header.jsp"%>
         <%@ include file="/jsp/common/menu.jsp"%>
         <div class="main">
+            <h2>404</h2>
             <h2>${errorMessage}</h2>
         </div>
         <%@ include file="/jsp/common/footer.jsp"%>
