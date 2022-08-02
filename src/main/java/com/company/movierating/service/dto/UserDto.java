@@ -18,11 +18,4 @@ public class UserDto {
     public enum Role {
         ADMIN, USER
     }
-
-    public void setEmail(String email) {
-        if (!email.matches("[\\w\\.]+@[\\w\\.]+\\.\\w+")) {
-            throw new IllegalArgumentException(email + " is not valid value for email");
-        }
-        this.email = email;
-    }
 }
