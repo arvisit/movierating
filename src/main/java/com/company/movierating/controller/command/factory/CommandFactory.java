@@ -4,6 +4,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.company.movierating.controller.command.Command;
+import com.company.movierating.controller.command.impl.CreateUserCommand;
+import com.company.movierating.controller.command.impl.CreateUserFormCommand;
 import com.company.movierating.controller.command.impl.ErrorCommand;
 import com.company.movierating.controller.command.impl.UserCommand;
 import com.company.movierating.controller.command.impl.UsersCommand;
@@ -23,6 +25,8 @@ public class CommandFactory {
         commands = new HashMap<>();
         commands.put("users", new UsersCommand(services.getService(UserService.class)));
         commands.put("user", new UserCommand(services.getService(UserService.class)));
+        commands.put("create_user_form", new CreateUserFormCommand());
+        commands.put("create_user", new CreateUserCommand(services.getService(UserService.class)));
         commands.put("error", new ErrorCommand());
     }
 
