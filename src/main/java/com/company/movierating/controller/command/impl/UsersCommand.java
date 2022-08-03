@@ -20,6 +20,6 @@ public class UsersCommand implements Command {
         List<UserDto> users;
         users = service.getAll();
         req.setAttribute("users", users);
-        return "jsp/user/users.jsp";
+        return "jsp/view/users.jsp";
     }
 }
