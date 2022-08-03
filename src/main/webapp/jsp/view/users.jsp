@@ -21,12 +21,14 @@
                         <th>Login</th>
                         <th>Role</th>
                         <th>Reputation</th>
+                        <th>Edit</th>
                         </tr>
                         <c:forEach items="${users}" var="user">
                             <tr>
                                 <td><a href="controller?command=user&id=${user.id}">${user.login}</a></td>
                                 <td>${user.role}</td>
                                 <td>${user.reputation}</td>
+                                <td><a href="controller?command=edit_user_form&id=${user.id}">Edit</a></td>
                             </tr>
                         </c:forEach>
                     </table>

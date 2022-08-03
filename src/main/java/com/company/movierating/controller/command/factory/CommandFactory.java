@@ -6,6 +6,8 @@ import java.util.Map;
 import com.company.movierating.controller.command.Command;
 import com.company.movierating.controller.command.impl.CreateUserCommand;
 import com.company.movierating.controller.command.impl.CreateUserFormCommand;
+import com.company.movierating.controller.command.impl.EditUserCommand;
+import com.company.movierating.controller.command.impl.EditUserFormCommand;
 import com.company.movierating.controller.command.impl.ErrorCommand;
 import com.company.movierating.controller.command.impl.UserCommand;
 import com.company.movierating.controller.command.impl.UsersCommand;
@@ -27,6 +29,8 @@ public class CommandFactory {
         commands.put("user", new UserCommand(services.getService(UserService.class)));
         commands.put("create_user_form", new CreateUserFormCommand());
         commands.put("create_user", new CreateUserCommand(services.getService(UserService.class)));
+        commands.put("edit_user_form", new EditUserFormCommand(services.getService(UserService.class)));
+        commands.put("edit_user", new EditUserCommand(services.getService(UserService.class)));
         commands.put("error", new ErrorCommand());
     }
 
