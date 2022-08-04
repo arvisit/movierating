@@ -1,5 +1,6 @@
 package com.company.movierating.controller;
 
+import com.company.movierating.exception.controller.BadParameterException;
 import com.company.movierating.exception.controller.NonAuthorizedException;
 import com.company.movierating.exception.controller.RegisterPasswordConfirmationException;
 import com.company.movierating.exception.controller.UnsupportedCommandException;
@@ -19,6 +20,10 @@ public enum ExceptionHandler {
         String message;
 
         if (e instanceof UnsupportedCommandException) {
+            status = 400;
+            message = e.getMessage();
+            page = "jsp/error/error.jsp";
+        } else if (e instanceof BadParameterException) {
             status = 400;
             message = e.getMessage();
             page = "jsp/error/error.jsp";
