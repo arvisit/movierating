@@ -21,16 +21,8 @@
                 <input name="id" type="hidden" value="${requestScope.user.id}"/>
                 <label for="role">Role:</label>
                 <select required="required" id="role" name="role" size="1">
-                    <c:choose>
-                        <c:when test="${requestScope.user.role.toString().equals('ADMIN')}">
-                            <option selected="selected" value="admin">Admin</option>
-                            <option value="user">User</option>
-                        </c:when>
-                        <c:otherwise>
-                            <option value="admin">Admin</option>
-                            <option selected="selected" value="user">User</option>
-                        </c:otherwise>
-                    </c:choose>
+                    <option ${(requestScope.user.role == 'ADMIN' ? 'selected' : '')} value="admin">Admin</option>
+                    <option ${(requestScope.user.role == 'USER' ? 'selected' : '')} value="user">User</option>
                 </select>
                 <br>
                 <label for="reputation">Reputation:</label>
