@@ -5,6 +5,7 @@ import com.company.movierating.service.UserService;
 import com.company.movierating.service.dto.UserDto;
 
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 
 public class CreateUserCommand implements Command {
     private final UserService service;
@@ -28,6 +29,8 @@ public class CreateUserCommand implements Command {
         UserDto created = service.create(user, confirmedPassword);
         req.setAttribute("successMessage", "New user was successfully registered");
         req.setAttribute("user", created);
+        HttpSession session = req.getSession();
+        session.setAttribute("user", created);
         return "jsp/view/user.jsp";
     }
 
