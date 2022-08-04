@@ -12,9 +12,7 @@ public class ErrorCommand implements Command {
 
     @Override
     public String execute(HttpServletRequest req) {
-        String msg = "Bad request";
-        req.setAttribute("errorMessage", msg);
-        throw new UnsupportedCommandException(msg);
+        throw new UnsupportedCommandException("Unknown command: " + req.getParameter("command"));
     }
 
 }
