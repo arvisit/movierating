@@ -10,7 +10,7 @@ public class SignOutCommand implements Command {
     @Override
     public String execute(HttpServletRequest req) {
         HttpSession session = req.getSession(false);
-        session.setAttribute("user", null);
+        session.invalidate();
         return "index.jsp";
     }
     
