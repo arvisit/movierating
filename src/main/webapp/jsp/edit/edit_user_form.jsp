@@ -4,6 +4,7 @@
 <html>
     <head>
         <meta charset="UTF-8">
+        <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/style.css"/>
         <title>Edit user</title>
     </head>
     <body>
@@ -41,10 +42,8 @@
                 <br>
                 <input type="submit" value="Save changes"/>
             </form>
-            <c:if test="${errorMessage != null}">
-                <p class="errorMessage">${errorMessage}</p>
-            </c:if>
         </div>
+        <%@ include file="/jsp/common/notification.jsp"%>
         <%@ include file="/jsp/common/footer.jsp"%>
     </body>
 </html>
