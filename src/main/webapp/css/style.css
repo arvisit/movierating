@@ -1,0 +1,25 @@
+@charset "UTF-8";
+
+div.notification p.loginMessage {
+    position: absolute;
+    top: 0;
+    left: 0;
+    background-color: cadetblue;
+    color: white;
+}
+
+div.notification p.successMessage {
+    position: absolute;
+    top: 0;
+    right: 0;
+    background-color: green;
+    color: white;
+}
+
+div.notification p.errorMessage {
+    position: absolute;
+    top: 0;
+    right: 0;
+    background-color: lightcoral;
+    color: white;
+}
