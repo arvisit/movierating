@@ -4,6 +4,7 @@
 <html>
     <head>
         <meta charset="UTF-8">
+        <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/style.css"/>
         <title>User</title>
     </head>
     <body>
@@ -17,9 +18,7 @@
             <p><b>Info:</b> ${user.info}</p>
             <p><b>Reputation:</b> ${user.reputation}</p>
         </div>
-            <c:if test="${successMessage != null}">
-                <p class="successMessage">${successMessage}</p>
-            </c:if>
+        <%@ include file="/jsp/common/notification.jsp"%>
         <%@ include file="/jsp/common/footer.jsp"%>
     </body>
 </html>

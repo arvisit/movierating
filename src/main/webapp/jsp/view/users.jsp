@@ -4,6 +4,7 @@
 <html>
     <head>
         <meta charset="UTF-8">
+        <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/style.css"/>
         <title>Users</title>
     </head>
     <body>
@@ -35,6 +36,7 @@
                 </c:otherwise>
             </c:choose>
         </div>
+        <%@ include file="/jsp/common/notification.jsp"%>
         <%@ include file="/jsp/common/footer.jsp"%>
     </body>
 </html>
