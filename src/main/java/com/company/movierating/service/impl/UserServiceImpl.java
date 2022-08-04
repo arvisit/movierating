@@ -4,6 +4,8 @@ import java.util.List;
 
 import com.company.movierating.dao.UserDao;
 import com.company.movierating.dao.entity.User;
+import com.company.movierating.exception.controller.NonAuthorizedException;
+import com.company.movierating.exception.service.ForbiddenPageException;
 import com.company.movierating.exception.service.NoRecordFoundException;
 import com.company.movierating.exception.service.UpdateWrongRecordAttemptException;
 import com.company.movierating.service.UserService;
@@ -86,6 +88,28 @@ public class UserServiceImpl implements UserService {
     public boolean delete(Long id) {
         log.debug("User service method _delete_ was called");
         return userDao.delete(id);
+    }
+
+    @Override
+    public UserDto approveSubject(UserDto actor, UserDto subject) {
+        if (actor.getRole() != UserDto.Role.ADMIN) {
+            if (actor.getId() != subject.getId()) {
+                throw new ForbiddenPageException("You have not enough rigths to view this page");
+            }
+        }
+        return subject;
+    }
+
+    @Override
+    public UserDto signIn(String login, String password) {
+        User user = userDao.getByLogin(login);
+        if (user == null) {
+            throw new NonAuthorizedException("No such login found");
+        }
+        if (!user.getPassword().equals(password)) {
+            throw new NonAuthorizedException("Wrong password");
+        }
+        return toDto(user);
     }
 
     private UserDto toDto(User entity) {

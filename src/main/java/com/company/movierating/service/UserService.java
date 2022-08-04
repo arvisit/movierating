@@ -6,4 +6,8 @@ public interface UserService extends AbstractService<Long, UserDto> {
     UserDto getByEmail(String email);
 
     UserDto getByLogin(String login);
+
+    UserDto signIn(String login, String password);
+
+    UserDto approveSubject(UserDto actor, UserDto subject);
 }
