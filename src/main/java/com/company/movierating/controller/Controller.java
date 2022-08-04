@@ -5,8 +5,10 @@ import java.io.IOException;
 import com.company.movierating.controller.command.Command;
 import com.company.movierating.controller.command.factory.CommandFactory;
 import com.company.movierating.dao.connection.DataSource;
+import com.company.movierating.exception.controller.NonAuthorizedException;
 import com.company.movierating.exception.controller.RegisterPasswordConfirmationException;
 import com.company.movierating.exception.controller.UnsupportedCommandException;
+import com.company.movierating.exception.service.ForbiddenPageException;
 import com.company.movierating.exception.service.NoRecordFoundException;
 import com.company.movierating.exception.service.RegistrationValidationException;
 
@@ -53,13 +55,21 @@ public class Controller extends HttpServlet {
             }
             resp.setStatus(400);
             page = "jsp/error/400.jsp";
-        } else if(e instanceof RegisterPasswordConfirmationException) {
+        } else if (e instanceof RegisterPasswordConfirmationException) {
             req.setAttribute("errorMessage", e.getMessage());
             page = "jsp/create/create_user_form.jsp";
         } else if (e instanceof RegistrationValidationException) {
             req.setAttribute("errorMessage", e.getMessage());
             page = "jsp/create/create_user_form.jsp";
-        } else if(e instanceof NoRecordFoundException) {
+        } else if (e instanceof NonAuthorizedException) {
+            req.setAttribute("errorMessage", e.getMessage());
+            resp.setStatus(401);
+            page = "jsp/sign_in/sign_in_form.jsp";
+        } else if (e instanceof ForbiddenPageException) {
+            req.setAttribute("errorMessage", e.getMessage());
+            resp.setStatus(403);
+            page = "index.jsp";
+        } else if (e instanceof NoRecordFoundException) {
             req.setAttribute("errorMessage", "Page not found");
             resp.setStatus(404);
             page = "jsp/error/404.jsp";
