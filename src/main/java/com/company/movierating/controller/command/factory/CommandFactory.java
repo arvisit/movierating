@@ -9,6 +9,9 @@ import com.company.movierating.controller.command.impl.CreateUserFormCommand;
 import com.company.movierating.controller.command.impl.EditUserCommand;
 import com.company.movierating.controller.command.impl.EditUserFormCommand;
 import com.company.movierating.controller.command.impl.ErrorCommand;
+import com.company.movierating.controller.command.impl.SignInCommand;
+import com.company.movierating.controller.command.impl.SignInFormCommand;
+import com.company.movierating.controller.command.impl.SignOutCommand;
 import com.company.movierating.controller.command.impl.UserCommand;
 import com.company.movierating.controller.command.impl.UsersCommand;
 import com.company.movierating.service.UserService;
@@ -31,6 +34,9 @@ public class CommandFactory {
         commands.put("create_user", new CreateUserCommand(services.getService(UserService.class)));
         commands.put("edit_user_form", new EditUserFormCommand(services.getService(UserService.class)));
         commands.put("edit_user", new EditUserCommand(services.getService(UserService.class)));
+        commands.put("sign_in_form", new SignInFormCommand());
+        commands.put("sign_in", new SignInCommand(services.getService(UserService.class)));
+        commands.put("sign_out", new SignOutCommand());
         commands.put("error", new ErrorCommand());
     }
 
