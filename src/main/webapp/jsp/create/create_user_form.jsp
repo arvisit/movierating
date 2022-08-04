@@ -4,6 +4,7 @@
 <html>
     <head>
         <meta charset="UTF-8">
+        <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/style.css"/>
         <title>Sign up</title>
     </head>
     <body>
@@ -14,7 +15,7 @@
             <form method="post" action="controller">
                 <input name="command" type="hidden" value="create_user"/>
                 <label for="login">Login:</label>
-                <input required="required" type="text" min="5" id="login" name="login" pattern="[A-Za-z0-9_]{4,100}"
+                <input required="required" type="text" minlength="4" maxlength="100" id="login" name="login" pattern="[A-Za-z0-9_]{4,100}"
                         title="Use latin letters, underscore, decimal digits"/>
                 <br>
                 <label for="email">Email:</label>
@@ -32,10 +33,8 @@
                 <br>
                 <input type="submit" value="Register"/>
             </form>
-            <c:if test="${errorMessage != null}">
-                <p class="errorMessage">${errorMessage}</p>
-            </c:if>
         </div>
+        <%@ include file="/jsp/common/notification.jsp"%>
         <%@ include file="/jsp/common/footer.jsp"%>
     </body>
 </html>
