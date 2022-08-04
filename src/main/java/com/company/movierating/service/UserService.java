@@ -10,4 +10,6 @@ public interface UserService extends AbstractService<Long, UserDto> {
     UserDto signIn(String login, String password);
 
     UserDto approveSubject(UserDto actor, UserDto subject);
+
+    UserDto create(UserDto entity, String confirmedPassword);
 }

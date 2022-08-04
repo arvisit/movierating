@@ -17,9 +17,11 @@ import lombok.extern.log4j.Log4j2;
 @Log4j2
 public class UserServiceImpl implements UserService {
     private final UserDao userDao;
+    private final UserValidator validator;
 
-    public UserServiceImpl(UserDao userDao) {
+    public UserServiceImpl(UserDao userDao, UserValidator validator) {
         this.userDao = userDao;
+        this.validator = validator;
     }
 
     @Override
@@ -63,7 +65,16 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserDto create(UserDto entity) {
         log.debug("User service method _create_ was called");
-        UserValidator.validateUserToCreate(entity);
+        validator.validateUserToCreate(entity);
+        entity.setRole(UserDto.Role.USER);
+        User createdEntity = userDao.create(toEntity(entity));
+        return toDto(createdEntity);
+    }
+
+    @Override
+    public UserDto create(UserDto entity, String confirmedPassword) {
+        log.debug("User service method _create_ was called");
+        validator.validateUserToCreate(entity, confirmedPassword);
         entity.setRole(UserDto.Role.USER);
         User createdEntity = userDao.create(toEntity(entity));
         return toDto(createdEntity);

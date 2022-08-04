@@ -7,6 +7,7 @@ import com.company.movierating.dao.UserDao;
 import com.company.movierating.dao.factory.DaoFactory;
 import com.company.movierating.service.UserService;
 import com.company.movierating.service.impl.UserServiceImpl;
+import com.company.movierating.service.validation.UserValidator;
 
 public class ServiceFactory {
     private final Map<Class<?>, Object> services;
@@ -19,7 +20,7 @@ public class ServiceFactory {
         DaoFactory daoFactory = DaoFactory.getInstance();
 
         services = new HashMap<>();
-        services.put(UserService.class, new UserServiceImpl(daoFactory.getDao(UserDao.class)));
+        services.put(UserService.class, new UserServiceImpl(daoFactory.getDao(UserDao.class), UserValidator.INSTANCE));
     }
 
     public static ServiceFactory getInstance() {
