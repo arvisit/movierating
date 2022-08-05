@@ -18,6 +18,7 @@ public class UsersCommand implements Command {
     @Override
     public String execute(HttpServletRequest req) {
         List<UserDto> users;
+        // TODO add pagination
         users = service.getAll();
         req.setAttribute("users", users);
         return "jsp/view/users.jsp";

@@ -7,7 +7,6 @@ import com.company.movierating.dao.entity.User;
 import com.company.movierating.exception.controller.NonAuthorizedException;
 import com.company.movierating.exception.service.ForbiddenPageException;
 import com.company.movierating.exception.service.NoRecordFoundException;
-import com.company.movierating.exception.service.UpdateWrongRecordAttemptException;
 import com.company.movierating.service.UserService;
 import com.company.movierating.service.dto.UserDto;
 import com.company.movierating.service.validation.UserValidator;
@@ -32,6 +31,16 @@ public class UserServiceImpl implements UserService {
             throw new NoRecordFoundException("There is no user with id= " + id);
         }
         return toDto(entity);
+    }
+
+    @Override
+    public UserDto getById(UserDto actor, Long id) {
+        log.debug("User service method _getById_ was called");
+        User entity = userDao.getById(id);
+        if (entity == null) {
+            throw new NoRecordFoundException("There is no user with id= " + id);
+        }
+        return approveSubject(actor, toDto(entity));
     }
 
     @Override
@@ -63,35 +72,28 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserDto create(UserDto entity) {
+    public UserDto create(UserDto dto) {
         log.debug("User service method _create_ was called");
-        validator.validateUserToCreate(entity);
-        entity.setRole(UserDto.Role.USER);
-        User createdEntity = userDao.create(toEntity(entity));
+        validator.validateUserToCreate(dto);
+        dto.setRole(UserDto.Role.USER);
+        User createdEntity = userDao.create(toEntity(dto));
         return toDto(createdEntity);
     }
 
     @Override
-    public UserDto create(UserDto entity, String confirmedPassword) {
+    public UserDto create(UserDto dto, String confirmedPassword) {
         log.debug("User service method _create_ was called");
-        validator.validateUserToCreate(entity, confirmedPassword);
-        entity.setRole(UserDto.Role.USER);
-        User createdEntity = userDao.create(toEntity(entity));
+        validator.validateUserToCreate(dto, confirmedPassword);
+        dto.setRole(UserDto.Role.USER);
+        User createdEntity = userDao.create(toEntity(dto));
         return toDto(createdEntity);
     }
 
     @Override
-    public UserDto update(UserDto entity) {
+    public UserDto update(UserDto dto) {
         log.debug("User service method _update_ was called");
-        User existing = userDao.getByEmail(entity.getEmail());
-        if (existing != null && existing.getId() != entity.getId()) {
-            throw new UpdateWrongRecordAttemptException("User with email= " + entity.getEmail() + " already exists");
-        }
-        existing = userDao.getByLogin(entity.getLogin());
-        if (existing != null && existing.getId() != entity.getId()) {
-            throw new UpdateWrongRecordAttemptException("User with login= " + entity.getLogin() + " already exists");
-        }
-        User createdEntity = userDao.update(toEntity(entity));
+        validator.validateUserToUpdate(dto);
+        User createdEntity = userDao.update(toEntity(dto));
         return toDto(createdEntity);
     }
 
@@ -105,7 +107,7 @@ public class UserServiceImpl implements UserService {
     public UserDto approveSubject(UserDto actor, UserDto subject) {
         if (actor.getRole() != UserDto.Role.ADMIN) {
             if (actor.getId() != subject.getId()) {
-                throw new ForbiddenPageException("You have not enough rigths to view this page");
+                throw new ForbiddenPageException("You have not enough rigths");
             }
         }
         return subject;
