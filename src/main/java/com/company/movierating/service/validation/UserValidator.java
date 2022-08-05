@@ -4,6 +4,7 @@ import com.company.movierating.dao.UserDao;
 import com.company.movierating.dao.entity.User;
 import com.company.movierating.dao.factory.DaoFactory;
 import com.company.movierating.exception.service.RegistrationValidationException;
+import com.company.movierating.exception.service.UpdateValidationException;
 import com.company.movierating.service.dto.UserDto;
 
 public enum UserValidator {
@@ -18,12 +19,12 @@ public enum UserValidator {
     private static final int EMAIL_MIN_LENGTH = 5;
     private static final UserDao USER_DAO = DaoFactory.getInstance().getDao(UserDao.class);
 
-    public void validateUserToCreate(UserDto entity) {
+    public void validateUserToCreate(UserDto dto) {
         StringBuilder sb = new StringBuilder();
 
-        checkEmail(entity.getEmail(), sb);
-        checkLogin(entity.getLogin(), sb);
-        checkPassword(entity.getPassword(), sb);
+        checkEmail(dto.getEmail(), sb);
+        checkLogin(dto.getLogin(), sb);
+        checkPassword(dto.getPassword(), sb);
 
         if (sb.length() != 0) {
             sb.delete(sb.length() - LINE_SEPARATOR.length(), sb.length());
@@ -31,17 +32,29 @@ public enum UserValidator {
         }
     }
 
-    public void validateUserToCreate(UserDto entity, String confirmedPassword) {
+    public void validateUserToCreate(UserDto dto, String confirmedPassword) {
         StringBuilder sb = new StringBuilder();
 
-        checkEmail(entity.getEmail(), sb);
-        checkLogin(entity.getLogin(), sb);
-        checkPassword(entity.getPassword(), sb);
-        confirmPassword(entity.getPassword(), confirmedPassword, sb);
+        checkEmail(dto.getEmail(), sb);
+        checkLogin(dto.getLogin(), sb);
+        checkPassword(dto.getPassword(), sb);
+        confirmPassword(dto.getPassword(), confirmedPassword, sb);
 
         if (sb.length() != 0) {
             sb.delete(sb.length() - LINE_SEPARATOR.length(), sb.length());
             throw new RegistrationValidationException(sb.toString());
+        }
+    }
+
+    public void validateUserToUpdate(UserDto dto) {
+        StringBuilder sb = new StringBuilder();
+
+        checkEmail(dto.getEmail(), dto.getId(), sb);
+        checkLogin(dto.getLogin(), dto.getId(), sb);
+
+        if (sb.length() != 0) {
+            sb.delete(sb.length() - LINE_SEPARATOR.length(), sb.length());
+            throw new UpdateValidationException(sb.toString());
         }
     }
 
@@ -91,9 +104,25 @@ public enum UserValidator {
         checkLoginExistance(login, sb);
     }
 
+    private void checkLogin(String login, Long id, StringBuilder sb) {
+        if (login == null) {
+            sb.append("Login field is empty").append(LINE_SEPARATOR);
+            return;
+        }
+        checkLoginContent(login, sb);
+        checkLoginExistance(login, id, sb);
+    }
+
     private void checkLoginExistance(String login, StringBuilder sb) {
         User existing = USER_DAO.getByLogin(login);
         if (existing != null) {
+            sb.append("User with such login already exists").append(LINE_SEPARATOR);
+        }
+    }
+
+    private void checkLoginExistance(String login, Long id, StringBuilder sb) {
+        User existing = USER_DAO.getByLogin(login);
+        if (existing != null && existing.getId() != id) {
             sb.append("User with such login already exists").append(LINE_SEPARATOR);
         }
     }
@@ -114,9 +143,25 @@ public enum UserValidator {
         checkEmailExistance(email, sb);
     }
 
+    private void checkEmail(String email, Long id, StringBuilder sb) {
+        if (email == null) {
+            sb.append("Email field is empty").append(LINE_SEPARATOR);
+            return;
+        }
+        checkEmailContent(email, sb);
+        checkEmailExistance(email, id, sb);
+    }
+
     private void checkEmailExistance(String email, StringBuilder sb) {
         User existing = USER_DAO.getByEmail(email);
         if (existing != null) {
+            sb.append("User with such email already exists").append(LINE_SEPARATOR);
+        }
+    }
+
+    private void checkEmailExistance(String email, Long id, StringBuilder sb) {
+        User existing = USER_DAO.getByEmail(email);
+        if (existing != null && existing.getId() != id) {
             sb.append("User with such email already exists").append(LINE_SEPARATOR);
         }
     }
@@ -130,4 +175,5 @@ public enum UserValidator {
                     .append(LINE_SEPARATOR);
         }
     }
+
 }
