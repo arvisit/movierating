@@ -13,12 +13,14 @@
         <div class="main">
             <h2>The User:</h2>
             <p><b>Login:</b> ${requestScope.user.login}</p>
-            <p><b>Email:</b> ${requestScope.user.email}</p>
             <p><b>Registration:</b> ${requestScope.user.registration}</p>
             <h2>Edit user:</h2>
             <form method="post" action="controller">
                 <input name="command" type="hidden" value="edit_user"/>
                 <input name="id" type="hidden" value="${requestScope.user.id}"/>
+                <label for="email">Email:</label>
+                <input required="required" type="email" id="email" name="email" value="${requestScope.user.email}"/>
+                <br>
                 <label for="role">Role:</label>
                 <select required="required" id="role" name="role" size="1">
                     <option ${(requestScope.user.role == 'ADMIN' ? 'selected' : '')} value="admin">Admin</option>
