@@ -19,7 +19,8 @@
                 <input name="command" type="hidden" value="edit_user"/>
                 <input name="id" type="hidden" value="${requestScope.user.id}"/>
                 <label for="email">Email:</label>
-                <input required="required" type="email" id="email" name="email" value="${requestScope.user.email}"/>
+                <input required="required" type="email" id="email" name="email" value="${requestScope.user.email}"
+                         minlength="5" maxlength="100"/>
                 <br>
                 <label for="role">Role:</label>
                 <select required="required" id="role" name="role" size="1">

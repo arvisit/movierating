@@ -19,7 +19,7 @@
                         title="Use latin letters, underscore, decimal digits"/>
                 <br>
                 <label for="email">Email:</label>
-                <input required="required" type="email" id="email" name="email"/>
+                <input required="required" type="email" id="email" name="email" minlength="5" maxlength="100"/>
                 <br>
                 <label for="password">Password:</label>
                 <input required="required" pattern="^(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9]).{8,32}" type="password" 
