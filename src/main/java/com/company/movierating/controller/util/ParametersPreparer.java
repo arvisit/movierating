@@ -3,7 +3,7 @@ package com.company.movierating.controller.util;
 import com.company.movierating.exception.controller.BadParameterException;
 import com.company.movierating.service.dto.UserDto;
 
-public enum UserParametersPreparer {
+public enum ParametersPreparer {
     INSTANCE;
     
     private static final String MESSAGE = "Bad parameter value '%s'";

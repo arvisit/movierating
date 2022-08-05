@@ -1,7 +1,7 @@
 package com.company.movierating.controller.command.impl;
 
 import com.company.movierating.controller.command.Command;
-import com.company.movierating.controller.util.UserParametersPreparer;
+import com.company.movierating.controller.util.ParametersPreparer;
 import com.company.movierating.service.UserService;
 import com.company.movierating.service.dto.UserDto;
 
@@ -9,9 +9,9 @@ import jakarta.servlet.http.HttpServletRequest;
 
 public class UserCommand implements Command {
     private final UserService service;
-    private final UserParametersPreparer preparer;
+    private final ParametersPreparer preparer;
 
-    public UserCommand(UserService service, UserParametersPreparer preparer) {
+    public UserCommand(UserService service, ParametersPreparer preparer) {
         this.service = service;
         this.preparer = preparer;
     }
