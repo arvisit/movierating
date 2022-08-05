@@ -34,7 +34,7 @@ public class UserDaoImpl implements UserDao {
     private static final String CREATE = "INSERT INTO users (email, login, password, role_id) " //
             + "VALUES (?, ?, ?, (SELECT id FROM roles WHERE name = ?))";
     private static final String UPDATE = "UPDATE users SET email = ?, login = ?, password = ?, " //
-            + "role_id = (SELECT id FROM roles WHERE name = ?), info = ?, retupation = ?, last_update = NOW()" //
+            + "role_id = (SELECT id FROM roles WHERE name = ?), info = ?, reputation = ?, last_update = NOW()" //
             + "WHERE id = ? AND deleted = FALSE";
     private static final String DELETE = "UPDATE users SET deleted = TRUE WHERE id = ?, last_update = NOW()";
 
@@ -137,9 +137,9 @@ public class UserDaoImpl implements UserDao {
             statement.setString(2, entity.getLogin());
             statement.setString(3, entity.getPassword());
             statement.setString(4, entity.getRole().toString());
-            statement.setLong(5, entity.getId());
-            statement.setString(6, entity.getInfo());
-            statement.setInt(7, entity.getReputation());
+            statement.setString(5, entity.getInfo());
+            statement.setInt(6, entity.getReputation());
+            statement.setLong(7, entity.getId());
             statement.executeUpdate();
 
             return getById(entity.getId());
