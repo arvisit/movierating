@@ -12,11 +12,17 @@
         <%@ include file="/jsp/common/menu.jsp"%>
         <div class="main">
             <h2>The User</h2>
+            <c:if test="${sessionScope.user != null && (sessionScope.user.role == 'ADMIN' || sessionScope.user.id == user.id)}">
+                <a class="edit" href="controller?command=edit_user_form&id=${user.id}">(edit)</a>
+            </c:if>
             <p><b>Login:</b> ${user.login}</p>
+            <c:if test="${sessionScope.user != null && (sessionScope.user.role == 'ADMIN' || sessionScope.user.id == user.id)}">
+                <p><b>Email:</b> ${user.email}</p>
+            </c:if>
+            <p><b>Reputation:</b> ${user.reputation}</p>
             <p><b>Registration:</b> ${user.registration}</p>
             <p><b>Role:</b> ${user.role}</p>
             <p><b>Info:</b> ${user.info}</p>
-            <p><b>Reputation:</b> ${user.reputation}</p>
         </div>
         <%@ include file="/jsp/common/notification.jsp"%>
         <%@ include file="/jsp/common/footer.jsp"%>
