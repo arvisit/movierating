@@ -23,14 +23,18 @@
                         <th>Login</th>
                         <th>Role</th>
                         <th>Reputation</th>
-                        <th>Edit</th>
                         </tr>
                         <c:forEach items="${users}" var="user">
                             <tr>
-                                <td><a href="controller?command=user&id=${user.id}">${user.login}</a></td>
+                                <td>
+                                    <a href="controller?command=user&id=${user.id}">${user.login}</a>
+                                    <c:if test="${sessionScope.user != null && (sessionScope.user.role == 'ADMIN' || sessionScope.user.id == user.id)}">
+                                        <br>
+                                        <a class="edit" href="controller?command=edit_user_form&id=${user.id}">(edit)</a>
+                                    </c:if>
+                                </td>
                                 <td>${user.role}</td>
                                 <td>${user.reputation}</td>
-                                <td><a href="controller?command=edit_user_form&id=${user.id}">Edit</a></td>
                             </tr>
                         </c:forEach>
                     </table>
