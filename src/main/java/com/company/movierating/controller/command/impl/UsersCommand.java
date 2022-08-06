@@ -22,15 +22,20 @@ public class UsersCommand implements Command {
     @Override
     public String execute(HttpServletRequest req) {
         Paging paging = paginator.getPaging(req);
-        
-        List<UserDto> users = service.getAll(paging.getLimit(), paging.getOffset());
+        int limit = paging.getLimit();
+        long offset = paging.getOffset();
+
+        List<UserDto> users = service.getAll(limit, offset);
         long totalEntities = service.count();
-        long fullFilledPages = totalEntities / paging.getLimit();
-        int partialFilledPage = (totalEntities % paging.getLimit()) > 0 ? 1 : 0;
+        long fullFilledPages = totalEntities / limit;
+        int partialFilledPage = (totalEntities % limit) > 0 ? 1 : 0;
         long totalPages = fullFilledPages + partialFilledPage;
-        
+
+        long page = paging.getPage();
+        page = (page > totalPages ? totalPages : page);
+
         req.setAttribute("users", users);
-        req.setAttribute("currentPage", paging.getPage());
+        req.setAttribute("currentPage", page);
         req.setAttribute("totalPages", totalPages);
         req.setAttribute("paginatedJsp", "users");
         return "jsp/view/users.jsp";
