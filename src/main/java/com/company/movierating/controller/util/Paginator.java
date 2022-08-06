@@ -8,21 +8,24 @@ public enum Paginator {
     INSTANCE(ParametersPreparer.INSTANCE);
 
     private final ParametersPreparer preparer;
+    private final static int LIMIT = 10;
 
     Paginator(ParametersPreparer preparer) {
         this.preparer = preparer;
     }
 
     public Paging getPaging(HttpServletRequest req) {
-        // TODO check for: negative, strange values; set limits to limit
-        
         String limitStr = req.getParameter("limit");
         int limit;
         if (limitStr == null) {
-            limit = 10;
+            limit = LIMIT;
         } else {
             limit = preparer.getInt(limitStr);
         }
+        if (limit != LIMIT) {
+            limit = LIMIT;
+        }
+
         String pageStr = req.getParameter("page");
         long page;
         if (pageStr == null) {
@@ -30,6 +33,10 @@ public enum Paginator {
         } else {
             page = preparer.getLong(pageStr);
         }
+        if (page < 0) {
+            page = 1;
+        }
+
         long offset = (page - 1) * limit;
         return new Paging(limit, offset, page);
     }
