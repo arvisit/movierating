@@ -37,9 +37,12 @@
                     <label for="reputation">Reputation:</label>
                     <input required="required" type="number" id="reputation" name="reputation" min="-32768" max="32767" 
                             value="${requestScope.user.reputation}"/>
+                    <c:if test="${sessionScope.user.id != requestScope.user.id}">
+                        <input name="info" type="hidden" value="${requestScope.user.info}"/>
+                    </c:if>
                     <br>
                 </c:if>
-                <c:if test="${sessionScope.user.role != 'ADMIN'}">
+                <c:if test="${sessionScope.user.id == requestScope.user.id}">
                     <input name="reputation" type="hidden" value="${requestScope.user.reputation}"/>
                     <label for="info">Info:</label>
                     <textarea id="info" name="info">${requestScope.user.info}</textarea>

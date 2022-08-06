@@ -54,13 +54,14 @@ public enum UserValidator {
         checkEmail(dto.getEmail(), dto.getId(), sb);
         checkLogin(dto.getLogin(), dto.getId(), sb);
         checkReputation(dto.getReputation(), sb);
+        checkInfo(dto.getInfo(), sb);
 
         if (sb.length() != 0) {
             sb.delete(sb.length() - LINE_SEPARATOR.length(), sb.length());
             throw new UpdateValidationException(sb.toString());
         }
     }
-    
+
     private void checkReputation(Integer reputation, StringBuilder sb) {
         if (reputation == null) {
             sb.append("Reputation field is empty").append(LINE_SEPARATOR);
@@ -69,6 +70,13 @@ public enum UserValidator {
         if (reputation < REPUTATION_MIN || reputation > REPUTATION_MAX) {
             sb.append("Reputation value should be in range between " + REPUTATION_MIN + " and " //
                     + REPUTATION_MAX).append(LINE_SEPARATOR);
+        }
+    }
+
+    private void checkInfo(String info, StringBuilder sb) {
+        if (info == null) {
+            sb.append("Info field is empty").append(LINE_SEPARATOR);
+            return;
         }
     }
 
