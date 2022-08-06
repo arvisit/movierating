@@ -14,6 +14,7 @@ import com.company.movierating.controller.command.impl.SignInFormCommand;
 import com.company.movierating.controller.command.impl.SignOutCommand;
 import com.company.movierating.controller.command.impl.UserCommand;
 import com.company.movierating.controller.command.impl.UsersCommand;
+import com.company.movierating.controller.util.Paginator;
 import com.company.movierating.controller.util.ParametersPreparer;
 import com.company.movierating.service.UserService;
 import com.company.movierating.service.factory.ServiceFactory;
@@ -29,7 +30,7 @@ public class CommandFactory {
         ServiceFactory services = ServiceFactory.getInstance();
 
         commands = new HashMap<>();
-        commands.put("users", new UsersCommand(services.getService(UserService.class)));
+        commands.put("users", new UsersCommand(services.getService(UserService.class), Paginator.INSTANCE));
         commands.put("user", new UserCommand(services.getService(UserService.class), ParametersPreparer.INSTANCE));
         commands.put("create_user_form", new CreateUserFormCommand());
         commands.put("create_user", new CreateUserCommand(services.getService(UserService.class)));

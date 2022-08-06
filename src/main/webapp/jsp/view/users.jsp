@@ -17,6 +17,7 @@
                 </c:when>
                 <c:otherwise>
                     <h2>Users</h2>
+                    <%@ include file="/jsp/common/pagination.jsp" %>
                     <table>
                         <tr>
                         <th>Login</th>
@@ -33,6 +34,7 @@
                             </tr>
                         </c:forEach>
                     </table>
+                    <%@ include file="/jsp/common/pagination.jsp" %>
                 </c:otherwise>
             </c:choose>
         </div>
