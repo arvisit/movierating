@@ -10,6 +10,8 @@ import com.company.movierating.service.dto.UserDto;
 public enum UserValidator {
     INSTANCE;
 
+    private static final short REPUTATION_MAX = Short.MAX_VALUE;
+    private static final short REPUTATION_MIN = Short.MIN_VALUE;
     private static final String LINE_SEPARATOR = System.lineSeparator();
     private static final int LOGIN_MAX_LENGTH = 100;
     private static final int LOGIN_MIN_LENGTH = 4;
@@ -51,10 +53,22 @@ public enum UserValidator {
 
         checkEmail(dto.getEmail(), dto.getId(), sb);
         checkLogin(dto.getLogin(), dto.getId(), sb);
+        checkReputation(dto.getReputation(), sb);
 
         if (sb.length() != 0) {
             sb.delete(sb.length() - LINE_SEPARATOR.length(), sb.length());
             throw new UpdateValidationException(sb.toString());
+        }
+    }
+    
+    private void checkReputation(Integer reputation, StringBuilder sb) {
+        if (reputation == null) {
+            sb.append("Reputation field is empty").append(LINE_SEPARATOR);
+            return;
+        }
+        if (reputation < REPUTATION_MIN || reputation > REPUTATION_MAX) {
+            sb.append("Reputation value should be in range between " + REPUTATION_MIN + " and " //
+                    + REPUTATION_MAX).append(LINE_SEPARATOR);
         }
     }
 
