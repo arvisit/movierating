@@ -72,6 +72,14 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public List<UserDto> getAll(int limit, long offset) {
+        log.debug("User service method _getAll_ (paged) was called");
+        return userDao.getAll(limit, offset).stream() //
+                .map(this::toDto) //
+                .toList();
+    }
+
+    @Override
     public UserDto create(UserDto dto) {
         log.debug("User service method _create_ was called");
         validator.validateUserToCreate(dto);
@@ -101,6 +109,12 @@ public class UserServiceImpl implements UserService {
     public boolean delete(Long id) {
         log.debug("User service method _delete_ was called");
         return userDao.delete(id);
+    }
+
+    @Override
+    public Long count() {
+        log.debug("User service method count_ was called");
+        return userDao.count();
     }
 
     @Override
