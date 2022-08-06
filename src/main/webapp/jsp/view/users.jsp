@@ -18,7 +18,7 @@
                 <c:otherwise>
                     <h2>Users</h2>
                     <%@ include file="/jsp/common/pagination.jsp" %>
-                    <table>
+                    <table class="list-center">
                         <tr>
                         <th>Login</th>
                         <th>Role</th>

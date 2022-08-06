@@ -2,7 +2,11 @@
 
 body {
     position: relative;
-    min-height: 95vh;
+}
+
+.list-center {
+    margin-left: auto;
+    margin-right: auto;
 }
 
 div.header {
@@ -10,19 +14,20 @@ div.header {
 }
 
 div.main {
-    padding-bottom: 2.5rem;
+    text-align: center;
+    width: 68%;
+    margin: auto;
+    padding: 1%;
+    border: 1px solid #228B22;
 }
 
 div.footer {
     text-align: center;
-    position: absolute;
-    bottom: 0;
     width: 100%;
-    height: 1.5rem;
 }
 
 div.menu {
-    width: 100%;
+    width: 70%;
     margin: auto;
     padding: 0;
     overflow: hidden;
@@ -53,6 +58,33 @@ div.menu a:hover {
 
 div.menu-right {
     float: right;
+}
+
+div.pagination {
+    display: inline-block;
+}
+
+div.pagination a {
+    color: black;
+    float: left;
+    padding: 6px 10px;
+    text-align: center;
+    text-decoration: none;
+    border: 1px solid #ddd;
+}
+
+div.pagination a:first-child {
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px;
+}
+
+div.pagination a:last-child {
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
+}
+
+div.pagination a:hover {
+    background-color: #ddd;
 }
 
 div.notification p.successMessage {

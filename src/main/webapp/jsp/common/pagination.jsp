@@ -2,28 +2,26 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <div class="pagination">
     <c:if test="${requestScope.totalPages != 1}">
-        <ul>
-            <c:choose>
-                <c:when test="${requestScope.currentPage != 1}">
-                    <li><a href="controller?command=${requestScope.paginatedJsp}&page=1">&lt&lt</a></li>
-                    <li><a href="controller?command=${requestScope.paginatedJsp}&page=${requestScope.currentPage - 1}">&lt</a></li>
-                </c:when>
-                <c:otherwise>
-                    <li><a role="link" aria-disabled="true">&lt&lt</a></li>
-                    <li><a role="link" aria-disabled="true">&lt</a></li>
-                </c:otherwise>
-            </c:choose>
-            <li><a role="link" aria-disabled="true">Page ${requestScope.currentPage} / ${requestScope.totalPages}</a></li>
-            <c:choose>
-                <c:when test="${requestScope.currentPage != requestScope.totalPages}">
-                    <li><a href="controller?command=${requestScope.paginatedJsp}&page=${requestScope.currentPage + 1}">&gt</a></li>
-                    <li><a href="controller?command=${requestScope.paginatedJsp}&page=${requestScope.totalPages}">&gt&gt</a></li>
-                </c:when>
-                <c:otherwise>
-                    <li><a role="link" aria-disabled="true">&gt</a></li>
-                    <li><a role="link" aria-disabled="true">&gt&gt</a></li>
-                </c:otherwise>
-            </c:choose>
-        </ul>
+        <c:choose>
+            <c:when test="${requestScope.currentPage != 1}">
+                <a href="controller?command=${requestScope.paginatedJsp}&page=1">&laquo;</a>
+                <a href="controller?command=${requestScope.paginatedJsp}&page=${requestScope.currentPage - 1}">&lsaquo;</a>
+            </c:when>
+            <c:otherwise>
+                <a role="link" aria-disabled="true">&laquo;</a>
+                <a role="link" aria-disabled="true">&lsaquo;</a>
+            </c:otherwise>
+        </c:choose>
+        <a role="link" aria-disabled="true">Page ${requestScope.currentPage} / ${requestScope.totalPages}</a>
+        <c:choose>
+            <c:when test="${requestScope.currentPage != requestScope.totalPages}">
+                <a href="controller?command=${requestScope.paginatedJsp}&page=${requestScope.currentPage + 1}">&rsaquo;</a>
+                <a href="controller?command=${requestScope.paginatedJsp}&page=${requestScope.totalPages}">&raquo;</a>
+            </c:when>
+            <c:otherwise>
+                <a role="link" aria-disabled="true">&rsaquo;</a>
+                <a role="link" aria-disabled="true">&raquo;</a>
+            </c:otherwise>
+        </c:choose>
     </c:if>
 </div>
