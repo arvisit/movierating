@@ -31,12 +31,17 @@ public class UserDaoImpl implements UserDao {
     private static final String GET_ALL = "SELECT u.id, u.email, u.login, u.password, u.registration, u.info, u.reputation, r.name AS role " //
             + "FROM users u JOIN roles r ON u.role_id = r.id " //
             + "WHERE u.deleted = FALSE";
+    private static final String GET_ALL_PARTIALLY = "SELECT u.id, u.email, u.login, u.password, u.registration, u.info, u.reputation, r.name AS role " //
+            + "FROM users u JOIN roles r ON u.role_id = r.id " //
+            + "WHERE u.deleted = FALSE " //
+            + "ORDER BY id LIMIT ? OFFSET ?";
     private static final String CREATE = "INSERT INTO users (email, login, password, role_id) " //
             + "VALUES (?, ?, ?, (SELECT id FROM roles WHERE name = ?))";
     private static final String UPDATE = "UPDATE users SET email = ?, login = ?, password = ?, " //
             + "role_id = (SELECT id FROM roles WHERE name = ?), info = ?, reputation = ?, last_update = NOW()" //
             + "WHERE id = ? AND deleted = FALSE";
     private static final String DELETE = "UPDATE users SET deleted = TRUE WHERE id = ?, last_update = NOW()";
+    private static final String COUNT = "SELECT COUNT(u.id) AS total FROM users u WHERE u.deleted = FALSE";
 
     private DataSource dataSource;
 
@@ -109,6 +114,24 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
+    public List<User> getAll(int limit, long offset) {
+        List<User> users = new ArrayList<>();
+        try (Connection connection = dataSource.getConnection()) {
+            PreparedStatement statement = connection.prepareStatement(GET_ALL_PARTIALLY);
+            statement.setInt(1, limit);
+            statement.setLong(2, offset);
+            ResultSet result = statement.executeQuery();
+
+            while (result.next()) {
+                users.add(process(result));
+            }
+        } catch (SQLException e) {
+            log.error(e.getMessage(), e);
+        }
+        return users;
+    }
+
+    @Override
     public User create(User entity) {
         try (Connection connection = dataSource.getConnection()) {
             PreparedStatement statement = connection.prepareStatement(CREATE, Statement.RETURN_GENERATED_KEYS);
@@ -161,6 +184,21 @@ public class UserDaoImpl implements UserDao {
             log.error(e.getMessage(), e);
         }
         return false;
+    }
+    
+    @Override
+    public Long count() {
+        try (Connection connection = dataSource.getConnection()) {
+            Statement statement = connection.createStatement();
+            ResultSet result = statement.executeQuery(COUNT);
+
+            if (result.next()) {
+                return result.getLong("total");
+            }
+        } catch (SQLException e) {
+            log.error(e.getMessage());
+        }
+        throw new RuntimeException("Couldn't count users");
     }
 
     private User process(ResultSet result) throws SQLException {
