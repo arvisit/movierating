@@ -24,17 +24,27 @@
                 <br>
                 <label for="role">Role:</label>
                 <select required="required" id="role" name="role" size="1">
-                    <option ${(requestScope.user.role == 'ADMIN' ? 'selected' : '')} value="admin">Admin</option>
-                    <option ${(requestScope.user.role == 'USER' ? 'selected' : '')} value="user">User</option>
+                    <c:if test="${sessionScope.user.role == 'ADMIN'}">
+                        <option ${(requestScope.user.role == 'ADMIN' ? 'selected' : '')} value="admin">Admin</option>
+                        <option ${(requestScope.user.role == 'USER' ? 'selected' : '')} value="user">User</option>
+                    </c:if>
+                    <c:if test="${sessionScope.user.role != 'ADMIN'}">
+                        <option selected value="user">User</option>
+                    </c:if>
                 </select>
                 <br>
-                <label for="reputation">Reputation:</label>
-                <input required="required" type="number" id="reputation" name="reputation" min="-32768" max="32767" 
-                        value="${requestScope.user.reputation}"/>
-                <br>
-                <label for="info">Info:</label>
-                <textarea id="info" name="info">${requestScope.user.info}</textarea>
-                <br>
+                <c:if test="${sessionScope.user.role == 'ADMIN'}">
+                    <label for="reputation">Reputation:</label>
+                    <input required="required" type="number" id="reputation" name="reputation" min="-32768" max="32767" 
+                            value="${requestScope.user.reputation}"/>
+                    <br>
+                </c:if>
+                <c:if test="${sessionScope.user.role != 'ADMIN'}">
+                    <input name="reputation" type="hidden" value="${requestScope.user.reputation}"/>
+                    <label for="info">Info:</label>
+                    <textarea id="info" name="info">${requestScope.user.info}</textarea>
+                    <br>
+                </c:if>
                 <input type="submit" value="Save changes"/>
             </form>
         </div>
