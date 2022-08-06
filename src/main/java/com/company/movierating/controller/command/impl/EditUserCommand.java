@@ -40,7 +40,7 @@ public class EditUserCommand implements Command {
         changed.setEmail(email);
 
         UserDto updated = service.update(changed);
-        req.setAttribute("successMessage", "Parameters from edit user form");
+        req.setAttribute("successMessage", "Parameters were updated successfully");
         req.setAttribute("user", updated);
         return "jsp/view/user.jsp";
     }
