@@ -9,19 +9,19 @@
                     <li><a href="controller?command=${requestScope.paginatedJsp}&page=${requestScope.currentPage - 1}">&lt</a></li>
                 </c:when>
                 <c:otherwise>
-                    <li>&lt&lt</li>
-                    <li>&lt</li>
+                    <li><a role="link" aria-disabled="true">&lt&lt</a></li>
+                    <li><a role="link" aria-disabled="true">&lt</a></li>
                 </c:otherwise>
             </c:choose>
-            <li>Page ${requestScope.currentPage} / ${requestScope.totalPages}</li>
+            <li><a role="link" aria-disabled="true">Page ${requestScope.currentPage} / ${requestScope.totalPages}</a></li>
             <c:choose>
                 <c:when test="${requestScope.currentPage != requestScope.totalPages}">
                     <li><a href="controller?command=${requestScope.paginatedJsp}&page=${requestScope.currentPage + 1}">&gt</a></li>
                     <li><a href="controller?command=${requestScope.paginatedJsp}&page=${requestScope.totalPages}">&gt&gt</a></li>
                 </c:when>
                 <c:otherwise>
-                    <li>&gt</li>
-                    <li>&gt&gt</li>
+                    <li><a role="link" aria-disabled="true">&gt</a></li>
+                    <li><a role="link" aria-disabled="true">&gt&gt</a></li>
                 </c:otherwise>
             </c:choose>
         </ul>
