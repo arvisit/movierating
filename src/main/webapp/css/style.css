@@ -5,6 +5,10 @@ body {
     min-height: 95vh;
 }
 
+div.header {
+    text-align: center;
+}
+
 div.main {
     padding-bottom: 2.5rem;
 }
@@ -17,19 +21,25 @@ div.footer {
     height: 1.5rem;
 }
 
-div.menu ul {
-    list-style-type: none;
-    margin: 0;
+div.menu {
+    width: 100%;
+    margin: auto;
     padding: 0;
     overflow: hidden;
     background-color: #228B22;
 }
 
-div.menu li {
-    float: left;
+div.loginMessage {
+    color: white;
+    text-align: center;
+    margin: auto;
+    padding: 16px;
+    float:left;
+    background-color: #006400;
 }
 
-div.menu li a {
+div.menu a {
+    float:left;
     display: block;
     color: white;
     text-align: center;
@@ -37,16 +47,12 @@ div.menu li a {
     text-decoration: none;
 }
 
-div.menu li a:hover {
+div.menu a:hover {
     background-color: #006400;
 }
 
-div.notification p.loginMessage {
-    position: absolute;
-    top: 0;
-    left: 0;
-    background-color: cadetblue;
-    color: white;
+div.menu-right {
+    float: right;
 }
 
 div.notification p.successMessage {
