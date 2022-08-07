@@ -123,6 +123,10 @@ public class UserServiceImpl implements UserService {
             if (actor.getId() != subject.getId()) {
                 throw new ForbiddenPageException("You have not enough rigths");
             }
+        } else {
+            if (subject.getRole() == UserDto.Role.ADMIN && actor.getId() != subject.getId()) {
+                throw new ForbiddenPageException("You have not enough rigths");
+            }
         }
         return subject;
     }

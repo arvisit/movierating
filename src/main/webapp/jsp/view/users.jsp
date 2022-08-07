@@ -28,7 +28,9 @@
                             <tr>
                                 <td>
                                     <a href="controller?command=user&id=${user.id}">${user.login}</a>
-                                    <c:if test="${sessionScope.user != null && (sessionScope.user.role == 'ADMIN' || sessionScope.user.id == user.id)}">
+                                    <c:if test="${sessionScope.user != null 
+                                            && ((sessionScope.user.role == 'ADMIN' && user.role != 'ADMIN') 
+                                            || sessionScope.user.id == user.id)}">
                                         <br>
                                         <a class="edit" href="controller?command=edit_user_form&id=${user.id}">(edit)</a>
                                     </c:if>
