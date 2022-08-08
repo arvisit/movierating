@@ -18,4 +18,10 @@ public class UserDto {
     public enum Role {
         ADMIN, USER
     }
+
+    @Override
+    public String toString() {
+        return "UserDto [id=" + id + ", login=" + login + ", email=" + email + ", role=" + role + ", info=" + info
+                + ", reputation=" + reputation + ", registration=" + registration + "]";
+    }
 }
