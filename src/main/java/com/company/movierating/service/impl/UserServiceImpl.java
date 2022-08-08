@@ -9,7 +9,7 @@ import com.company.movierating.exception.service.ForbiddenPageException;
 import com.company.movierating.exception.service.NoRecordFoundException;
 import com.company.movierating.service.UserService;
 import com.company.movierating.service.dto.UserDto;
-import com.company.movierating.service.validation.UserValidator;
+import com.company.movierating.service.util.UserValidator;
 
 import lombok.extern.log4j.Log4j2;
 

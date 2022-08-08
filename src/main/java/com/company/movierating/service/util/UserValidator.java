@@ -1,4 +1,4 @@
-package com.company.movierating.service.validation;
+package com.company.movierating.service.util;
 
 import com.company.movierating.dao.UserDao;
 import com.company.movierating.dao.entity.User;

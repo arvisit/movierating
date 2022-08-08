@@ -7,7 +7,7 @@ import com.company.movierating.dao.UserDao;
 import com.company.movierating.dao.factory.DaoFactory;
 import com.company.movierating.service.UserService;
 import com.company.movierating.service.impl.UserServiceImpl;
-import com.company.movierating.service.validation.UserValidator;
+import com.company.movierating.service.util.UserValidator;
 
 public class ServiceFactory {
     private final Map<Class<?>, Object> services;
