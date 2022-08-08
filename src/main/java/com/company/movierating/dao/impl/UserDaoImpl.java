@@ -211,7 +211,7 @@ public class UserDaoImpl implements UserDao {
         user.setInfo(result.getString("info"));
         user.setReputation(result.getInt("reputation"));
         user.setRegistration(ZonedDateTime.parse(result.getString("registration"),
-                DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSSSSSx")));
+                DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSSx")));
 
         return user;
     }

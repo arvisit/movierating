@@ -9,6 +9,7 @@ import com.company.movierating.exception.service.ForbiddenPageException;
 import com.company.movierating.exception.service.NoRecordFoundException;
 import com.company.movierating.service.UserService;
 import com.company.movierating.service.dto.UserDto;
+import com.company.movierating.service.util.DigestUtil;
 import com.company.movierating.service.util.UserValidator;
 
 import lombok.extern.log4j.Log4j2;
@@ -84,6 +85,7 @@ public class UserServiceImpl implements UserService {
         log.debug("User service method _create_ was called");
         validator.validateUserToCreate(dto);
         dto.setRole(UserDto.Role.USER);
+        dto.setPassword(DigestUtil.INSTANCE.hash(dto.getPassword()));
         User createdEntity = userDao.create(toEntity(dto));
         return toDto(createdEntity);
     }
@@ -93,6 +95,7 @@ public class UserServiceImpl implements UserService {
         log.debug("User service method _create_ was called");
         validator.validateUserToCreate(dto, confirmedPassword);
         dto.setRole(UserDto.Role.USER);
+        dto.setPassword(DigestUtil.INSTANCE.hash(dto.getPassword()));
         User createdEntity = userDao.create(toEntity(dto));
         return toDto(createdEntity);
     }
@@ -137,7 +140,8 @@ public class UserServiceImpl implements UserService {
         if (user == null) {
             throw new NonAuthorizedException("No such login found");
         }
-        if (!user.getPassword().equals(password)) {
+        String hashedPassword = DigestUtil.INSTANCE.hash(password);
+        if (!user.getPassword().equals(hashedPassword)) {
             throw new NonAuthorizedException("Wrong password");
         }
         return toDto(user);
