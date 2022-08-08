@@ -5,7 +5,6 @@ import java.util.List;
 import com.company.movierating.dao.UserDao;
 import com.company.movierating.dao.entity.User;
 import com.company.movierating.exception.controller.NonAuthorizedException;
-import com.company.movierating.exception.service.ForbiddenPageException;
 import com.company.movierating.exception.service.NoRecordFoundException;
 import com.company.movierating.service.UserService;
 import com.company.movierating.service.dto.UserDto;
@@ -31,17 +30,8 @@ public class UserServiceImpl implements UserService {
         if (entity == null) {
             throw new NoRecordFoundException("There is no user with id= " + id);
         }
+        entity.setPassword(null);
         return toDto(entity);
-    }
-
-    @Override
-    public UserDto getById(UserDto actor, Long id) {
-        log.debug("User service method _getById_ was called");
-        User entity = userDao.getById(id);
-        if (entity == null) {
-            throw new NoRecordFoundException("There is no user with id= " + id);
-        }
-        return approveSubject(actor, toDto(entity));
     }
 
     @Override
@@ -51,6 +41,7 @@ public class UserServiceImpl implements UserService {
         if (entity == null) {
             throw new NoRecordFoundException("There is no user with email= " + email);
         }
+        entity.setPassword(null);
         return toDto(entity);
     }
 
@@ -61,6 +52,7 @@ public class UserServiceImpl implements UserService {
         if (entity == null) {
             throw new NoRecordFoundException("There is no user with login= " + login);
         }
+        entity.setPassword(null);
         return toDto(entity);
     }
 
@@ -68,7 +60,10 @@ public class UserServiceImpl implements UserService {
     public List<UserDto> getAll() {
         log.debug("User service method _getAll_ was called");
         return userDao.getAll().stream() //
-                .map(this::toDto) //
+                .map(dao -> {
+                    dao.setPassword(null);
+                    return toDto(dao);
+                }) //
                 .toList();
     }
 
@@ -76,7 +71,10 @@ public class UserServiceImpl implements UserService {
     public List<UserDto> getAll(int limit, long offset) {
         log.debug("User service method _getAll_ (paged) was called");
         return userDao.getAll(limit, offset).stream() //
-                .map(this::toDto) //
+                .map(dao -> {
+                    dao.setPassword(null);
+                    return toDto(dao);
+                }) //
                 .toList();
     }
 
@@ -87,6 +85,7 @@ public class UserServiceImpl implements UserService {
         dto.setRole(UserDto.Role.USER);
         dto.setPassword(DigestUtil.INSTANCE.hash(dto.getPassword()));
         User createdEntity = userDao.create(toEntity(dto));
+        createdEntity.setPassword(null);
         return toDto(createdEntity);
     }
 
@@ -97,14 +96,23 @@ public class UserServiceImpl implements UserService {
         dto.setRole(UserDto.Role.USER);
         dto.setPassword(DigestUtil.INSTANCE.hash(dto.getPassword()));
         User createdEntity = userDao.create(toEntity(dto));
+        createdEntity.setPassword(null);
         return toDto(createdEntity);
     }
 
     @Override
     public UserDto update(UserDto dto) {
         log.debug("User service method _update_ was called");
+        UserDto dtoToUpdate = toDto(userDao.getById(dto.getId()));
+        
+        dtoToUpdate.setEmail(dto.getEmail());
+        dtoToUpdate.setInfo(dto.getInfo());
+        dtoToUpdate.setReputation(dto.getReputation());
+        dtoToUpdate.setRole(dto.getRole());
+        
         validator.validateUserToUpdate(dto);
         User createdEntity = userDao.update(toEntity(dto));
+        createdEntity.setPassword(null);
         return toDto(createdEntity);
     }
 
@@ -121,20 +129,6 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserDto approveSubject(UserDto actor, UserDto subject) {
-        if (actor.getRole() != UserDto.Role.ADMIN) {
-            if (actor.getId() != subject.getId()) {
-                throw new ForbiddenPageException("You have not enough rigths");
-            }
-        } else {
-            if (subject.getRole() == UserDto.Role.ADMIN && actor.getId() != subject.getId()) {
-                throw new ForbiddenPageException("You have not enough rigths");
-            }
-        }
-        return subject;
-    }
-
-    @Override
     public UserDto signIn(String login, String password) {
         User user = userDao.getByLogin(login);
         if (user == null) {
@@ -144,6 +138,7 @@ public class UserServiceImpl implements UserService {
         if (!user.getPassword().equals(hashedPassword)) {
             throw new NonAuthorizedException("Wrong password");
         }
+        user.setPassword(null);
         return toDto(user);
     }
 
