@@ -23,11 +23,6 @@ public class UserRoleFilter extends HttpFilter {
         if (requiresRole(command)) {
             HttpSession session = req.getSession(false);
             UserDto sessionUser = (UserDto) session.getAttribute("user");
-            if (session == null || sessionUser == null) {
-                req.setAttribute("errorMessage", "Authorization needed");
-                req.getRequestDispatcher("jsp/sign_in/sign_in_form.jsp").forward(req, res);
-                return;
-            }
             Long targetId;
             try {
                 targetId = ParametersPreparer.INSTANCE.getLong(req.getParameter("id"));
@@ -42,7 +37,7 @@ public class UserRoleFilter extends HttpFilter {
             if (sessionUser.getRole() != UserDto.Role.ADMIN && sessionUser.getId() != targetId) {
                 int status = 403;
                 req.setAttribute("errorStatus", status);
-                req.setAttribute("errorMessage", "No corresponding rights. Access denied");
+                req.setAttribute("errorMessage", "No rights to edit other users");
                 res.setStatus(status);
                 req.getRequestDispatcher("index.jsp").forward(req, res);
                 return;
