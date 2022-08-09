@@ -4,7 +4,7 @@
 <html>
     <head>
         <meta charset="UTF-8">
-        <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/style.css"/>
+        <link rel="stylesheet" type="text/css" href="css/style.css"/>
         <title>MovieRating</title>
     </head>
     <body>

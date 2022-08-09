@@ -2,7 +2,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <div class="menu">
     <c:if test="${sessionScope.user != null}">
-        <div class="loginMessage">Hello, ${sessionScope.user.login}</div>
+        <div class="loginMessage">Hello, <c:out value="${sessionScope.user.login}"/></div>
     </c:if>
     <div class="menu-right">
         <a href=".">Home</a>

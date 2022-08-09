@@ -4,7 +4,7 @@
 <html>
     <head>
         <meta charset="UTF-8">
-        <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/style.css"/>
+        <link rel="stylesheet" type="text/css" href="css/style.css"/>
         <title>Users</title>
     </head>
     <body>
@@ -27,7 +27,7 @@
                         <c:forEach items="${users}" var="user">
                             <tr>
                                 <td>
-                                    <a href="controller?command=user&id=${user.id}">${user.login}</a>
+                                    <a href="controller?command=user&id=${user.id}"><c:out value="${user.login}"/></a>
                                     <c:if test="${sessionScope.user != null 
                                             && ((sessionScope.user.role == 'ADMIN' && user.role != 'ADMIN') 
                                             || sessionScope.user.id == user.id)}">

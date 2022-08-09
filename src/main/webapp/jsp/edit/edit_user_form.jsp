@@ -4,7 +4,7 @@
 <html>
     <head>
         <meta charset="UTF-8">
-        <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/style.css"/>
+        <link rel="stylesheet" type="text/css" href="css/style.css"/>
         <title>Edit user</title>
     </head>
     <body>
@@ -12,8 +12,8 @@
         <%@ include file="/jsp/common/menu.jsp"%>
         <div class="main">
             <h2>The User:</h2>
-            <p><b>Login:</b> ${requestScope.user.login}</p>
-            <p><b>Registration:</b> ${requestScope.user.registration}</p>
+            <p><b>Login:</b> <c:out value="${requestScope.user.login}"/></p>
+            <p><b>Registration:</b> <c:out value="${requestScope.user.registration}"/></p>
             <h2>Edit user:</h2>
             <form method="post" action="controller">
                 <input name="command" type="hidden" value="edit_user"/>
