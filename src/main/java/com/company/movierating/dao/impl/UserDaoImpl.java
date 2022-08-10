@@ -14,6 +14,7 @@ import com.company.movierating.dao.UserDao;
 import com.company.movierating.dao.connection.DataSource;
 import com.company.movierating.dao.entity.User;
 import com.company.movierating.dao.entity.User.Role;
+import com.company.movierating.dao.util.Constants;
 
 import lombok.extern.log4j.Log4j2;
 
@@ -40,7 +41,7 @@ public class UserDaoImpl implements UserDao {
     private static final String UPDATE = "UPDATE users SET email = ?, login = ?, password = ?, " //
             + "role_id = (SELECT id FROM roles WHERE name = ?), info = ?, reputation = ?, last_update = NOW()" //
             + "WHERE id = ? AND deleted = FALSE";
-    private static final String DELETE = "UPDATE users SET deleted = TRUE WHERE id = ?, last_update = NOW()";
+    private static final String DELETE = "UPDATE users SET deleted = TRUE, last_update = NOW() WHERE id = ?";
     private static final String COUNT = "SELECT COUNT(u.id) AS total FROM users u WHERE u.deleted = FALSE";
 
     private DataSource dataSource;
@@ -211,7 +212,7 @@ public class UserDaoImpl implements UserDao {
         user.setInfo(result.getString("info"));
         user.setReputation(result.getInt("reputation"));
         user.setRegistration(ZonedDateTime.parse(result.getString("registration"),
-                DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSSx")));
+                DateTimeFormatter.ofPattern(Constants.DB_ZONED_DATE_TIME_FORMAT)));
 
         return user;
     }
