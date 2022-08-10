@@ -3,7 +3,7 @@ package com.company.movierating.service.util;
 import com.company.movierating.dao.UserDao;
 import com.company.movierating.dao.entity.User;
 import com.company.movierating.dao.factory.DaoFactory;
-import com.company.movierating.exception.service.RegistrationValidationException;
+import com.company.movierating.exception.service.CreateValidationException;
 import com.company.movierating.exception.service.UpdateValidationException;
 import com.company.movierating.service.dto.UserDto;
 
@@ -30,7 +30,7 @@ public enum UserValidator {
 
         if (sb.length() != 0) {
             sb.delete(sb.length() - LINE_SEPARATOR.length(), sb.length());
-            throw new RegistrationValidationException(sb.toString());
+            throw new CreateValidationException(sb.toString());
         }
     }
 
@@ -44,7 +44,7 @@ public enum UserValidator {
 
         if (sb.length() != 0) {
             sb.delete(sb.length() - LINE_SEPARATOR.length(), sb.length());
-            throw new RegistrationValidationException(sb.toString());
+            throw new CreateValidationException(sb.toString());
         }
     }
 

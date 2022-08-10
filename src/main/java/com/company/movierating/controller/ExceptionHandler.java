@@ -6,7 +6,7 @@ import com.company.movierating.exception.controller.RegisterPasswordConfirmation
 import com.company.movierating.exception.controller.UnsupportedCommandException;
 import com.company.movierating.exception.service.ForbiddenPageException;
 import com.company.movierating.exception.service.NoRecordFoundException;
-import com.company.movierating.exception.service.RegistrationValidationException;
+import com.company.movierating.exception.service.CreateValidationException;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -31,7 +31,7 @@ public enum ExceptionHandler {
             status = 400;
             message = e.getMessage();
             page = "jsp/create/create_user_form.jsp";
-        } else if (e instanceof RegistrationValidationException) {
+        } else if (e instanceof CreateValidationException) {
             status = 400;
             message = e.getMessage();
             page = "jsp/create/create_user_form.jsp";

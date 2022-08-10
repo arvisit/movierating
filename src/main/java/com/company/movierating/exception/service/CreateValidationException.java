@@ -3,13 +3,13 @@ package com.company.movierating.exception.service;
 import com.company.movierating.exception.ServiceException;
 
 @SuppressWarnings("serial")
-public class RegistrationValidationException extends ServiceException {
+public class CreateValidationException extends ServiceException {
 
-    public RegistrationValidationException(String errorMessage) {
+    public CreateValidationException(String errorMessage) {
         super(errorMessage);
     }
 
-    public RegistrationValidationException(String errorMessage, Throwable err) {
+    public CreateValidationException(String errorMessage, Throwable err) {
         super(errorMessage, err);
     }
 }
