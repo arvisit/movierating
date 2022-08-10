@@ -5,7 +5,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.sql.Timestamp;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -38,8 +37,8 @@ public class BanDaoImpl implements BanDao {
             + "FROM bans b " //
             + "WHERE b.admin_id = ? AND b.deleted = FALSE " //
             + "ORDERED BY b.id LIMIT ? OFFSET ?";
-    private static final String CREATE = "INSERT INTO bans (user_id, admin_id, end_date, reason) " //
-            + "VALUES (?, ?, ?, ?)";
+    private static final String CREATE = "INSERT INTO bans (user_id, admin_id, start_date, end_date, reason) " //
+            + "VALUES (?, ?, ?, ?, ?)";
     private static final String UPDATE = "UPDATE bans SET end_date = ?, last_update = NOW() " //
             + "WHERE id = ? AND deleted = FALSE";
     private static final String DELETE = "UPDATE bans SET deleted = TRUE, last_update = NOW() " //
@@ -149,8 +148,10 @@ public class BanDaoImpl implements BanDao {
             statement.setLong(1, entity.getUserId());
             statement.setLong(2, entity.getAdminId());
             statement.setString(3,
+                    entity.getStartDate().format(DateTimeFormatter.ofPattern(Constants.APP_ZONED_DATE_TIME_FORMAT)));
+            statement.setString(4,
                     entity.getEndDate().format(DateTimeFormatter.ofPattern(Constants.APP_ZONED_DATE_TIME_FORMAT)));
-            statement.setString(4, entity.getReason());
+            statement.setString(5, entity.getReason());
             statement.executeUpdate();
 
             ResultSet keys = statement.getGeneratedKeys();
@@ -168,7 +169,8 @@ public class BanDaoImpl implements BanDao {
     public Ban update(Ban entity) {
         try (Connection connection = dataSource.getConnection()) {
             PreparedStatement statement = connection.prepareStatement(UPDATE);
-            statement.setTimestamp(1, Timestamp.valueOf(entity.getEndDate().toLocalDateTime()));
+            statement.setString(1,
+                    entity.getEndDate().format(DateTimeFormatter.ofPattern(Constants.APP_ZONED_DATE_TIME_FORMAT)));
             statement.setLong(2, entity.getId());
             statement.executeUpdate();
 

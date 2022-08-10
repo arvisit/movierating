@@ -3,10 +3,14 @@ package com.company.movierating.service.factory;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.company.movierating.dao.BanDao;
 import com.company.movierating.dao.UserDao;
 import com.company.movierating.dao.factory.DaoFactory;
+import com.company.movierating.service.BanService;
 import com.company.movierating.service.UserService;
+import com.company.movierating.service.impl.BanServiceImpl;
 import com.company.movierating.service.impl.UserServiceImpl;
+import com.company.movierating.service.util.BanValidator;
 import com.company.movierating.service.util.UserValidator;
 
 public class ServiceFactory {
@@ -21,6 +25,7 @@ public class ServiceFactory {
 
         services = new HashMap<>();
         services.put(UserService.class, new UserServiceImpl(daoFactory.getDao(UserDao.class), UserValidator.INSTANCE));
+        services.put(BanService.class, new BanServiceImpl(daoFactory.getDao(BanDao.class), BanValidator.INSTANCE));
     }
 
     public static ServiceFactory getInstance() {
