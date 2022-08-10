@@ -3,8 +3,10 @@ package com.company.movierating.dao.factory;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.company.movierating.dao.BanDao;
 import com.company.movierating.dao.UserDao;
 import com.company.movierating.dao.connection.DataSource;
+import com.company.movierating.dao.impl.BanDaoImpl;
 import com.company.movierating.dao.impl.UserDaoImpl;
 
 public class DaoFactory {
@@ -19,6 +21,7 @@ public class DaoFactory {
         
         daos = new HashMap<>();
         daos.put(UserDao.class, new UserDaoImpl(dataSource));
+        daos.put(BanDao.class, new BanDaoImpl(dataSource));
     }
 
     public static DaoFactory getInstance() {
