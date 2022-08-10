@@ -2,17 +2,17 @@ package com.company.movierating.service.util;
 
 import java.time.ZonedDateTime;
 
+import com.company.movierating.dao.UserDao;
+import com.company.movierating.dao.entity.User;
+import com.company.movierating.dao.factory.DaoFactory;
 import com.company.movierating.exception.service.CreateValidationException;
 import com.company.movierating.exception.service.UpdateValidationException;
-import com.company.movierating.service.UserService;
 import com.company.movierating.service.dto.BanDto;
-import com.company.movierating.service.dto.UserDto;
-import com.company.movierating.service.factory.ServiceFactory;
 
 public enum BanValidator {
     INSTANCE;
 
-    private final UserService userService = ServiceFactory.getInstance().getService(UserService.class);
+    private static final UserDao USER_DAO = DaoFactory.getInstance().getDao(UserDao.class);
     private static final String LINE_SEPARATOR = System.lineSeparator();
 
     public void validateBanToCreate(BanDto dto) {
@@ -47,12 +47,12 @@ public enum BanValidator {
             sb.append("User id field is empty").append(LINE_SEPARATOR);
             return;
         }
-        UserDto user = userService.getById(id);
+        User user = USER_DAO.getById(id);
         if (user == null) {
             sb.append("No user with such id").append(LINE_SEPARATOR);
             return;
         }
-        if (user.getRole() != UserDto.Role.USER) {
+        if (user.getRole() != User.Role.USER) {
             sb.append("Not a user role").append(LINE_SEPARATOR);
         }
     }
@@ -62,12 +62,12 @@ public enum BanValidator {
             sb.append("Admin id field is empty").append(LINE_SEPARATOR);
             return;
         }
-        UserDto admin = userService.getById(id);
+        User admin = USER_DAO.getById(id);
         if (admin == null) {
             sb.append("No admin with such id").append(LINE_SEPARATOR);
             return;
         }
-        if (admin.getRole() != UserDto.Role.ADMIN) {
+        if (admin.getRole() != User.Role.ADMIN) {
             sb.append("Not an admin role").append(LINE_SEPARATOR);
         }
     }
