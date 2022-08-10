@@ -26,7 +26,7 @@ CREATE TABLE IF NOT EXISTS bans (
     id BIGSERIAL PRIMARY KEY,
     user_id BIGINT NOT NULL REFERENCES users(id),
     admin_id BIGINT NOT NULL REFERENCES users(id),
-    start_date TIMESTAMPTZ(3) NOT NULL DEFAULT NOW(),
+    start_date TIMESTAMPTZ(3) NOT NULL,
     end_date TIMESTAMPTZ(3) NOT NULL,
     reason TEXT NOT NULL,
     last_update TIMESTAMPTZ(3) NOT NULL DEFAULT NOW(),
