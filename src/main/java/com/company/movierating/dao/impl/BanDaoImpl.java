@@ -46,6 +46,9 @@ public class BanDaoImpl implements BanDao {
     private static final String COUNT = "SELECT COUNT(b.id) AS total " //
             + "FROM bans b " //
             + "WHERE b.deleted = FALSE";
+    private static final String IS_BANNED = "SELECT COUNT(b.id) AS active_bans " //
+            + "FROM bans b " //
+            + "WHERE b.user_id = ? AND b.deleted = FALSE AND b.end_date > NOW()";
 
     private DataSource dataSource;
 
@@ -208,6 +211,22 @@ public class BanDaoImpl implements BanDao {
             log.error(e.getMessage());
         }
         throw new RuntimeException("Couldn't count bans");
+    }
+
+    @Override
+    public boolean isBanned(Long userId) {
+        try (Connection connection = dataSource.getConnection()) {
+            PreparedStatement statement = connection.prepareStatement(IS_BANNED);
+            statement.setLong(1, userId);
+            ResultSet result = statement.executeQuery();
+
+            if (result.next()) {
+                return result.getLong("active_bans") > 0;
+            }
+        } catch (SQLException e) {
+            log.error(e.getMessage(), e);
+        }
+        return false;
     }
 
     private Ban process(ResultSet result) throws SQLException {

@@ -8,4 +8,6 @@ public interface BanDao extends AbstractDao<Long, Ban> {
     List<Ban> getAllByUser(Long id, int limit, long offset);
 
     List<Ban> getAllByAdmin(Long id, int limit, long offset);
+
+    boolean isBanned(Long userId);
 }
