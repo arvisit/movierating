@@ -10,4 +10,5 @@ public interface UserService extends AbstractService<Long, UserDto> {
     UserDto signIn(String login, String password);
 
     UserDto create(UserDto entity, String confirmedPassword);
+
 }

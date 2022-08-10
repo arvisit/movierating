@@ -24,7 +24,8 @@ public class ServiceFactory {
         DaoFactory daoFactory = DaoFactory.getInstance();
 
         services = new HashMap<>();
-        services.put(UserService.class, new UserServiceImpl(daoFactory.getDao(UserDao.class), UserValidator.INSTANCE));
+        services.put(UserService.class, new UserServiceImpl(daoFactory.getDao(UserDao.class),
+                daoFactory.getDao(BanDao.class), UserValidator.INSTANCE));
         services.put(BanService.class, new BanServiceImpl(daoFactory.getDao(BanDao.class), BanValidator.INSTANCE));
     }
 

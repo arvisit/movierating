@@ -14,6 +14,7 @@ public class UserDto {
     private String info;
     private Integer reputation;
     private ZonedDateTime registration;
+    private boolean banned;
 
     public enum Role {
         ADMIN, USER
