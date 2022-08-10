@@ -111,9 +111,9 @@ public class UserServiceImpl implements UserService {
         dtoToUpdate.setRole(dto.getRole());
         
         validator.validateUserToUpdate(dtoToUpdate);
-        User createdEntity = userDao.update(toEntity(dtoToUpdate));
-        createdEntity.setPassword(null);
-        return toDto(createdEntity);
+        User updatedEntity = userDao.update(toEntity(dtoToUpdate));
+        updatedEntity.setPassword(null);
+        return toDto(updatedEntity);
     }
 
     @Override
@@ -124,7 +124,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public Long count() {
-        log.debug("User service method count_ was called");
+        log.debug("User service method _count_ was called");
         return userDao.count();
     }
 
