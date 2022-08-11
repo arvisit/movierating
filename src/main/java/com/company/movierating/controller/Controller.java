@@ -15,7 +15,6 @@ import lombok.extern.log4j.Log4j2;
 
 @Log4j2
 @WebServlet("/controller")
-@SuppressWarnings("serial")
 public class Controller extends HttpServlet {
     private final ExceptionHandler exceptionHandler = ExceptionHandler.INSTANCE;
 

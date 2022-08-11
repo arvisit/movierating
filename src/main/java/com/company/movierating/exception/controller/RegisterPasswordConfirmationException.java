@@ -2,7 +2,6 @@ package com.company.movierating.exception.controller;
 
 import com.company.movierating.exception.ControllerException;
 
-@SuppressWarnings("serial")
 public class RegisterPasswordConfirmationException extends ControllerException {
 
     public RegisterPasswordConfirmationException(String errorMessage) {

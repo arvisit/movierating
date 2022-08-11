@@ -1,6 +1,5 @@
 package com.company.movierating.exception;
 
-@SuppressWarnings("serial")
 public class ServiceException extends RuntimeException {
 
     public ServiceException(String errorMessage) {

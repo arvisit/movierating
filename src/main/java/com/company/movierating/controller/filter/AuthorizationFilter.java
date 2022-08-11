@@ -9,7 +9,6 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
-@SuppressWarnings("serial")
 public class AuthorizationFilter extends HttpFilter {
 
     @Override

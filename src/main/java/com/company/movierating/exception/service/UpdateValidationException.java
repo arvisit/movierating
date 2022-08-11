@@ -2,7 +2,6 @@ package com.company.movierating.exception.service;
 
 import com.company.movierating.exception.ServiceException;
 
-@SuppressWarnings("serial")
 public class UpdateValidationException extends ServiceException {
 
     public UpdateValidationException(String errorMessage) {
