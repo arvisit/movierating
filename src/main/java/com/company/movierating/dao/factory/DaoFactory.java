@@ -17,11 +17,9 @@ public class DaoFactory {
     }
 
     private DaoFactory() {
-        DataSource dataSource = DataSource.getInstance();
-        
         daos = new HashMap<>();
-        daos.put(UserDao.class, new UserDaoImpl(dataSource));
-        daos.put(BanDao.class, new BanDaoImpl(dataSource));
+        daos.put(UserDao.class, new UserDaoImpl(DataSource.getInstance()));
+        daos.put(BanDao.class, new BanDaoImpl(DataSource.getInstance()));
     }
 
     public static DaoFactory getInstance() {

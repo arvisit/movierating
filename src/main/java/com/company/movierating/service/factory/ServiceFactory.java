@@ -21,12 +21,11 @@ public class ServiceFactory {
     }
 
     private ServiceFactory() {
-        DaoFactory daoFactory = DaoFactory.getInstance();
-
         services = new HashMap<>();
-        services.put(UserService.class, new UserServiceImpl(daoFactory.getDao(UserDao.class),
-                daoFactory.getDao(BanDao.class), UserValidator.INSTANCE));
-        services.put(BanService.class, new BanServiceImpl(daoFactory.getDao(BanDao.class), BanValidator.INSTANCE));
+        services.put(UserService.class, new UserServiceImpl(DaoFactory.getInstance().getDao(UserDao.class),
+                DaoFactory.getInstance().getDao(BanDao.class), UserValidator.INSTANCE));
+        services.put(BanService.class,
+                new BanServiceImpl(DaoFactory.getInstance().getDao(BanDao.class), BanValidator.INSTANCE));
     }
 
     public static ServiceFactory getInstance() {

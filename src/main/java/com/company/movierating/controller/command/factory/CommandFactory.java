@@ -27,19 +27,19 @@ public class CommandFactory {
     }
 
     private CommandFactory() {
-        ServiceFactory services = ServiceFactory.getInstance();
-
         commands = new HashMap<>();
-        commands.put("users", new UsersCommand(services.getService(UserService.class), Paginator.INSTANCE));
-        commands.put("user", new UserCommand(services.getService(UserService.class), ParametersPreparer.INSTANCE));
+        commands.put("users",
+                new UsersCommand(ServiceFactory.getInstance().getService(UserService.class), Paginator.INSTANCE));
+        commands.put("user", new UserCommand(ServiceFactory.getInstance().getService(UserService.class),
+                ParametersPreparer.INSTANCE));
         commands.put("create_user_form", new CreateUserFormCommand());
-        commands.put("create_user", new CreateUserCommand(services.getService(UserService.class)));
-        commands.put("edit_user_form",
-                new EditUserFormCommand(services.getService(UserService.class), ParametersPreparer.INSTANCE));
-        commands.put("edit_user",
-                new EditUserCommand(services.getService(UserService.class), ParametersPreparer.INSTANCE));
+        commands.put("create_user", new CreateUserCommand(ServiceFactory.getInstance().getService(UserService.class)));
+        commands.put("edit_user_form", new EditUserFormCommand(
+                ServiceFactory.getInstance().getService(UserService.class), ParametersPreparer.INSTANCE));
+        commands.put("edit_user", new EditUserCommand(ServiceFactory.getInstance().getService(UserService.class),
+                ParametersPreparer.INSTANCE));
         commands.put("sign_in_form", new SignInFormCommand());
-        commands.put("sign_in", new SignInCommand(services.getService(UserService.class)));
+        commands.put("sign_in", new SignInCommand(ServiceFactory.getInstance().getService(UserService.class)));
         commands.put("sign_out", new SignOutCommand());
         commands.put("error", new ErrorCommand());
     }
