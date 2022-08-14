@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.company.movierating.dao.BanDao;
+import com.company.movierating.dao.UserDao;
 import com.company.movierating.dao.connection.DataSource;
 import com.company.movierating.dao.entity.Ban;
 import com.company.movierating.dao.util.Constants;
@@ -46,14 +47,19 @@ public class BanDaoImpl implements BanDao {
     private static final String COUNT = "SELECT COUNT(b.id) AS total " //
             + "FROM bans b " //
             + "WHERE b.deleted = FALSE";
+    private static final String COUNT_BY_USER_ID = "SELECT COUNT(b.id) AS total " //
+            + "FROM bans b " //
+            + "WHERE b.deleted = FALSE AND b.user_id = ?";
     private static final String IS_BANNED = "SELECT COUNT(b.id) AS active_bans " //
             + "FROM bans b " //
             + "WHERE b.user_id = ? AND b.deleted = FALSE AND b.end_date > NOW()";
 
     private DataSource dataSource;
+    private UserDao userDao;
 
-    public BanDaoImpl(DataSource dataSource) {
+    public BanDaoImpl(DataSource dataSource, UserDao userDao) {
         this.dataSource = dataSource;
+        this.userDao = userDao;
     }
 
     @Override
@@ -148,8 +154,8 @@ public class BanDaoImpl implements BanDao {
     public Ban create(Ban entity) {
         try (Connection connection = dataSource.getConnection()) {
             PreparedStatement statement = connection.prepareStatement(CREATE, Statement.RETURN_GENERATED_KEYS);
-            statement.setLong(1, entity.getUserId());
-            statement.setLong(2, entity.getAdminId());
+            statement.setLong(1, entity.getUser().getId());
+            statement.setLong(2, entity.getAdmin().getId());
             statement.setString(3,
                     entity.getStartDate().format(DateTimeFormatter.ofPattern(Constants.APP_ZONED_DATE_TIME_FORMAT)));
             statement.setString(4,
@@ -214,6 +220,22 @@ public class BanDaoImpl implements BanDao {
     }
 
     @Override
+    public Long countByUser(Long id) {
+        try (Connection connection = dataSource.getConnection()) {
+            PreparedStatement statement = connection.prepareStatement(COUNT_BY_USER_ID);
+            statement.setLong(1, id);
+            ResultSet result = statement.executeQuery();
+
+            if (result.next()) {
+                return result.getLong("total");
+            }
+        } catch (SQLException e) {
+            log.error(e.getMessage());
+        }
+        throw new RuntimeException("Couldn't count bans");
+    }
+
+    @Override
     public boolean isBanned(Long userId) {
         try (Connection connection = dataSource.getConnection()) {
             PreparedStatement statement = connection.prepareStatement(IS_BANNED);
@@ -232,8 +254,8 @@ public class BanDaoImpl implements BanDao {
     private Ban process(ResultSet result) throws SQLException {
         Ban ban = new Ban();
         ban.setId(result.getLong("id"));
-        ban.setUserId(result.getLong("user_id"));
-        ban.setAdminId(result.getLong("admin_id"));
+        ban.setUser(userDao.getById(result.getLong("user_id")));
+        ban.setAdmin(userDao.getById(result.getLong("admin_id")));
         ban.setStartDate(ZonedDateTime.parse(result.getString("start_date"),
                 DateTimeFormatter.ofPattern(Constants.DB_ZONED_DATE_TIME_FORMAT)));
         ban.setEndDate(ZonedDateTime.parse(result.getString("end_date"),

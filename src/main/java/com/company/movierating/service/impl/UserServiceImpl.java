@@ -2,12 +2,12 @@ package com.company.movierating.service.impl;
 
 import java.util.List;
 
-import com.company.movierating.dao.BanDao;
 import com.company.movierating.dao.UserDao;
 import com.company.movierating.dao.entity.User;
 import com.company.movierating.exception.controller.NonAuthorizedException;
 import com.company.movierating.exception.service.NoRecordFoundException;
 import com.company.movierating.service.UserService;
+import com.company.movierating.service.converter.impl.UserConverter;
 import com.company.movierating.service.dto.UserDto;
 import com.company.movierating.service.util.DigestUtil;
 import com.company.movierating.service.util.UserValidator;
@@ -17,12 +17,12 @@ import lombok.extern.log4j.Log4j2;
 @Log4j2
 public class UserServiceImpl implements UserService {
     private final UserDao userDao;
-    private final BanDao banDao;
+    private final UserConverter userConverter;
     private final UserValidator validator;
 
-    public UserServiceImpl(UserDao userDao, BanDao banDao, UserValidator validator) {
+    public UserServiceImpl(UserDao userDao, UserConverter userConverter, UserValidator validator) {
         this.userDao = userDao;
-        this.banDao = banDao;
+        this.userConverter = userConverter;
         this.validator = validator;
     }
 
@@ -34,7 +34,7 @@ public class UserServiceImpl implements UserService {
             throw new NoRecordFoundException("There is no user with id= " + id);
         }
         entity.setPassword(null);
-        return toDto(entity);
+        return userConverter.toDto(entity);
     }
 
     @Override
@@ -45,7 +45,7 @@ public class UserServiceImpl implements UserService {
             throw new NoRecordFoundException("There is no user with email= " + email);
         }
         entity.setPassword(null);
-        return toDto(entity);
+        return userConverter.toDto(entity);
     }
 
     @Override
@@ -56,7 +56,7 @@ public class UserServiceImpl implements UserService {
             throw new NoRecordFoundException("There is no user with login= " + login);
         }
         entity.setPassword(null);
-        return toDto(entity);
+        return userConverter.toDto(entity);
     }
 
     @Override
@@ -65,7 +65,7 @@ public class UserServiceImpl implements UserService {
         return userDao.getAll().stream() //
                 .map(dao -> {
                     dao.setPassword(null);
-                    return toDto(dao);
+                    return userConverter.toDto(dao);
                 }) //
                 .toList();
     }
@@ -76,7 +76,7 @@ public class UserServiceImpl implements UserService {
         return userDao.getAll(limit, offset).stream() //
                 .map(dao -> {
                     dao.setPassword(null);
-                    return toDto(dao);
+                    return userConverter.toDto(dao);
                 }) //
                 .toList();
     }
@@ -87,9 +87,9 @@ public class UserServiceImpl implements UserService {
         validator.validateUserToCreate(dto);
         dto.setRole(UserDto.Role.USER);
         dto.setPassword(DigestUtil.INSTANCE.hash(dto.getPassword()));
-        User createdEntity = userDao.create(toEntity(dto));
+        User createdEntity = userDao.create(userConverter.toEntity(dto));
         createdEntity.setPassword(null);
-        return toDto(createdEntity);
+        return userConverter.toDto(createdEntity);
     }
 
     @Override
@@ -98,15 +98,15 @@ public class UserServiceImpl implements UserService {
         validator.validateUserToCreate(dto, confirmedPassword);
         dto.setRole(UserDto.Role.USER);
         dto.setPassword(DigestUtil.INSTANCE.hash(dto.getPassword()));
-        User createdEntity = userDao.create(toEntity(dto));
+        User createdEntity = userDao.create(userConverter.toEntity(dto));
         createdEntity.setPassword(null);
-        return toDto(createdEntity);
+        return userConverter.toDto(createdEntity);
     }
 
     @Override
     public UserDto update(UserDto dto) {
         log.debug("User service method _update_ was called");
-        UserDto dtoToUpdate = toDto(userDao.getById(dto.getId()));
+        UserDto dtoToUpdate = userConverter.toDto(userDao.getById(dto.getId()));
 
         dtoToUpdate.setEmail(dto.getEmail());
         dtoToUpdate.setInfo(dto.getInfo());
@@ -114,9 +114,9 @@ public class UserServiceImpl implements UserService {
         dtoToUpdate.setRole(dto.getRole());
 
         validator.validateUserToUpdate(dtoToUpdate);
-        User updatedEntity = userDao.update(toEntity(dtoToUpdate));
+        User updatedEntity = userDao.update(userConverter.toEntity(dtoToUpdate));
         updatedEntity.setPassword(null);
-        return toDto(updatedEntity);
+        return userConverter.toDto(updatedEntity);
     }
 
     @Override
@@ -142,38 +142,7 @@ public class UserServiceImpl implements UserService {
             throw new NonAuthorizedException("Wrong password");
         }
         user.setPassword(null);
-        return toDto(user);
-    }
-
-    private boolean isBanned(Long userId) {
-        return banDao.isBanned(userId);
-    }
-
-    private UserDto toDto(User entity) {
-        UserDto dto = new UserDto();
-        dto.setId(entity.getId());
-        dto.setEmail(entity.getEmail());
-        dto.setLogin(entity.getLogin());
-        dto.setPassword(entity.getPassword());
-        dto.setRole(UserDto.Role.valueOf(entity.getRole().toString()));
-        dto.setRegistration(entity.getRegistration());
-        dto.setInfo(entity.getInfo());
-        dto.setReputation(entity.getReputation());
-        dto.setBanned(isBanned(entity.getId()));
-        return dto;
-    }
-
-    private User toEntity(UserDto dto) {
-        User entity = new User();
-        entity.setId(dto.getId());
-        entity.setEmail(dto.getEmail());
-        entity.setLogin(dto.getLogin());
-        entity.setPassword(dto.getPassword());
-        entity.setRole(User.Role.valueOf(dto.getRole().toString()));
-        entity.setRegistration(dto.getRegistration());
-        entity.setInfo(dto.getInfo());
-        entity.setReputation(dto.getReputation());
-        return entity;
+        return userConverter.toDto(user);
     }
 
 }

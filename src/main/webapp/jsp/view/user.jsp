@@ -20,6 +20,10 @@
             <c:if test="${sessionScope.user != null && ((sessionScope.user.role == 'ADMIN' && user.role != 'ADMIN') 
                     || sessionScope.user.id == user.id)}">
                 <p><b>Email:</b> <c:out value="${user.email}"/></p>
+                <a class="edit" href="controller?command=user_bans&id=${user.id}">My bans</a>
+            </c:if>
+            <c:if test="${sessionScope.user != null && (sessionScope.user.role == 'ADMIN' && user.id == sessionScope.user.id)}">
+                <a class="edit" href="controller?command=assigned_bans&id=${user.id}">Assigned bans</a>
             </c:if>
             <p><b>Reputation:</b> ${user.reputation}</p>
             <p><b>Registration:</b> ${user.registration}</p>

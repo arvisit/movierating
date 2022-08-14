@@ -12,10 +12,12 @@ import com.company.movierating.controller.command.impl.ErrorCommand;
 import com.company.movierating.controller.command.impl.SignInCommand;
 import com.company.movierating.controller.command.impl.SignInFormCommand;
 import com.company.movierating.controller.command.impl.SignOutCommand;
+import com.company.movierating.controller.command.impl.UserBansCommand;
 import com.company.movierating.controller.command.impl.UserCommand;
 import com.company.movierating.controller.command.impl.UsersCommand;
 import com.company.movierating.controller.util.Paginator;
 import com.company.movierating.controller.util.ParametersPreparer;
+import com.company.movierating.service.BanService;
 import com.company.movierating.service.UserService;
 import com.company.movierating.service.factory.ServiceFactory;
 
@@ -42,6 +44,8 @@ public class CommandFactory {
         commands.put("sign_in", new SignInCommand(ServiceFactory.getInstance().getService(UserService.class)));
         commands.put("sign_out", new SignOutCommand());
         commands.put("error", new ErrorCommand());
+        commands.put("user_bans", new UserBansCommand(ServiceFactory.getInstance().getService(BanService.class),
+                ParametersPreparer.INSTANCE, Paginator.INSTANCE));
     }
 
     public static CommandFactory getInstance() {

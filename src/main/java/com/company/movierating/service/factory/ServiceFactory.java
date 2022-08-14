@@ -8,6 +8,9 @@ import com.company.movierating.dao.UserDao;
 import com.company.movierating.dao.factory.DaoFactory;
 import com.company.movierating.service.BanService;
 import com.company.movierating.service.UserService;
+import com.company.movierating.service.converter.factory.ConverterFactory;
+import com.company.movierating.service.converter.impl.BanConverter;
+import com.company.movierating.service.converter.impl.UserConverter;
 import com.company.movierating.service.impl.BanServiceImpl;
 import com.company.movierating.service.impl.UserServiceImpl;
 import com.company.movierating.service.util.BanValidator;
@@ -17,15 +20,15 @@ public class ServiceFactory {
     private final Map<Class<?>, Object> services;
 
     private static class ServiceFactoryHolder {
-        public static ServiceFactory HOLDER_INSTANCE = new ServiceFactory();
+        public static final ServiceFactory HOLDER_INSTANCE = new ServiceFactory();
     }
 
     private ServiceFactory() {
         services = new HashMap<>();
         services.put(UserService.class, new UserServiceImpl(DaoFactory.getInstance().getDao(UserDao.class),
-                DaoFactory.getInstance().getDao(BanDao.class), UserValidator.INSTANCE));
-        services.put(BanService.class,
-                new BanServiceImpl(DaoFactory.getInstance().getDao(BanDao.class), BanValidator.INSTANCE));
+                ConverterFactory.getInstance().getConverter(UserConverter.class), UserValidator.INSTANCE));
+        services.put(BanService.class, new BanServiceImpl(DaoFactory.getInstance().getDao(BanDao.class),
+                ConverterFactory.getInstance().getConverter(BanConverter.class), BanValidator.INSTANCE));
     }
 
     public static ServiceFactory getInstance() {

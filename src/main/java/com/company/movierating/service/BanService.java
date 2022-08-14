@@ -8,4 +8,7 @@ public interface BanService extends AbstractService<Long, BanDto> {
     List<BanDto> getAllByUser(Long id, int limit, long offset);
 
     List<BanDto> getAllByAdmin(Long id, int limit, long offset);
+
+    Long countByUser(Long id);
+
 }

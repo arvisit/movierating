@@ -7,8 +7,8 @@ import lombok.Data;
 @Data
 public class BanDto {
     private Long id;
-    private Long userId;
-    private Long adminId;
+    private UserDto user;
+    private UserDto admin;
     private ZonedDateTime startDate;
     private ZonedDateTime endDate;
     private String reason;

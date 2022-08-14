@@ -13,13 +13,13 @@ public class DaoFactory {
     private final Map<Class<?>, Object> daos;
     
     private static class DaoFactoryHolder {
-        public static DaoFactory HOLDER_INSTANCE = new DaoFactory();
+        public static final DaoFactory HOLDER_INSTANCE = new DaoFactory();
     }
 
     private DaoFactory() {
         daos = new HashMap<>();
         daos.put(UserDao.class, new UserDaoImpl(DataSource.getInstance()));
-        daos.put(BanDao.class, new BanDaoImpl(DataSource.getInstance()));
+        daos.put(BanDao.class, new BanDaoImpl(DataSource.getInstance(), getDao(UserDao.class)));
     }
 
     public static DaoFactory getInstance() {
