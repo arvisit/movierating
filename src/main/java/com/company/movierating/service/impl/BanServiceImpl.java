@@ -97,11 +97,17 @@ public class BanServiceImpl implements BanService {
         log.debug("Ban service method _count_ was called");
         return banDao.count();
     }
-    
+
     @Override
     public Long countByUser(Long id) {
         log.debug("Ban service method _countByUser_ was called");
         return banDao.countByUser(id);
+    }
+
+    @Override
+    public Long countByAdmin(Long id) {
+        log.debug("Ban service method _countByAdmin_ was called");
+        return banDao.countByAdmin(id);
     }
 
 }

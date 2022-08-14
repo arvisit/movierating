@@ -50,6 +50,9 @@ public class BanDaoImpl implements BanDao {
     private static final String COUNT_BY_USER_ID = "SELECT COUNT(b.id) AS total " //
             + "FROM bans b " //
             + "WHERE b.deleted = FALSE AND b.user_id = ?";
+    private static final String COUNT_BY_ADMIN_ID = "SELECT COUNT(b.id) AS total " //
+            + "FROM bans b " //
+            + "WHERE b.deleted = FALSE AND b.admin_id = ?";
     private static final String IS_BANNED = "SELECT COUNT(b.id) AS active_bans " //
             + "FROM bans b " //
             + "WHERE b.user_id = ? AND b.deleted = FALSE AND b.end_date > NOW()";
@@ -226,6 +229,22 @@ public class BanDaoImpl implements BanDao {
             statement.setLong(1, id);
             ResultSet result = statement.executeQuery();
 
+            if (result.next()) {
+                return result.getLong("total");
+            }
+        } catch (SQLException e) {
+            log.error(e.getMessage());
+        }
+        throw new RuntimeException("Couldn't count bans");
+    }
+
+    @Override
+    public Long countByAdmin(Long id) {
+        try (Connection connection = dataSource.getConnection()) {
+            PreparedStatement statement = connection.prepareStatement(COUNT_BY_ADMIN_ID);
+            statement.setLong(1, id);
+            ResultSet result = statement.executeQuery();
+            
             if (result.next()) {
                 return result.getLong("total");
             }

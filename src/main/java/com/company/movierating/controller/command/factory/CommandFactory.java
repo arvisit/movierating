@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.company.movierating.controller.command.Command;
+import com.company.movierating.controller.command.impl.AssignedBansCommand;
 import com.company.movierating.controller.command.impl.CreateUserCommand;
 import com.company.movierating.controller.command.impl.CreateUserFormCommand;
 import com.company.movierating.controller.command.impl.EditUserCommand;
@@ -46,6 +47,10 @@ public class CommandFactory {
         commands.put("error", new ErrorCommand());
         commands.put("user_bans", new UserBansCommand(ServiceFactory.getInstance().getService(BanService.class),
                 ParametersPreparer.INSTANCE, Paginator.INSTANCE));
+        commands.put("assigned_bans",
+                new AssignedBansCommand(ServiceFactory.getInstance().getService(BanService.class),
+                        ServiceFactory.getInstance().getService(UserService.class), ParametersPreparer.INSTANCE,
+                        Paginator.INSTANCE));
     }
 
     public static CommandFactory getInstance() {
