@@ -12,16 +12,17 @@ import lombok.extern.log4j.Log4j2;
 
 @Log4j2
 public class ConnectionPool {
-    private final static int POOL_SIZE = 16;
+    private final Integer poolSize;
     private final BlockingQueue<ProxyConnection> freeConnections;
     private final Queue<ProxyConnection> inUseConnections;
 
-    ConnectionPool(String driver, String url, String user, String password) {
-        freeConnections = new LinkedBlockingDeque<>(POOL_SIZE);
+    ConnectionPool(String driver, String url, String user, String password, Integer poolSize) {
+        this.poolSize = poolSize;
+        freeConnections = new LinkedBlockingDeque<>(poolSize);
         inUseConnections = new ArrayDeque<>();
         try {
             Class.forName(driver);
-            for (int i = 0; i < POOL_SIZE; i++) {
+            for (int i = 0; i < poolSize; i++) {
                 Connection connection = DriverManager.getConnection(url, user, password);
                 freeConnections.offer(new ProxyConnection(connection));
                 log.info("Connection was initialized");
@@ -53,7 +54,7 @@ public class ConnectionPool {
     }
 
     public void destroyPool() {
-        for (int i = 0; i < POOL_SIZE; i++) {
+        for (int i = 0; i < poolSize; i++) {
             try {
                 ProxyConnection proxy = (ProxyConnection) freeConnections.take();
                 proxy.reallyClose();

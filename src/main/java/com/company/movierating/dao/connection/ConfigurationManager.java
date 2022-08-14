@@ -17,6 +17,8 @@ public class ConfigurationManager {
     private final String password;
     @Getter
     private final String driver;
+    @Getter
+    private final Integer poolSize;
     private static final String PROPERTIES_FILE = "/application.properties";
 
     private static class ConfigurationManagerHolder {
@@ -37,6 +39,7 @@ public class ConfigurationManager {
                 password = properties.getProperty("db.prod.password");
             }
             driver = properties.getProperty("db.driver");
+            poolSize = Integer.valueOf(properties.getProperty("pool.size"));
             log.info("Configuration properties were loaded");
         } catch (IOException e) {
             throw new RuntimeException(e);

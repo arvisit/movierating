@@ -11,6 +11,7 @@ public class DataSource implements AutoCloseable {
     private final String user;
     private final String password;
     private final String driver;
+    private final Integer poolSize;
 
     private static class DataSourceHolder {
         public static final DataSource INSTANCE_HOLDER = new DataSource();
@@ -22,6 +23,7 @@ public class DataSource implements AutoCloseable {
         user = properties.getUser();
         password = properties.getPassword();
         driver = properties.getDriver();
+        poolSize = properties.getPoolSize();
     }
 
     public static DataSource getInstance() {
@@ -30,7 +32,7 @@ public class DataSource implements AutoCloseable {
 
     public Connection getConnection() {
         if (connectionPool == null) {
-            connectionPool = new ConnectionPool(driver, url, user, password);
+            connectionPool = new ConnectionPool(driver, url, user, password, poolSize);
             log.info("Connection pool was initialized");
         }
         return connectionPool.getConnection();
