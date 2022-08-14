@@ -31,7 +31,7 @@ public class Controller extends HttpServlet {
     private void process(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         log.debug("Got request");
         String command = req.getParameter("command");
-        Command commandInstance = CommandFactory.getInstance().getCommand(command);
+        Command commandInstance = CommandFactory.getInstance().getCommandIdentity(command).getCommand();
         String page;
         try {
             page = commandInstance.execute(req);
