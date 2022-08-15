@@ -34,6 +34,11 @@
                                         <br>
                                         <a class="edit" href="controller?command=edit_user_form&id=${user.id}">(edit)</a>
                                     </c:if>
+                                    <c:if test="${sessionScope.user != null
+                                             && (sessionScope.user.role == 'ADMIN' && user.role != 'ADMIN')}">
+                                        <br>
+                                        <a class="ban" href="controller?command=ban_user_form&id=${user.id}">(ban)</a>
+                                    </c:if>
                                 </td>
                                 <td>${user.role}</td>
                                 <td>${user.reputation}</td>
