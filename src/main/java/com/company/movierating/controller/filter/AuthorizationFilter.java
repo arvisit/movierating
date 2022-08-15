@@ -2,7 +2,10 @@ package com.company.movierating.controller.filter;
 
 import java.io.IOException;
 
+import com.company.movierating.controller.command.factory.CommandFactory;
+import com.company.movierating.controller.command.factory.CommandIdentity;
 import com.company.movierating.controller.util.JspConstants;
+import com.company.movierating.controller.util.SecurityLevel;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -16,8 +19,9 @@ public class AuthorizationFilter extends HttpFilter {
     @Override
     protected void doFilter(HttpServletRequest req, HttpServletResponse res, FilterChain chain)
             throws IOException, ServletException {
-        String command = req.getParameter("command");
-        if (requiresAuthorization(command)) {
+
+        CommandIdentity commandIdentity = CommandFactory.getInstance().getCommandIdentity(req.getParameter("command"));
+        if (commandIdentity.getSecurityLevel().getValue() > SecurityLevel.GUEST.getValue()) {
             HttpSession session = req.getSession(false);
             if (session == null || session.getAttribute("user") == null) {
                 req.setAttribute("errorMessage", "Authorization needed");
@@ -26,13 +30,6 @@ public class AuthorizationFilter extends HttpFilter {
             }
         }
         chain.doFilter(req, res);
-    }
-
-    private boolean requiresAuthorization(String command) {
-        return switch (command) {
-            case "users", "user", "sign_in_form", "sign_in", "create_user_form", "create_user", "error" -> false;
-            default -> true;
-        };
     }
 
 }
