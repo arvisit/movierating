@@ -32,6 +32,7 @@ div.menu {
     padding: 0;
     overflow: hidden;
     background-color: #228B22;
+    border: 1px solid #228B22;
 }
 
 div.loginMessage {
