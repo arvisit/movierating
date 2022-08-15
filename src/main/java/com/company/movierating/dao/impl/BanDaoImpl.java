@@ -29,15 +29,15 @@ public class BanDaoImpl implements BanDao {
     private static final String GET_ALL_PARTIALLY = "SELECT b.id, b.user_id, b.admin_id, b.start_date, b.end_date, b.reason " //
             + "FROM bans b " //
             + "WHERE b.deleted = FALSE " //
-            + "ORDERED BY b.id LIMIT ? OFFSET ?";
+            + "ORDER BY b.id LIMIT ? OFFSET ?";
     private static final String GET_ALL_BY_USER_ID_PARTIALLY = "SELECT b.id, b.user_id, b.admin_id, b.start_date, b.end_date, b.reason " //
             + "FROM bans b " //
             + "WHERE b.user_id = ? AND b.deleted = FALSE " //
-            + "ORDERED BY b.id LIMIT ? OFFSET ?";
+            + "ORDER BY b.id LIMIT ? OFFSET ?";
     private static final String GET_ALL_BY_ADMIN_ID_PARTIALLY = "SELECT b.id, b.user_id, b.admin_id, b.start_date, b.end_date, b.reason " //
             + "FROM bans b " //
             + "WHERE b.admin_id = ? AND b.deleted = FALSE " //
-            + "ORDERED BY b.id LIMIT ? OFFSET ?";
+            + "ORDER BY b.id LIMIT ? OFFSET ?";
     private static final String CREATE = "INSERT INTO bans (user_id, admin_id, start_date, end_date, reason) " //
             + "VALUES (?, ?, ?, ?, ?)";
     private static final String UPDATE = "UPDATE bans SET end_date = ?, last_update = NOW() " //
