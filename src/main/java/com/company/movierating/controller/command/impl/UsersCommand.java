@@ -3,6 +3,7 @@ package com.company.movierating.controller.command.impl;
 import java.util.List;
 
 import com.company.movierating.controller.command.Command;
+import com.company.movierating.controller.util.JspConstants;
 import com.company.movierating.controller.util.Paginator;
 import com.company.movierating.controller.util.Paginator.Paging;
 import com.company.movierating.service.UserService;
@@ -38,6 +39,6 @@ public class UsersCommand implements Command {
         req.setAttribute("currentPage", page);
         req.setAttribute("totalPages", totalPages);
         req.setAttribute("paginatedJsp", "users");
-        return "jsp/view/users.jsp";
+        return JspConstants.VIEW_USERS;
     }
 }

@@ -1,6 +1,7 @@
 package com.company.movierating.controller.command.impl;
 
 import com.company.movierating.controller.command.Command;
+import com.company.movierating.controller.util.JspConstants;
 import com.company.movierating.service.UserService;
 import com.company.movierating.service.dto.UserDto;
 
@@ -31,7 +32,7 @@ public class CreateUserCommand implements Command {
         req.setAttribute("user", created);
         HttpSession session = req.getSession();
         session.setAttribute("user", created);
-        return "jsp/view/user.jsp";
+        return JspConstants.VIEW_USER;
     }
 
 }

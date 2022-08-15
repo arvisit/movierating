@@ -2,6 +2,8 @@ package com.company.movierating.controller.filter;
 
 import java.io.IOException;
 
+import com.company.movierating.controller.util.JspConstants;
+
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpFilter;
@@ -19,7 +21,7 @@ public class AuthorizationFilter extends HttpFilter {
             HttpSession session = req.getSession(false);
             if (session == null || session.getAttribute("user") == null) {
                 req.setAttribute("errorMessage", "Authorization needed");
-                req.getRequestDispatcher("jsp/sign_in/sign_in_form.jsp").forward(req, res);
+                req.getRequestDispatcher(JspConstants.SIGN_IN_FORM).forward(req, res);
                 return;
             }
         }

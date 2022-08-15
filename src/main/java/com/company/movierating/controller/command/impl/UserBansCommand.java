@@ -3,6 +3,7 @@ package com.company.movierating.controller.command.impl;
 import java.util.List;
 
 import com.company.movierating.controller.command.Command;
+import com.company.movierating.controller.util.JspConstants;
 import com.company.movierating.controller.util.Paginator;
 import com.company.movierating.controller.util.Paginator.Paging;
 import com.company.movierating.controller.util.ParametersPreparer;
@@ -43,7 +44,7 @@ public class UserBansCommand implements Command {
         req.setAttribute("totalPages", totalPages);
         req.setAttribute("paginatedJsp", "bans");
         req.setAttribute("title", "My Bans");
-        return "jsp/view/bans.jsp";
+        return JspConstants.VIEW_BANS;
     }
 
 }

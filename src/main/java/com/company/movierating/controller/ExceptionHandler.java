@@ -1,5 +1,6 @@
 package com.company.movierating.controller;
 
+import com.company.movierating.controller.util.JspConstants;
 import com.company.movierating.exception.controller.BadParameterException;
 import com.company.movierating.exception.controller.NonAuthorizedException;
 import com.company.movierating.exception.controller.RegisterPasswordConfirmationException;
@@ -22,35 +23,35 @@ public enum ExceptionHandler {
         if (e instanceof UnsupportedCommandException) {
             status = 400;
             message = e.getMessage();
-            page = "jsp/error/error.jsp";
+            page = JspConstants.DEFAULT_ERROR;
         } else if (e instanceof BadParameterException) {
             status = 400;
             message = e.getMessage();
-            page = "jsp/error/error.jsp";
+            page = JspConstants.DEFAULT_ERROR;
         } else if (e instanceof RegisterPasswordConfirmationException) {
             status = 400;
             message = e.getMessage();
-            page = "jsp/create/create_user_form.jsp";
+            page = JspConstants.CREATE_USER_FORM;
         } else if (e instanceof CreateValidationException) {
             status = 400;
             message = e.getMessage();
-            page = "jsp/create/create_user_form.jsp";
+            page = JspConstants.CREATE_USER_FORM;
         } else if (e instanceof NonAuthorizedException) {
             status = 401;
             message = e.getMessage();
-            page = "jsp/sign_in/sign_in_form.jsp";
+            page = JspConstants.SIGN_IN_FORM;
         } else if (e instanceof ForbiddenPageException) {
             status = 403;
             message = e.getMessage();
-            page = "index.jsp";
+            page = JspConstants.MAIN_PAGE;
         } else if (e instanceof NoRecordFoundException) {
             status = 404;
             message = "Page not found";
-            page = "jsp/error/404.jsp";
+            page = JspConstants.DEFAULT_ERROR;
         } else {
             status = 500;
             message = "Internal server error";
-            page = "jsp/error/error.jsp";
+            page = JspConstants.DEFAULT_ERROR;
         }
 
         req.setAttribute("errorStatus", status);

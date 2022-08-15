@@ -2,6 +2,7 @@ package com.company.movierating.controller.filter;
 
 import java.io.IOException;
 
+import com.company.movierating.controller.util.JspConstants;
 import com.company.movierating.controller.util.ParametersPreparer;
 import com.company.movierating.exception.controller.BadParameterException;
 import com.company.movierating.service.dto.UserDto;
@@ -30,7 +31,7 @@ public class UserRoleFilter extends HttpFilter {
                 req.setAttribute("errorStatus", status);
                 req.setAttribute("errorMessage", e.getMessage());
                 res.setStatus(status);
-                req.getRequestDispatcher("jsp/error/error.jsp").forward(req, res);
+                req.getRequestDispatcher(JspConstants.DEFAULT_ERROR).forward(req, res);
                 return;
             }
             if (sessionUser.getRole() != UserDto.Role.ADMIN && sessionUser.getId() != targetId) {
@@ -38,7 +39,7 @@ public class UserRoleFilter extends HttpFilter {
                 req.setAttribute("errorStatus", status);
                 req.setAttribute("errorMessage", "No rights to edit other users");
                 res.setStatus(status);
-                req.getRequestDispatcher("index.jsp").forward(req, res);
+                req.getRequestDispatcher(JspConstants.MAIN_PAGE).forward(req, res);
                 return;
             }
         }

@@ -1,6 +1,7 @@
 package com.company.movierating.controller.command.impl;
 
 import com.company.movierating.controller.command.Command;
+import com.company.movierating.controller.util.JspConstants;
 import com.company.movierating.service.UserService;
 import com.company.movierating.service.dto.UserDto;
 
@@ -21,7 +22,7 @@ public class SignInCommand implements Command {
         UserDto user = service.signIn(login, password);
         HttpSession session = req.getSession();
         session.setAttribute("user", user);
-        return "index.jsp";
+        return JspConstants.MAIN_PAGE;
     }
 
 }

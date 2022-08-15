@@ -1,6 +1,7 @@
 package com.company.movierating.controller.command.impl;
 
 import com.company.movierating.controller.command.Command;
+import com.company.movierating.controller.util.JspConstants;
 import com.company.movierating.controller.util.ParametersPreparer;
 import com.company.movierating.service.UserService;
 import com.company.movierating.service.dto.UserDto;
@@ -21,7 +22,7 @@ public class UserCommand implements Command {
         long id = preparer.getLong(req.getParameter("id"));
         UserDto user = service.getById(id);
         req.setAttribute("user", user);
-        return "jsp/view/user.jsp";
+        return JspConstants.VIEW_USER;
     }
 
 }

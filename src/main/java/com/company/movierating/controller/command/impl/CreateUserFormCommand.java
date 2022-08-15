@@ -1,13 +1,14 @@
 package com.company.movierating.controller.command.impl;
 
 import com.company.movierating.controller.command.Command;
+import com.company.movierating.controller.util.JspConstants;
 
 import jakarta.servlet.http.HttpServletRequest;
 
 public class CreateUserFormCommand implements Command {
     @Override
     public String execute(HttpServletRequest req) {
-        return "jsp/create/create_user_form.jsp";
+        return JspConstants.CREATE_USER_FORM;
     }
 
 }

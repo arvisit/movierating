@@ -1,6 +1,7 @@
 package com.company.movierating.controller.command.impl;
 
 import com.company.movierating.controller.command.Command;
+import com.company.movierating.controller.util.JspConstants;
 import com.company.movierating.controller.util.ParametersPreparer;
 import com.company.movierating.service.UserService;
 import com.company.movierating.service.dto.UserDto;
@@ -35,7 +36,7 @@ public class EditUserCommand implements Command {
         UserDto updated = service.update(changed);
         req.setAttribute("successMessage", "Parameters were updated successfully");
         req.setAttribute("user", updated);
-        return "jsp/view/user.jsp";
+        return JspConstants.VIEW_USER;
     }
 
 }

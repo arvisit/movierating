@@ -1,6 +1,7 @@
 package com.company.movierating.controller.command.impl;
 
 import com.company.movierating.controller.command.Command;
+import com.company.movierating.controller.util.JspConstants;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
@@ -11,7 +12,7 @@ public class SignOutCommand implements Command {
     public String execute(HttpServletRequest req) {
         HttpSession session = req.getSession(false);
         session.invalidate();
-        return "index.jsp";
+        return JspConstants.MAIN_PAGE;
     }
     
 }
