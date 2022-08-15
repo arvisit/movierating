@@ -15,6 +15,7 @@ import com.company.movierating.controller.command.impl.UserCommand;
 import com.company.movierating.controller.command.impl.UsersCommand;
 import com.company.movierating.controller.util.Paginator;
 import com.company.movierating.controller.util.ParametersPreparer;
+import com.company.movierating.controller.util.SecurityLevel;
 import com.company.movierating.service.BanService;
 import com.company.movierating.service.UserService;
 import com.company.movierating.service.factory.ServiceFactory;
@@ -22,33 +23,36 @@ import com.company.movierating.service.factory.ServiceFactory;
 import lombok.Getter;
 
 public enum CommandIdentity {
-    ERROR(new ErrorCommand()),
+    ERROR(new ErrorCommand(), SecurityLevel.GUEST),
 
-    USERS(new UsersCommand(ServiceFactory.getInstance().getService(UserService.class), Paginator.INSTANCE)),
-    USER(new UserCommand(ServiceFactory.getInstance().getService(UserService.class), ParametersPreparer.INSTANCE)),
+    USERS(new UsersCommand(ServiceFactory.getInstance().getService(UserService.class), Paginator.INSTANCE), SecurityLevel.GUEST),
+    USER(new UserCommand(ServiceFactory.getInstance().getService(UserService.class), ParametersPreparer.INSTANCE), SecurityLevel.GUEST),
 
     USER_BANS(new UserBansCommand(ServiceFactory.getInstance().getService(BanService.class),
-            ParametersPreparer.INSTANCE, Paginator.INSTANCE)),
+            ParametersPreparer.INSTANCE, Paginator.INSTANCE), SecurityLevel.USER_SELF),
     ASSIGNED_BANS(new AssignedBansCommand(ServiceFactory.getInstance().getService(BanService.class),
             ServiceFactory.getInstance().getService(UserService.class), ParametersPreparer.INSTANCE,
-            Paginator.INSTANCE)),
+            Paginator.INSTANCE), SecurityLevel.ADMIN_SELF),
 
-    SIGN_IN_FORM(new SignInFormCommand()),
-    SIGN_IN(new SignInCommand(ServiceFactory.getInstance().getService(UserService.class))),
-    SIGN_OUT(new SignOutCommand()),
+    SIGN_IN_FORM(new SignInFormCommand(), SecurityLevel.GUEST),
+    SIGN_IN(new SignInCommand(ServiceFactory.getInstance().getService(UserService.class)), SecurityLevel.GUEST),
+    SIGN_OUT(new SignOutCommand(), SecurityLevel.USER),
 
-    CREATE_USER_FORM(new CreateUserFormCommand()),
-    CREATE_USER(new CreateUserCommand(ServiceFactory.getInstance().getService(UserService.class))),
+    CREATE_USER_FORM(new CreateUserFormCommand(), SecurityLevel.GUEST),
+    CREATE_USER(new CreateUserCommand(ServiceFactory.getInstance().getService(UserService.class)), SecurityLevel.GUEST),
 
     EDIT_USER_FORM(new EditUserFormCommand(ServiceFactory.getInstance().getService(UserService.class),
-            ParametersPreparer.INSTANCE)),
+            ParametersPreparer.INSTANCE), SecurityLevel.USER_SELF),
     EDIT_USER(new EditUserCommand(ServiceFactory.getInstance().getService(UserService.class),
-            ParametersPreparer.INSTANCE));
+            ParametersPreparer.INSTANCE), SecurityLevel.USER_SELF);
 
     @Getter
     private final Command command;
+    @Getter
+    private final SecurityLevel securityLevel;
 
-    CommandIdentity(Command command) {
+    CommandIdentity(Command command, SecurityLevel securityLevel) {
         this.command = command;
+        this.securityLevel = securityLevel;
     }
 }
