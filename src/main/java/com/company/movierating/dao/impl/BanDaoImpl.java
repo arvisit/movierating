@@ -5,6 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.Timestamp;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -159,10 +160,8 @@ public class BanDaoImpl implements BanDao {
             PreparedStatement statement = connection.prepareStatement(CREATE, Statement.RETURN_GENERATED_KEYS);
             statement.setLong(1, entity.getUser().getId());
             statement.setLong(2, entity.getAdmin().getId());
-            statement.setString(3,
-                    entity.getStartDate().format(DateTimeFormatter.ofPattern(Constants.APP_ZONED_DATE_TIME_FORMAT)));
-            statement.setString(4,
-                    entity.getEndDate().format(DateTimeFormatter.ofPattern(Constants.APP_ZONED_DATE_TIME_FORMAT)));
+            statement.setTimestamp(3, Timestamp.from(entity.getStartDate().toInstant()));
+            statement.setTimestamp(4, Timestamp.from(entity.getEndDate().toInstant()));
             statement.setString(5, entity.getReason());
             statement.executeUpdate();
 
@@ -181,8 +180,7 @@ public class BanDaoImpl implements BanDao {
     public Ban update(Ban entity) {
         try (Connection connection = dataSource.getConnection()) {
             PreparedStatement statement = connection.prepareStatement(UPDATE);
-            statement.setString(1,
-                    entity.getEndDate().format(DateTimeFormatter.ofPattern(Constants.APP_ZONED_DATE_TIME_FORMAT)));
+            statement.setTimestamp(1,Timestamp.from(entity.getEndDate().toInstant()));
             statement.setLong(2, entity.getId());
             statement.executeUpdate();
 
@@ -279,6 +277,7 @@ public class BanDaoImpl implements BanDao {
                 DateTimeFormatter.ofPattern(Constants.DB_ZONED_DATE_TIME_FORMAT)));
         ban.setEndDate(ZonedDateTime.parse(result.getString("end_date"),
                 DateTimeFormatter.ofPattern(Constants.DB_ZONED_DATE_TIME_FORMAT)));
+        ban.setReason(result.getString("reason"));
 
         return ban;
     }
