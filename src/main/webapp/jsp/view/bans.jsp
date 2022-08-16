@@ -28,6 +28,8 @@
                                             <c:out value="${ban.user.login}"/>
                                         </a>
                                         <br>
+                                        <a href="controller?command=edit_ban_form&id=${ban.id}">(edit)</a>
+                                        <br>
                                     </c:if>
                                     <b>Start date: </b>${ban.startDate}
                                     <br>

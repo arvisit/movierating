@@ -6,6 +6,8 @@ import com.company.movierating.controller.command.impl.BanUserCommand;
 import com.company.movierating.controller.command.impl.BanUserFormCommand;
 import com.company.movierating.controller.command.impl.CreateUserCommand;
 import com.company.movierating.controller.command.impl.CreateUserFormCommand;
+import com.company.movierating.controller.command.impl.EditBanCommand;
+import com.company.movierating.controller.command.impl.EditBanFormCommand;
 import com.company.movierating.controller.command.impl.EditUserCommand;
 import com.company.movierating.controller.command.impl.EditUserFormCommand;
 import com.company.movierating.controller.command.impl.ErrorCommand;
@@ -54,6 +56,11 @@ public enum CommandIdentity {
             ParametersPreparer.INSTANCE), SecurityLevel.ADMIN_SELF),
     BAN_USER(new BanUserCommand(ServiceFactory.getInstance().getService(BanService.class), //
             ServiceFactory.getInstance().getService(UserService.class), ParametersPreparer.INSTANCE),
+            SecurityLevel.ADMIN_SELF),
+
+    EDIT_BAN_FORM(new EditBanFormCommand(ServiceFactory.getInstance().getService(BanService.class),
+            ParametersPreparer.INSTANCE), SecurityLevel.ADMIN_SELF),
+    EDIT_BAN(new EditBanCommand(ServiceFactory.getInstance().getService(BanService.class), ParametersPreparer.INSTANCE),
             SecurityLevel.ADMIN_SELF);
 
     @Getter

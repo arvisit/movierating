@@ -1,0 +1,52 @@
+package com.company.movierating.controller.command.impl;
+
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
+
+import com.company.movierating.controller.command.Command;
+import com.company.movierating.controller.util.JspConstants;
+import com.company.movierating.controller.util.ParametersPreparer;
+import com.company.movierating.dao.util.Constants;
+import com.company.movierating.service.BanService;
+import com.company.movierating.service.dto.BanDto;
+
+import jakarta.servlet.http.HttpServletRequest;
+import lombok.extern.log4j.Log4j2;
+
+@Log4j2
+public class EditBanCommand implements Command {
+    private final BanService service;
+    private final ParametersPreparer preparer;
+
+    public EditBanCommand(BanService service, ParametersPreparer preparer) {
+        this.service = service;
+        this.preparer = preparer;
+    }
+
+    @Override
+    public String execute(HttpServletRequest req) {
+        String banIdStr = req.getParameter("id");
+        String unbanStr = req.getParameter("unban");
+        String durationStr = req.getParameter("duration");
+        String startDateStr = req.getParameter("start_date");
+
+        BanDto changed = new BanDto();
+
+        changed.setId(preparer.getLong(banIdStr));
+        if (Boolean.parseBoolean(unbanStr)) {
+            changed.setEndDate(ZonedDateTime.now());
+        } else {
+            long duration = preparer.getLong(durationStr);
+            log.debug(startDateStr);
+            ZonedDateTime startDate = ZonedDateTime.parse(startDateStr,
+                    DateTimeFormatter.ofPattern(Constants.APP_ZONED_DATE_TIME_FORMAT));
+            changed.setEndDate(startDate.plusDays(duration));
+        }
+
+        BanDto updated = service.update(changed);
+        req.setAttribute("successMessage", "Parameters were updated successfully");
+        req.setAttribute("user", updated.getUser());
+        return JspConstants.VIEW_USER;
+    }
+
+}
