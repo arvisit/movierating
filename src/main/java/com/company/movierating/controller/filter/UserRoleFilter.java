@@ -37,6 +37,7 @@ public class UserRoleFilter extends HttpFilter {
                 req.getRequestDispatcher(JspConstants.DEFAULT_ERROR).forward(req, res);
                 return;
             }
+            // TODO add check if level admin, user, self...
             if (sessionUser.getRole() != UserDto.Role.ADMIN && sessionUser.getId() != targetId) {
                 int status = 403;
                 req.setAttribute("errorStatus", status);
