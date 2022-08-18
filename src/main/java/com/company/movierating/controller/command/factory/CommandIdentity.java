@@ -42,7 +42,7 @@ public enum CommandIdentity {
 
     SIGN_IN_FORM(new SignInFormCommand(), SecurityLevel.GUEST),
     SIGN_IN(new SignInCommand(ServiceFactory.getInstance().getService(UserService.class)), SecurityLevel.GUEST),
-    SIGN_OUT(new SignOutCommand(), SecurityLevel.GUEST),
+    SIGN_OUT(new SignOutCommand(), SecurityLevel.USER),
 
     CREATE_USER_FORM(new CreateUserFormCommand(), SecurityLevel.GUEST),
     CREATE_USER(new CreateUserCommand(ServiceFactory.getInstance().getService(UserService.class)), SecurityLevel.GUEST),
@@ -59,9 +59,9 @@ public enum CommandIdentity {
             SecurityLevel.ADMIN_SELF),
 
     EDIT_BAN_FORM(new EditBanFormCommand(ServiceFactory.getInstance().getService(BanService.class),
-            ParametersPreparer.INSTANCE), SecurityLevel.ADMIN_SELF),
+            ParametersPreparer.INSTANCE), SecurityLevel.ADMIN),
     EDIT_BAN(new EditBanCommand(ServiceFactory.getInstance().getService(BanService.class), ParametersPreparer.INSTANCE),
-            SecurityLevel.ADMIN_SELF);
+            SecurityLevel.ADMIN);
 
     @Getter
     private final Command command;
