@@ -1,0 +1,105 @@
+@charset "UTF-8";
+
+body {
+    position: relative;
+}
+
+.list-center {
+    margin-left: auto;
+    margin-right: auto;
+}
+
+div.header {
+    text-align: center;
+}
+
+div.main {
+    text-align: center;
+    width: 68%;
+    margin: auto;
+    padding: 1%;
+    border: 1px solid #228B22;
+}
+
+div.footer {
+    text-align: center;
+    width: 100%;
+}
+
+div.menu {
+    width: 70%;
+    margin: auto;
+    padding: 0;
+    overflow: hidden;
+    background-color: #228B22;
+    border: 1px solid #228B22;
+}
+
+div.loginMessage {
+    color: white;
+    text-align: center;
+    margin: auto;
+    padding: 16px;
+    float:left;
+    background-color: #006400;
+}
+
+div.menu a {
+    float:left;
+    display: block;
+    color: white;
+    text-align: center;
+    padding: 16px;
+    text-decoration: none;
+}
+
+div.menu a:hover {
+    background-color: #006400;
+}
+
+div.menu-right {
+    float: right;
+}
+
+div.pagination {
+    display: inline-block;
+}
+
+div.pagination a {
+    color: black;
+    float: left;
+    padding: 6px 10px;
+    text-align: center;
+    text-decoration: none;
+    border: 1px solid #ddd;
+}
+
+div.pagination a:first-child {
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px;
+}
+
+div.pagination a:last-child {
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
+}
+
+div.pagination a:hover {
+    background-color: #ddd;
+}
+
+div.notification p.successMessage {
+    position: absolute;
+    top: 0;
+    right: 0;
+    background-color: green;
+    color: white;
+}
+
+div.notification p.errorMessage {
+    position: absolute;
+    top: 0;
+    right: 0;
+    background-color: lightcoral;
+    color: white;
+}

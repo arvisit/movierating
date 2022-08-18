@@ -52,7 +52,7 @@
             <version>2.0.0</version>
         </dependency>
         <dependency>
-            <groupId>org.pfojectlombok</groupId>
+            <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
             <version>1.18.24</version>
             <scope>provided</scope>
@@ -71,6 +71,20 @@
                     <outputDirectory>${env.TOMCAT_HOME}/webapps</outputDirectory>
                 </configuration>
             </plugin>
+             <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.10.1</version>
+                <configuration>
+                    <annotationProcessorPaths>
+                        <path>
+                            <groupId>org.projectlombok</groupId>
+                            <artifactId>lombok</artifactId>
+                            <version>>1.18.24</version>
+                        </path>
+                    </annotationProcessorPaths>
+                </configuration>
+             </plugin>
         </plugins>
     </build>
 

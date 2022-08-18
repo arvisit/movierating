@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+    
+<web-app xmlns="http://xmlns.jcp.org/xml/ns/javaee"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee
+         http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd"
+         version="3.1">
+
+    <servlet-mapping>
+        <servlet-name>default</servlet-name>
+        <url-pattern>*.css</url-pattern>
+    </servlet-mapping>
+    
+    <filter>
+        <filter-name>AuthorizationFilter</filter-name>
+        <filter-class>com.company.movierating.controller.filter.AuthorizationFilter</filter-class>
+    </filter>
+    
+    <filter-mapping>
+        <filter-name>AuthorizationFilter</filter-name>
+        <url-pattern>/controller</url-pattern>
+    </filter-mapping>
+    
+    <filter>
+        <filter-name>UserSelfLevelFilter</filter-name>
+        <filter-class>com.company.movierating.controller.filter.UserSelfLevelFilter</filter-class>
+    </filter>
+    
+    <filter-mapping>
+        <filter-name>UserSelfLevelFilter</filter-name>
+        <url-pattern>/controller</url-pattern>
+    </filter-mapping>
+    
+    <filter>
+        <filter-name>AdminLevelFilter</filter-name>
+        <filter-class>com.company.movierating.controller.filter.AdminLevelFilter</filter-class>
+    </filter>
+    
+    <filter-mapping>
+        <filter-name>AdminLevelFilter</filter-name>
+        <url-pattern>/controller</url-pattern>
+    </filter-mapping>
+    
+    <filter>
+        <filter-name>AdminSelfLevelFilter</filter-name>
+        <filter-class>com.company.movierating.controller.filter.AdminSelfLevelFilter</filter-class>
+    </filter>
+    
+    <filter-mapping>
+        <filter-name>AdminSelfLevelFilter</filter-name>
+        <url-pattern>/controller</url-pattern>
+    </filter-mapping>
+    
+    <error-page>
+        <error-code>400</error-code>
+        <location>/jsp/error/400.jsp</location>
+    </error-page>
+    <error-page>
+        <error-code>404</error-code>
+        <location>/jsp/error/404.jsp</location>
+    </error-page>
+    <error-page>
+        <error-code>500</error-code>
+        <location>/jsp/error/500.jsp</location>
+    </error-page>
+</web-app>
