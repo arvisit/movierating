@@ -22,12 +22,32 @@
     </filter-mapping>
     
     <filter>
-        <filter-name>UserRoleFilter</filter-name>
-        <filter-class>com.company.movierating.controller.filter.UserRoleFilter</filter-class>
+        <filter-name>UserSelfLevelFilter</filter-name>
+        <filter-class>com.company.movierating.controller.filter.UserSelfLevelFilter</filter-class>
     </filter>
     
     <filter-mapping>
-        <filter-name>UserRoleFilter</filter-name>
+        <filter-name>UserSelfLevelFilter</filter-name>
+        <url-pattern>/controller</url-pattern>
+    </filter-mapping>
+    
+    <filter>
+        <filter-name>AdminLevelFilter</filter-name>
+        <filter-class>com.company.movierating.controller.filter.AdminLevelFilter</filter-class>
+    </filter>
+    
+    <filter-mapping>
+        <filter-name>AdminLevelFilter</filter-name>
+        <url-pattern>/controller</url-pattern>
+    </filter-mapping>
+    
+    <filter>
+        <filter-name>AdminSelfLevelFilter</filter-name>
+        <filter-class>com.company.movierating.controller.filter.AdminSelfLevelFilter</filter-class>
+    </filter>
+    
+    <filter-mapping>
+        <filter-name>AdminSelfLevelFilter</filter-name>
         <url-pattern>/controller</url-pattern>
     </filter-mapping>
     
