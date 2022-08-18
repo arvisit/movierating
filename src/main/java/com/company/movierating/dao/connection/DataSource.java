@@ -38,7 +38,7 @@ public class DataSource implements AutoCloseable {
         return connectionPool.getConnection();
     }
 
-    public ConnectionPool getConnectionPool() {
+    ConnectionPool getConnectionPool() {
         return connectionPool;
     }
 
