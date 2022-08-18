@@ -5,8 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.time.ZonedDateTime;
-import java.time.format.DateTimeFormatter;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,7 +13,6 @@ import com.company.movierating.dao.UserDao;
 import com.company.movierating.dao.connection.DataSource;
 import com.company.movierating.dao.entity.User;
 import com.company.movierating.dao.entity.User.Role;
-import com.company.movierating.dao.util.Constants;
 
 import lombok.extern.log4j.Log4j2;
 
@@ -211,8 +209,7 @@ public class UserDaoImpl implements UserDao {
         user.setRole(Role.valueOf(result.getString("role")));
         user.setInfo(result.getString("info"));
         user.setReputation(result.getInt("reputation"));
-        user.setRegistration(ZonedDateTime.parse(result.getString("registration"),
-                DateTimeFormatter.ofPattern(Constants.DB_ZONED_DATE_TIME_FORMAT)));
+        user.setRegistration(result.getTimestamp("registration").toLocalDateTime().atZone(ZoneId.systemDefault()));
 
         return user;
     }

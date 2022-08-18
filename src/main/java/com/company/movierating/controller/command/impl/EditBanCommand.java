@@ -6,7 +6,6 @@ import java.time.format.DateTimeFormatter;
 import com.company.movierating.controller.command.Command;
 import com.company.movierating.controller.util.JspConstants;
 import com.company.movierating.controller.util.ParametersPreparer;
-import com.company.movierating.dao.util.Constants;
 import com.company.movierating.service.BanService;
 import com.company.movierating.service.dto.BanDto;
 
@@ -39,7 +38,7 @@ public class EditBanCommand implements Command {
             long duration = preparer.getLong(durationStr);
             log.debug(startDateStr);
             ZonedDateTime startDate = ZonedDateTime.parse(startDateStr,
-                    DateTimeFormatter.ofPattern(Constants.APP_ZONED_DATE_TIME_FORMAT));
+                    DateTimeFormatter.ISO_ZONED_DATE_TIME);
             changed.setEndDate(startDate.plusDays(duration));
         }
 

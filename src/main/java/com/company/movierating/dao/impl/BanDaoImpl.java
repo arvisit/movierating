@@ -6,8 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Timestamp;
-import java.time.ZonedDateTime;
-import java.time.format.DateTimeFormatter;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,7 +14,6 @@ import com.company.movierating.dao.BanDao;
 import com.company.movierating.dao.UserDao;
 import com.company.movierating.dao.connection.DataSource;
 import com.company.movierating.dao.entity.Ban;
-import com.company.movierating.dao.util.Constants;
 
 import lombok.extern.log4j.Log4j2;
 
@@ -273,10 +271,8 @@ public class BanDaoImpl implements BanDao {
         ban.setId(result.getLong("id"));
         ban.setUser(userDao.getById(result.getLong("user_id")));
         ban.setAdmin(userDao.getById(result.getLong("admin_id")));
-        ban.setStartDate(ZonedDateTime.parse(result.getString("start_date"),
-                DateTimeFormatter.ofPattern(Constants.DB_ZONED_DATE_TIME_FORMAT)));
-        ban.setEndDate(ZonedDateTime.parse(result.getString("end_date"),
-                DateTimeFormatter.ofPattern(Constants.DB_ZONED_DATE_TIME_FORMAT)));
+        ban.setStartDate(result.getTimestamp("start_date").toLocalDateTime().atZone(ZoneId.systemDefault()));
+        ban.setEndDate(result.getTimestamp("end_date").toLocalDateTime().atZone(ZoneId.systemDefault()));
         ban.setReason(result.getString("reason"));
 
         return ban;
