@@ -14,7 +14,9 @@ import jakarta.servlet.http.HttpFilter;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import lombok.extern.log4j.Log4j2;
 
+@Log4j2
 public class AuthorizationFilter extends HttpFilter {
     private final ExceptionHandler exceptionHandler = ExceptionHandler.INSTANCE;
 
@@ -27,6 +29,7 @@ public class AuthorizationFilter extends HttpFilter {
             HttpSession session = req.getSession(false);
             if (session == null || session.getAttribute("user") == null) {
                 Exception e = new NonAuthorizedException("Authorization needed");
+                log.error(e.getMessage(), e);
                 String page = exceptionHandler.handleException(req, res, e);
                 req.getRequestDispatcher(page).forward(req, res);
                 return;

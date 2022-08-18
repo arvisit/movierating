@@ -19,7 +19,9 @@ import jakarta.servlet.http.HttpFilter;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import lombok.extern.log4j.Log4j2;
 
+@Log4j2
 public class UserSelfLevelFilter extends HttpFilter {
     private final ExceptionHandler exceptionHandler = ExceptionHandler.INSTANCE;
     private final UserService userService = ServiceFactory.getInstance().getService(UserService.class);
@@ -34,6 +36,7 @@ public class UserSelfLevelFilter extends HttpFilter {
             try {
                 targetId = ParametersPreparer.INSTANCE.getLong(req.getParameter("id"));
             } catch (BadParameterException e) {
+                log.error(e.getMessage(), e);
                 String page = exceptionHandler.handleException(req, res, e);
                 req.getRequestDispatcher(page).forward(req, res);
                 return;
@@ -42,6 +45,7 @@ public class UserSelfLevelFilter extends HttpFilter {
             UserDto sessionUser = (UserDto) session.getAttribute("user");
             if (sessionUser.getRole() != UserDto.Role.ADMIN && sessionUser.getId() != targetId) {
                 Exception e = new ForbiddenPageException("No rights to access another user's data");
+                log.error(e.getMessage(), e);
                 String page = exceptionHandler.handleException(req, res, e);
                 req.getRequestDispatcher(page).forward(req, res);
                 return;
@@ -50,6 +54,7 @@ public class UserSelfLevelFilter extends HttpFilter {
             if (sessionUser.getRole() == UserDto.Role.ADMIN && targetUser.getRole() == UserDto.Role.ADMIN
                     && sessionUser.getId() != targetId) {
                 Exception e = new ForbiddenPageException("No rights to access another admnin's data");
+                log.error(e.getMessage(), e);
                 String page = exceptionHandler.handleException(req, res, e);
                 req.getRequestDispatcher(page).forward(req, res);
                 return;
