@@ -37,8 +37,7 @@ public enum CommandIdentity {
     USER_BANS(new UserBansCommand(ServiceFactory.getInstance().getService(BanService.class),
             ParametersPreparer.INSTANCE, Paginator.INSTANCE), SecurityLevel.USER_SELF),
     ASSIGNED_BANS(new AssignedBansCommand(ServiceFactory.getInstance().getService(BanService.class),
-            ServiceFactory.getInstance().getService(UserService.class), ParametersPreparer.INSTANCE,
-            Paginator.INSTANCE), SecurityLevel.ADMIN_SELF),
+            ParametersPreparer.INSTANCE, Paginator.INSTANCE), SecurityLevel.ADMIN_SELF),
 
     SIGN_IN_FORM(new SignInFormCommand(), SecurityLevel.GUEST),
     SIGN_IN(new SignInCommand(ServiceFactory.getInstance().getService(UserService.class)), SecurityLevel.GUEST),
