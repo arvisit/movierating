@@ -41,8 +41,10 @@ public class BanUserCommand implements Command {
         ban.setEndDate(current.plusDays(duration));
         ban.setReason(reason);
 
+        req.setAttribute(JspConstants.LAST_PAGE_ATTRIBUTE_NAME,
+                "redirect:controller?command=ban_user_form&id=" + userIdStr);
         banService.create(ban);
-        req.setAttribute("successMessage", "Ban was successfully applied");
+        req.setAttribute(JspConstants.SUCCESS_MESSAGE_ATTRIBUTE_NAME, "Ban was successfully applied");
         req.setAttribute("user", banned);
         return JspConstants.VIEW_USER;
     }

@@ -42,8 +42,10 @@ public class EditBanCommand implements Command {
             changed.setEndDate(startDate.plusDays(duration));
         }
 
+        req.setAttribute(JspConstants.LAST_PAGE_ATTRIBUTE_NAME,
+                "redirect:controller?command=edit_ban_form&id=" + banIdStr);
         BanDto updated = service.update(changed);
-        req.setAttribute("successMessage", "Parameters were updated successfully");
+        req.setAttribute(JspConstants.SUCCESS_MESSAGE_ATTRIBUTE_NAME, "Parameters were updated successfully");
         req.setAttribute("user", updated.getUser());
         return JspConstants.VIEW_USER;
     }

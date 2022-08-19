@@ -12,6 +12,16 @@
     </servlet-mapping>
     
     <filter>
+        <filter-name>MessageFilter</filter-name>
+        <filter-class>com.company.movierating.controller.filter.MessageFilter</filter-class>
+    </filter>
+    
+    <filter-mapping>
+        <filter-name>MessageFilter</filter-name>
+        <url-pattern>/controller</url-pattern>
+    </filter-mapping>
+    
+    <filter>
         <filter-name>AuthorizationFilter</filter-name>
         <filter-class>com.company.movierating.controller.filter.AuthorizationFilter</filter-class>
     </filter>

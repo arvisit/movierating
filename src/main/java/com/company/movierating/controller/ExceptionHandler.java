@@ -7,7 +7,7 @@ import com.company.movierating.exception.controller.RegisterPasswordConfirmation
 import com.company.movierating.exception.controller.UnsupportedCommandException;
 import com.company.movierating.exception.service.ForbiddenPageException;
 import com.company.movierating.exception.service.NoRecordFoundException;
-import com.company.movierating.exception.service.CreateValidationException;
+import com.company.movierating.exception.service.ValidationException;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -32,10 +32,10 @@ public enum ExceptionHandler {
             status = 400;
             message = e.getMessage();
             page = JspConstants.CREATE_USER_FORM;
-        } else if (e instanceof CreateValidationException) {
+        } else if (e instanceof ValidationException) {
             status = 400;
             message = e.getMessage();
-            page = JspConstants.CREATE_USER_FORM;
+            page = (String) req.getAttribute(JspConstants.LAST_PAGE_ATTRIBUTE_NAME);
         } else if (e instanceof NonAuthorizedException) {
             status = 401;
             message = e.getMessage();
@@ -55,7 +55,7 @@ public enum ExceptionHandler {
         }
 
         req.setAttribute("errorStatus", status);
-        req.setAttribute("errorMessage", message);
+        req.setAttribute(JspConstants.ERROR_MESSAGE_ATTRIBUTE_NAME, message);
         resp.setStatus(status);
 
         return page;
