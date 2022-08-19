@@ -18,12 +18,12 @@ import lombok.extern.log4j.Log4j2;
 public class UserServiceImpl implements UserService {
     private final UserDao userDao;
     private final UserConverter userConverter;
-    private final UserValidator validator;
+    private final UserValidator userValidator;
 
-    public UserServiceImpl(UserDao userDao, UserConverter userConverter, UserValidator validator) {
+    public UserServiceImpl(UserDao userDao, UserConverter userConverter, UserValidator userValidator) {
         this.userDao = userDao;
         this.userConverter = userConverter;
-        this.validator = validator;
+        this.userValidator = userValidator;
     }
 
     @Override
@@ -84,7 +84,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserDto create(UserDto dto) {
         log.debug("User service method _create_ was called");
-        validator.validateUserToCreate(dto);
+        userValidator.validateUserToCreate(dto);
         dto.setRole(UserDto.Role.USER);
         dto.setPassword(DigestUtil.INSTANCE.hash(dto.getPassword()));
         User createdEntity = userDao.create(userConverter.toEntity(dto));
@@ -95,7 +95,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserDto create(UserDto dto, String confirmedPassword) {
         log.debug("User service method _create_ was called");
-        validator.validateUserToCreate(dto, confirmedPassword);
+        userValidator.validateUserToCreate(dto, confirmedPassword);
         dto.setRole(UserDto.Role.USER);
         dto.setPassword(DigestUtil.INSTANCE.hash(dto.getPassword()));
         User createdEntity = userDao.create(userConverter.toEntity(dto));
@@ -113,7 +113,7 @@ public class UserServiceImpl implements UserService {
         dtoToUpdate.setReputation(dto.getReputation());
         dtoToUpdate.setRole(dto.getRole());
 
-        validator.validateUserToUpdate(dtoToUpdate);
+        userValidator.validateUserToUpdate(dtoToUpdate);
         User updatedEntity = userDao.update(userConverter.toEntity(dtoToUpdate));
         updatedEntity.setPassword(null);
         return userConverter.toDto(updatedEntity);

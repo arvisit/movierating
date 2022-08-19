@@ -16,12 +16,12 @@ import lombok.extern.log4j.Log4j2;
 public class BanServiceImpl implements BanService {
     private final BanDao banDao;
     private final BanConverter banConverter;
-    private final BanValidator validator;
+    private final BanValidator banValidator;
 
-    public BanServiceImpl(BanDao banDao, BanConverter banConverter, BanValidator validator) {
+    public BanServiceImpl(BanDao banDao, BanConverter banConverter, BanValidator banValidator) {
         this.banDao = banDao;
         this.banConverter = banConverter;
-        this.validator = validator;
+        this.banValidator = banValidator;
     }
 
     @Override
@@ -69,7 +69,7 @@ public class BanServiceImpl implements BanService {
     @Override
     public BanDto create(BanDto dto) {
         log.debug("Ban service method _create_ was called");
-        validator.validateBanToCreate(dto);
+        banValidator.validateBanToCreate(dto);
         Ban createdEntity = banDao.create(banConverter.toEntity(dto));
         return banConverter.toDto(createdEntity);
     }
@@ -80,7 +80,7 @@ public class BanServiceImpl implements BanService {
         BanDto dtoToUpdate = banConverter.toDto(banDao.getById(dto.getId()));
 
         dtoToUpdate.setEndDate(dto.getEndDate());
-        validator.validateBanToUpdate(dtoToUpdate);
+        banValidator.validateBanToUpdate(dtoToUpdate);
 
         Ban updatedEntity = banDao.update(banConverter.toEntity(dtoToUpdate));
         return banConverter.toDto(updatedEntity);
