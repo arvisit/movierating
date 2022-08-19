@@ -33,7 +33,7 @@ public class UserDaoImpl implements UserDao {
     private static final String GET_ALL_PARTIALLY = "SELECT u.id, u.email, u.login, u.password, u.registration, u.info, u.reputation, r.name AS role " //
             + "FROM users u JOIN roles r ON u.role_id = r.id " //
             + "WHERE u.deleted = FALSE " //
-            + "ORDER BY id LIMIT ? OFFSET ?";
+            + "ORDER BY u.id LIMIT ? OFFSET ?";
     private static final String CREATE = "INSERT INTO users (email, login, password, role_id) " //
             + "VALUES (?, ?, ?, (SELECT id FROM roles WHERE name = ?))";
     private static final String UPDATE = "UPDATE users SET email = ?, login = ?, password = ?, " //
