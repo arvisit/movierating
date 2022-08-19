@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.company.movierating.service.converter.impl.BanConverter;
+import com.company.movierating.service.converter.impl.FilmConverter;
 import com.company.movierating.service.converter.impl.UserConverter;
 
 public class ConverterFactory {
@@ -17,6 +18,7 @@ public class ConverterFactory {
         converters = new HashMap<>();
         converters.put(UserConverter.class, new UserConverter());
         converters.put(BanConverter.class, new BanConverter(getConverter(UserConverter.class)));
+        converters.put(FilmConverter.class, new FilmConverter());
     }
 
     public static ConverterFactory getInstance() {
