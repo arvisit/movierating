@@ -4,6 +4,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.List;
 
 import com.company.movierating.dao.FilmDao;
@@ -59,32 +61,106 @@ public class FilmDaoImpl implements FilmDao {
 
     @Override
     public List<Film> getAll() {
-        return null;
+        List<Film> films = new ArrayList<>();
+        try (Connection connection = dataSource.getConnection()) {
+            Statement statement = connection.createStatement();
+            ResultSet result = statement.executeQuery(GET_ALL);
+
+            while (result.next()) {
+                films.add(process(result));
+            }
+        } catch (SQLException e) {
+            log.error(e.getMessage(), e);
+        }
+        return films;
     }
 
     @Override
     public List<Film> getAll(int limit, long offset) {
-        return null;
+        List<Film> films = new ArrayList<>();
+        try (Connection connection = dataSource.getConnection()) {
+            PreparedStatement statement = connection.prepareStatement(GET_ALL_PARTIALLY);
+            statement.setInt(1, limit);
+            statement.setLong(2, offset);
+            ResultSet result = statement.executeQuery();
+
+            while (result.next()) {
+                films.add(process(result));
+            }
+        } catch (SQLException e) {
+            log.error(e.getMessage(), e);
+        }
+        return films;
     }
 
     @Override
     public Film create(Film entity) {
+        try (Connection connection = dataSource.getConnection()) {
+            PreparedStatement statement = connection.prepareStatement(CREATE, Statement.RETURN_GENERATED_KEYS);
+            statement.setString(1, entity.getTitle());
+            statement.setString(2, entity.getDescription());
+            statement.setInt(3, entity.getReleaseYear());
+            statement.setInt(4, entity.getLength());
+            statement.setString(5, entity.getAgeRating().toString().replace('_', '-'));
+            statement.executeUpdate();
+
+            ResultSet keys = statement.getGeneratedKeys();
+            if (keys.next()) {
+                Long id = keys.getLong("id");
+                return getById(id);
+            }
+        } catch (SQLException e) {
+            log.error(e.getMessage(), e);
+        }
         return null;
     }
 
     @Override
     public Film update(Film entity) {
+        try (Connection connection = dataSource.getConnection()) {
+            PreparedStatement statement = connection.prepareStatement(UPDATE);
+            statement.setString(1, entity.getTitle());
+            statement.setString(2, entity.getDescription());
+            statement.setInt(3, entity.getReleaseYear());
+            statement.setInt(4, entity.getLength());
+            statement.setString(5, entity.getAgeRating().toString().replace('_', '-'));
+            statement.setLong(6, entity.getId());
+            statement.executeUpdate();
+
+            return getById(entity.getId());
+        } catch (SQLException e) {
+            log.error(e.getMessage(), e);
+        }
         return null;
     }
 
     @Override
     public boolean delete(Long id) {
+        try (Connection connection = dataSource.getConnection()) {
+            PreparedStatement statement = connection.prepareStatement(DELETE);
+            statement.setLong(1, id);
+            int rowsDeleted = statement.executeUpdate();
+
+            return rowsDeleted == 1;
+        } catch (SQLException e) {
+            log.error(e.getMessage(), e);
+        }
         return false;
     }
 
     @Override
     public Long count() {
-        return null;
+        try (Connection connection = dataSource.getConnection()) {
+            Statement statement = connection.createStatement();
+            ResultSet result = statement.executeQuery(COUNT);
+
+            if (result.next()) {
+                return result.getLong("total");
+            }
+        } catch (SQLException e) {
+            log.error(e.getMessage(), e);
+        }
+        throw new RuntimeException("Couldn't count films");
     }
 
     private Film process(ResultSet result) throws SQLException {
