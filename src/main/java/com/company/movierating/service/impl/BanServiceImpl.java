@@ -38,7 +38,7 @@ public class BanServiceImpl implements BanService {
     public List<BanDto> getAll() {
         log.debug("Ban service method _getAll_ was called");
         return banDao.getAll().stream() //
-                .map(e -> banConverter.toDto(e)) //
+                .map(banConverter::toDto) //
                 .toList();
     }
 
@@ -46,7 +46,7 @@ public class BanServiceImpl implements BanService {
     public List<BanDto> getAll(int limit, long offset) {
         log.debug("Ban service method _getAll_ (paged) was called");
         return banDao.getAll(limit, offset).stream() //
-                .map(e -> banConverter.toDto(e)) //
+                .map(banConverter::toDto) //
                 .toList();
     }
 
@@ -54,7 +54,7 @@ public class BanServiceImpl implements BanService {
     public List<BanDto> getAllByUser(Long id, int limit, long offset) {
         log.debug("Ban service method _getAllByUser_ (paged) was called");
         return banDao.getAllByUser(id, limit, offset).stream() //
-                .map(e -> banConverter.toDto(e)) //
+                .map(banConverter::toDto) //
                 .toList();
     }
 
@@ -62,7 +62,7 @@ public class BanServiceImpl implements BanService {
     public List<BanDto> getAllByAdmin(Long id, int limit, long offset) {
         log.debug("Ban service method _getAllByAdmin_ (paged) was called");
         return banDao.getAllByAdmin(id, limit, offset).stream() //
-                .map(e -> banConverter.toDto(e)) //
+                .map(banConverter::toDto) //
                 .toList();
     }
 
