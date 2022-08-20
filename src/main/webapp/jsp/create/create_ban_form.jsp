@@ -15,7 +15,7 @@
             <p><b>Login:</b> <c:out value="${requestScope.user.login}"/></p>
             <h2>Ban user:</h2>
             <form method="post" action="controller">
-                <input name="command" type="hidden" value="ban_user"/>
+                <input name="command" type="hidden" value="create_ban"/>
                 <input name="id" type="hidden" value="${requestScope.user.id}"/>
                 <label for="duration">Duration (days):</label>
                 <input required="required" type="number" id="duration" name="duration" min="1" max="31" value="1"/>

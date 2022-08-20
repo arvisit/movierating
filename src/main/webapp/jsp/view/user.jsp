@@ -17,7 +17,7 @@
                 <a class="edit" href="controller?command=edit_user_form&id=${user.id}">(edit)</a>
             </c:if>
             <c:if test="${sessionScope.user != null && (sessionScope.user.role == 'ADMIN' && user.role != 'ADMIN')}">
-                <a class="ban" href="controller?command=ban_user_form&id=${user.id}">(ban)</a>
+                <a class="ban" href="controller?command=create_ban_form&id=${user.id}">(ban)</a>
             </c:if>
             <p><b>Login:</b> <c:out value="${user.login}"/></p>
             <c:if test="${sessionScope.user != null && ((sessionScope.user.role == 'ADMIN' && user.role != 'ADMIN') 

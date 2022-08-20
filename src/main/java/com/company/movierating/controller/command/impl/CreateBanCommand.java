@@ -12,12 +12,12 @@ import com.company.movierating.service.dto.UserDto;
 
 import jakarta.servlet.http.HttpServletRequest;
 
-public class BanUserCommand implements Command {
+public class CreateBanCommand implements Command {
     private final BanService banService;
     private final UserService userService;
     private final ParametersPreparer preparer;
 
-    public BanUserCommand(BanService banService, UserService userService, ParametersPreparer preparer) {
+    public CreateBanCommand(BanService banService, UserService userService, ParametersPreparer preparer) {
         this.banService = banService;
         this.userService = userService;
         this.preparer = preparer;

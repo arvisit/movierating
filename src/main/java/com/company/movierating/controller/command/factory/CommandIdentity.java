@@ -2,8 +2,8 @@ package com.company.movierating.controller.command.factory;
 
 import com.company.movierating.controller.command.Command;
 import com.company.movierating.controller.command.impl.AssignedBansCommand;
-import com.company.movierating.controller.command.impl.BanUserCommand;
-import com.company.movierating.controller.command.impl.BanUserFormCommand;
+import com.company.movierating.controller.command.impl.CreateBanCommand;
+import com.company.movierating.controller.command.impl.CreateBanFormCommand;
 import com.company.movierating.controller.command.impl.CreateUserCommand;
 import com.company.movierating.controller.command.impl.CreateUserFormCommand;
 import com.company.movierating.controller.command.impl.EditBanCommand;
@@ -51,9 +51,9 @@ public enum CommandIdentity {
     EDIT_USER(new EditUserCommand(ServiceFactory.getInstance().getService(UserService.class),
             ParametersPreparer.INSTANCE), SecurityLevel.USER_SELF),
 
-    BAN_USER_FORM(new BanUserFormCommand(ServiceFactory.getInstance().getService(UserService.class),
+    CREATE_BAN_FORM(new CreateBanFormCommand(ServiceFactory.getInstance().getService(UserService.class),
             ParametersPreparer.INSTANCE), SecurityLevel.ADMIN_SELF),
-    BAN_USER(new BanUserCommand(ServiceFactory.getInstance().getService(BanService.class), //
+    CREATE_BAN(new CreateBanCommand(ServiceFactory.getInstance().getService(BanService.class), //
             ServiceFactory.getInstance().getService(UserService.class), ParametersPreparer.INSTANCE),
             SecurityLevel.ADMIN_SELF),
 
