@@ -34,7 +34,7 @@
                                     </c:if>
                                 </td>
                                 <td>${film.releaseYear}</td>
-                                <td>${film.ageRating.toString().replace('_', '-')}</td>
+                                <td>${film.ageRating.name}</td>
                             </tr>
                         </c:forEach>
                     </table>
