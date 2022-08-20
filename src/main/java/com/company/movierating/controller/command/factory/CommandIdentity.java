@@ -11,6 +11,7 @@ import com.company.movierating.controller.command.impl.EditBanFormCommand;
 import com.company.movierating.controller.command.impl.EditUserCommand;
 import com.company.movierating.controller.command.impl.EditUserFormCommand;
 import com.company.movierating.controller.command.impl.ErrorCommand;
+import com.company.movierating.controller.command.impl.FilmsCommand;
 import com.company.movierating.controller.command.impl.SignInCommand;
 import com.company.movierating.controller.command.impl.SignInFormCommand;
 import com.company.movierating.controller.command.impl.SignOutCommand;
@@ -21,6 +22,7 @@ import com.company.movierating.controller.util.Paginator;
 import com.company.movierating.controller.util.ParametersPreparer;
 import com.company.movierating.controller.util.SecurityLevel;
 import com.company.movierating.service.BanService;
+import com.company.movierating.service.FilmService;
 import com.company.movierating.service.UserService;
 import com.company.movierating.service.factory.ServiceFactory;
 
@@ -60,7 +62,10 @@ public enum CommandIdentity {
     EDIT_BAN_FORM(new EditBanFormCommand(ServiceFactory.getInstance().getService(BanService.class),
             ParametersPreparer.INSTANCE), SecurityLevel.ADMIN),
     EDIT_BAN(new EditBanCommand(ServiceFactory.getInstance().getService(BanService.class), ParametersPreparer.INSTANCE),
-            SecurityLevel.ADMIN);
+            SecurityLevel.ADMIN),
+
+    FILMS(new FilmsCommand(ServiceFactory.getInstance().getService(FilmService.class), Paginator.INSTANCE),
+            SecurityLevel.GUEST);
 
     @Getter
     private final Command command;

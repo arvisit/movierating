@@ -6,6 +6,7 @@
     </c:if>
     <div class="menu-right">
         <a href=".">Home</a>
+        <a href="controller?command=films">Films</a>
         <a href="controller?command=users">Users</a>
         <c:if test="${sessionScope.user == null}">
             <a href="controller?command=sign_in_form">Sign in</a>
