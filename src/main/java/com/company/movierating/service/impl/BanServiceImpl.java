@@ -16,12 +16,12 @@ import lombok.extern.log4j.Log4j2;
 public class BanServiceImpl implements BanService {
     private final BanDao banDao;
     private final BanConverter banConverter;
-    private final BanValidator validator;
+    private final BanValidator banValidator;
 
-    public BanServiceImpl(BanDao banDao, BanConverter banConverter, BanValidator validator) {
+    public BanServiceImpl(BanDao banDao, BanConverter banConverter, BanValidator banValidator) {
         this.banDao = banDao;
         this.banConverter = banConverter;
-        this.validator = validator;
+        this.banValidator = banValidator;
     }
 
     @Override
@@ -38,7 +38,7 @@ public class BanServiceImpl implements BanService {
     public List<BanDto> getAll() {
         log.debug("Ban service method _getAll_ was called");
         return banDao.getAll().stream() //
-                .map(e -> banConverter.toDto(e)) //
+                .map(banConverter::toDto) //
                 .toList();
     }
 
@@ -46,7 +46,7 @@ public class BanServiceImpl implements BanService {
     public List<BanDto> getAll(int limit, long offset) {
         log.debug("Ban service method _getAll_ (paged) was called");
         return banDao.getAll(limit, offset).stream() //
-                .map(e -> banConverter.toDto(e)) //
+                .map(banConverter::toDto) //
                 .toList();
     }
 
@@ -54,7 +54,7 @@ public class BanServiceImpl implements BanService {
     public List<BanDto> getAllByUser(Long id, int limit, long offset) {
         log.debug("Ban service method _getAllByUser_ (paged) was called");
         return banDao.getAllByUser(id, limit, offset).stream() //
-                .map(e -> banConverter.toDto(e)) //
+                .map(banConverter::toDto) //
                 .toList();
     }
 
@@ -62,14 +62,14 @@ public class BanServiceImpl implements BanService {
     public List<BanDto> getAllByAdmin(Long id, int limit, long offset) {
         log.debug("Ban service method _getAllByAdmin_ (paged) was called");
         return banDao.getAllByAdmin(id, limit, offset).stream() //
-                .map(e -> banConverter.toDto(e)) //
+                .map(banConverter::toDto) //
                 .toList();
     }
 
     @Override
     public BanDto create(BanDto dto) {
         log.debug("Ban service method _create_ was called");
-        validator.validateBanToCreate(dto);
+        banValidator.validateBanToCreate(dto);
         Ban createdEntity = banDao.create(banConverter.toEntity(dto));
         return banConverter.toDto(createdEntity);
     }
@@ -80,7 +80,7 @@ public class BanServiceImpl implements BanService {
         BanDto dtoToUpdate = banConverter.toDto(banDao.getById(dto.getId()));
 
         dtoToUpdate.setEndDate(dto.getEndDate());
-        validator.validateBanToUpdate(dtoToUpdate);
+        banValidator.validateBanToUpdate(dtoToUpdate);
 
         Ban updatedEntity = banDao.update(banConverter.toEntity(dtoToUpdate));
         return banConverter.toDto(updatedEntity);

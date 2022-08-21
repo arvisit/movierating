@@ -3,8 +3,7 @@ package com.company.movierating.service.util;
 import com.company.movierating.dao.UserDao;
 import com.company.movierating.dao.entity.User;
 import com.company.movierating.dao.factory.DaoFactory;
-import com.company.movierating.exception.service.CreateValidationException;
-import com.company.movierating.exception.service.UpdateValidationException;
+import com.company.movierating.exception.service.ValidationException;
 import com.company.movierating.service.dto.UserDto;
 
 public enum UserValidator {
@@ -12,7 +11,7 @@ public enum UserValidator {
 
     private static final short REPUTATION_MAX = Short.MAX_VALUE;
     private static final short REPUTATION_MIN = Short.MIN_VALUE;
-    private static final String LINE_SEPARATOR = System.lineSeparator();
+    private static final String LINE_SEPARATOR = "<br>";
     private static final int LOGIN_MAX_LENGTH = 100;
     private static final int LOGIN_MIN_LENGTH = 4;
     private static final int PASSWORD_MAX_LENGTH = 32;
@@ -30,7 +29,7 @@ public enum UserValidator {
 
         if (sb.length() != 0) {
             sb.delete(sb.length() - LINE_SEPARATOR.length(), sb.length());
-            throw new CreateValidationException(sb.toString());
+            throw new ValidationException(sb.toString());
         }
     }
 
@@ -44,7 +43,7 @@ public enum UserValidator {
 
         if (sb.length() != 0) {
             sb.delete(sb.length() - LINE_SEPARATOR.length(), sb.length());
-            throw new CreateValidationException(sb.toString());
+            throw new ValidationException(sb.toString());
         }
     }
 
@@ -58,7 +57,7 @@ public enum UserValidator {
 
         if (sb.length() != 0) {
             sb.delete(sb.length() - LINE_SEPARATOR.length(), sb.length());
-            throw new UpdateValidationException(sb.toString());
+            throw new ValidationException(sb.toString());
         }
     }
 

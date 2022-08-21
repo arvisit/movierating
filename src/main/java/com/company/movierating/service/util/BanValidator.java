@@ -2,8 +2,7 @@ package com.company.movierating.service.util;
 
 import java.time.ZonedDateTime;
 
-import com.company.movierating.exception.service.CreateValidationException;
-import com.company.movierating.exception.service.UpdateValidationException;
+import com.company.movierating.exception.service.ValidationException;
 import com.company.movierating.service.dto.BanDto;
 import com.company.movierating.service.dto.UserDto;
 
@@ -23,7 +22,7 @@ public enum BanValidator {
 
         if (sb.length() != 0) {
             sb.delete(sb.length() - LINE_SEPARATOR.length(), sb.length());
-            throw new CreateValidationException(sb.toString());
+            throw new ValidationException(sb.toString());
         }
     }
 
@@ -35,7 +34,7 @@ public enum BanValidator {
 
         if (sb.length() != 0) {
             sb.delete(sb.length() - LINE_SEPARATOR.length(), sb.length());
-            throw new UpdateValidationException(sb.toString());
+            throw new ValidationException(sb.toString());
         }
     }
 
