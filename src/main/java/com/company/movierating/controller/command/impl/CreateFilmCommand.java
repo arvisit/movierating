@@ -27,7 +27,7 @@ public class CreateFilmCommand implements Command {
         String ageRatingStr = req.getParameter("ageRating");
 
         FilmDto film = new FilmDto();
-        film.setTitle(title.toUpperCase());
+        film.setTitle(title);
         film.setDescription(description);
         film.setReleaseYear(preparer.getInt(releaseYearStr));
         film.setLength(preparer.getInt(lengthStr));
