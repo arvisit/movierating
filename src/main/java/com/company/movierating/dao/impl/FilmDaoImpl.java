@@ -29,7 +29,7 @@ public class FilmDaoImpl implements FilmDao {
             + "ORDER BY f.id LIMIT ? OFFSET ?";
     private static final String CREATE = "INSERT INTO films (title, description, release_year, length, age_rating_id) "
             + "VALUES (?, ?, ?, ?, (SELECT id FROM age_ratings WHERE name = ?))";
-    private static final String UPDATE = "UPDATE films SET title = ?, description = ?, release_year = ?, length = ?, //"
+    private static final String UPDATE = "UPDATE films SET title = ?, description = ?, release_year = ?, length = ?, "
             + "age_rating_id = (SELECT id FROM age_ratings WHERE name = ?), last_update = NOW() " //
             + "WHERE id = ? AND DELETED = FALSE";
     private static final String DELETE = "UPDATE films SET deleted = TRUE, last_update = NOW() WHERE id = ?";

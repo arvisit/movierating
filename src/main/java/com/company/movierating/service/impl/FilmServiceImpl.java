@@ -54,6 +54,7 @@ public class FilmServiceImpl implements FilmService {
     public FilmDto create(FilmDto dto) {
         log.debug("Film service method _create_ was called");
         filmValidator.validateFilm(dto);
+        dto.setTitle(dto.getTitle().toUpperCase());
         Film createdEntity = filmDao.create(filmConverter.toEntity(dto));
         return filmConverter.toDto(createdEntity);
     }
@@ -62,6 +63,7 @@ public class FilmServiceImpl implements FilmService {
     public FilmDto update(FilmDto dto) {
         log.debug("Film service method _update_ was called");
         filmValidator.validateFilm(dto);
+        dto.setTitle(dto.getTitle().toUpperCase());
         Film updatedEntity = filmDao.update(filmConverter.toEntity(dto));
         return filmConverter.toDto(updatedEntity);
     }

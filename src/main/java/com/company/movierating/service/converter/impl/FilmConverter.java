@@ -24,7 +24,7 @@ public class FilmConverter implements Converter<Film, FilmDto> {
         entity.setId(dto.getId());
         entity.setTitle(dto.getTitle());
         entity.setDescription(dto.getDescription());
-        entity.setReleaseYear(entity.getReleaseYear());
+        entity.setReleaseYear(dto.getReleaseYear());
         entity.setLength(dto.getLength());
         entity.setAgeRating(Film.AgeRating.valueOf(dto.getAgeRating().toString()));
         return entity;

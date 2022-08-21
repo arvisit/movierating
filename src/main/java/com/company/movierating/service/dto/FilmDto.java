@@ -1,6 +1,7 @@
 package com.company.movierating.service.dto;
 
 import lombok.Data;
+import lombok.Getter;
 
 @Data
 public class FilmDto {
@@ -12,6 +13,13 @@ public class FilmDto {
     private AgeRating ageRating;
 
     public enum AgeRating {
-        G, PG, PG_13, R, NC_17;
+        G("G"), PG("PG"), PG_13("PG-13"), R("R"), NC_17("NC-17");
+
+        @Getter
+        private final String name;
+
+        AgeRating(String name) {
+            this.name = name;
+        }
     }
 }

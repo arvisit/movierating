@@ -6,10 +6,14 @@
     </c:if>
     <div class="menu-right">
         <a href=".">Home</a>
+        <a href="controller?command=films">Films</a>
         <a href="controller?command=users">Users</a>
         <c:if test="${sessionScope.user == null}">
             <a href="controller?command=sign_in_form">Sign in</a>
             <a href="controller?command=create_user_form">Sign up</a>
+        </c:if>
+        <c:if test="${sessionScope.user != null && sessionScope.user.role == 'ADMIN'}">
+            <a href="controller?command=create_film_form">Add film</a>
         </c:if>
         <c:if test="${sessionScope.user != null}">
             <a href="controller?command=user&id=${sessionScope.user.id}">My Profile</a>

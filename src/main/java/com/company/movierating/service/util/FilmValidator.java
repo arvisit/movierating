@@ -8,6 +8,7 @@ public enum FilmValidator {
     INSTANCE;
 
     private static final String LINE_SEPARATOR = "<br>";
+    private static final int MAX_NUMBER = Short.MAX_VALUE;
 
     public void validateFilm(FilmDto dto) {
         StringBuilder sb = new StringBuilder();
@@ -33,11 +34,21 @@ public enum FilmValidator {
     }
 
     private void checkReleaseYear(Integer releaseYear, StringBuilder sb) {
-        nullCheck(releaseYear, sb, "Release year field is empty");
+        if (releaseYear == null) {
+            sb.append("Release year field is empty").append(LINE_SEPARATOR);
+            return;
+        }
+        checkIfNotPositiveNumber(releaseYear, sb);
+        checkForMaxValue(releaseYear, sb);
     }
 
     private void checkLength(Integer length, StringBuilder sb) {
-        nullCheck(length, sb, "Length field is empty");
+        if (length == null) {
+            sb.append("Length field is empty").append(LINE_SEPARATOR);
+            return;
+        }
+        checkIfNotPositiveNumber(length, sb);
+        checkForMaxValue(length, sb);
     }
 
     private void checkAgeRating(AgeRating ageRating, StringBuilder sb) {
@@ -47,6 +58,18 @@ public enum FilmValidator {
     private <T> void nullCheck(T input, StringBuilder sb, String errorMessage) {
         if (input == null) {
             sb.append(errorMessage).append(LINE_SEPARATOR);
+        }
+    }
+    
+    private void checkIfNotPositiveNumber(Integer number, StringBuilder sb) {
+        if (number < 1) {
+            sb.append("Numeric field value should be positive").append(LINE_SEPARATOR);
+        }
+    }
+    
+    private void checkForMaxValue(Integer number, StringBuilder sb) {
+        if (number > MAX_NUMBER) {
+            sb.append("Numeric field value should be less or equal to " + MAX_NUMBER).append(LINE_SEPARATOR);
         }
     }
 

@@ -42,7 +42,7 @@ public class CreateBanCommand implements Command {
         ban.setReason(reason);
 
         req.setAttribute(JspConstants.LAST_PAGE_ATTRIBUTE_NAME,
-                "redirect:controller?command=ban_user_form&id=" + userIdStr);
+                "redirect:controller?command=create_ban_form&id=" + userIdStr);
         banService.create(ban);
         req.setAttribute(JspConstants.SUCCESS_MESSAGE_ATTRIBUTE_NAME, "Ban was successfully applied");
         req.setAttribute("user", banned);
