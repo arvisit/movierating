@@ -10,6 +10,8 @@ import com.company.movierating.controller.command.impl.CreateUserCommand;
 import com.company.movierating.controller.command.impl.CreateUserFormCommand;
 import com.company.movierating.controller.command.impl.EditBanCommand;
 import com.company.movierating.controller.command.impl.EditBanFormCommand;
+import com.company.movierating.controller.command.impl.EditFilmCommand;
+import com.company.movierating.controller.command.impl.EditFilmFormCommand;
 import com.company.movierating.controller.command.impl.EditUserCommand;
 import com.company.movierating.controller.command.impl.EditUserFormCommand;
 import com.company.movierating.controller.command.impl.ErrorCommand;
@@ -74,8 +76,13 @@ public enum CommandIdentity {
 
     CREATE_FILM_FORM(new CreateFilmFormCommand(), SecurityLevel.ADMIN),
     CREATE_FILM(new CreateFilmCommand(ServiceFactory.getInstance().getService(FilmService.class),
-            ParametersPreparer.INSTANCE), SecurityLevel.ADMIN);
+            ParametersPreparer.INSTANCE), SecurityLevel.ADMIN),
 
+    EDIT_FILM_FORM(new EditFilmFormCommand(ServiceFactory.getInstance().getService(FilmService.class),
+            ParametersPreparer.INSTANCE), SecurityLevel.ADMIN),
+    EDIT_FILM(new EditFilmCommand(ServiceFactory.getInstance().getService(FilmService.class),
+            ParametersPreparer.INSTANCE), SecurityLevel.ADMIN);
+    
     @Getter
     private final Command command;
     @Getter
