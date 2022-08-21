@@ -39,7 +39,8 @@ public class UserDaoImpl implements UserDao {
     private static final String UPDATE = "UPDATE users SET email = ?, login = ?, password = ?, " //
             + "role_id = (SELECT id FROM roles WHERE name = ?), info = ?, reputation = ?, last_update = NOW()" //
             + "WHERE id = ? AND deleted = FALSE";
-    private static final String DELETE = "UPDATE users SET deleted = TRUE, last_update = NOW() WHERE id = ?";
+    private static final String DELETE = "UPDATE users SET deleted = TRUE, last_update = NOW() " //
+            + "WHERE id = ? AND deleted = FALSE";
     private static final String COUNT = "SELECT COUNT(u.id) AS total FROM users u WHERE u.deleted = FALSE";
 
     private DataSource dataSource;
