@@ -32,6 +32,7 @@
             <p><b>Registration:</b> ${user.registration}</p>
             <p><b>Role:</b> ${user.role}</p>
             <p><b>Info:</b> <c:out value="${user.info}"/></p>
+            <p><a href="controller?command=user_scores&id=${user.id}">My scores</a></p>
         </div>
         <%@ include file="/jsp/common/notification.jsp"%>
         <%@ include file="/jsp/common/footer.jsp"%>
