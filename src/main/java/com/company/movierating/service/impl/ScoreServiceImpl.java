@@ -52,6 +52,22 @@ public class ScoreServiceImpl implements ScoreService {
     }
 
     @Override
+    public List<ScoreDto> getAllByFilm(Long id, int limit, long offset) {
+        log.debug("Score service method _getAllByFilm_ (paged) was called");
+        return scoreDao.getAllByFilm(id, limit, offset).stream() //
+                .map(scoreConverter::toDto) //
+                .toList();
+    }
+
+    @Override
+    public List<ScoreDto> getAllByUser(Long id, int limit, long offset) {
+        log.debug("Score service method _getAllByUser_ (paged) was called");
+        return scoreDao.getAllByUser(id, limit, offset).stream() //
+                .map(scoreConverter::toDto) //
+                .toList();
+    }
+
+    @Override
     public ScoreDto create(ScoreDto dto) {
         log.debug("Score service method _create_ was called");
         scoreValidator.validateScoreToCreate(dto);
@@ -77,6 +93,24 @@ public class ScoreServiceImpl implements ScoreService {
     public Long count() {
         log.debug("Score service method _count_ was called");
         return scoreDao.count();
+    }
+
+    @Override
+    public Long countByFilm(Long id) {
+        log.debug("Score service method _countByFilm_ was called");
+        return scoreDao.countByFilm(id);
+    }
+
+    @Override
+    public Long countByUser(Long id) {
+        log.debug("Score service method _countByUser_ was called");
+        return scoreDao.countByUser(id);
+    }
+
+    @Override
+    public Double countFilmAverageScore(Long id) {
+        log.debug("Score service method _countFilmAverageScore_ was called");
+        return scoreDao.countFilmAverageScore(id);
     }
 
 }
