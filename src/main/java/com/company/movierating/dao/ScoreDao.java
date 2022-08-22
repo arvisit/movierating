@@ -13,5 +13,5 @@ public interface ScoreDao extends AbstractDao<Long, Score> {
 
     Long countByUser(Long id);
 
-    Double getFilmAverageScore(Long id);
+    Double countFilmAverageScore(Long id);
 }

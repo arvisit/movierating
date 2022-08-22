@@ -251,7 +251,7 @@ public class ScoreDaoImpl implements ScoreDao {
     }
 
     @Override
-    public Double getFilmAverageScore(Long id) {
+    public Double countFilmAverageScore(Long id) {
         try (Connection connection = dataSource.getConnection()) {
             PreparedStatement statement = connection.prepareStatement(COUNT_FILM_AVERAGE_SCORE);
             statement.setLong(1, id);
