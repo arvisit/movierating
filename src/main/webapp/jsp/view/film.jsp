@@ -15,6 +15,9 @@
             <c:if test="${sessionScope.user != null && sessionScope.user.role == 'ADMIN'}">
                 <a class="edit" href="controller?command=edit_film_form&id=${film.id}">(edit)</a>
             </c:if>
+            <c:if test="${sessionScope.user != null && sessionScope.user.role == 'USER'}">
+                <a class="edit" href="controller?command=create_score_form&id=${film.id}">(score)</a>
+            </c:if>
             <p><b>Title:</b> <c:out value="${film.title}"/></p>
             <p><b>Description:</b> <c:out value="${film.description}"/></p>
             <p><b>Release year:</b> <c:out value="${film.releaseYear}"/></p>

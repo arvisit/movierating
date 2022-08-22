@@ -6,6 +6,8 @@ import com.company.movierating.controller.command.impl.CreateBanCommand;
 import com.company.movierating.controller.command.impl.CreateBanFormCommand;
 import com.company.movierating.controller.command.impl.CreateFilmCommand;
 import com.company.movierating.controller.command.impl.CreateFilmFormCommand;
+import com.company.movierating.controller.command.impl.CreateScoreCommand;
+import com.company.movierating.controller.command.impl.CreateScoreFormCommand;
 import com.company.movierating.controller.command.impl.CreateUserCommand;
 import com.company.movierating.controller.command.impl.CreateUserFormCommand;
 import com.company.movierating.controller.command.impl.EditBanCommand;
@@ -89,7 +91,13 @@ public enum CommandIdentity {
     FILM_SCORES(new FilmScoresCommand(ServiceFactory.getInstance().getService(ScoreService.class),
             ParametersPreparer.INSTANCE, Paginator.INSTANCE), SecurityLevel.GUEST),
     USER_SCORES(new UserScoresCommand(ServiceFactory.getInstance().getService(ScoreService.class),
-            ParametersPreparer.INSTANCE, Paginator.INSTANCE), SecurityLevel.GUEST);
+            ParametersPreparer.INSTANCE, Paginator.INSTANCE), SecurityLevel.GUEST),
+
+    CREATE_SCORE_FORM(new CreateScoreFormCommand(ServiceFactory.getInstance().getService(FilmService.class),
+            ParametersPreparer.INSTANCE), SecurityLevel.USER_SELF_NOT_BANNED),
+    CREATE_SCORE(new CreateScoreCommand(ServiceFactory.getInstance().getService(ScoreService.class), //
+            ServiceFactory.getInstance().getService(FilmService.class), ParametersPreparer.INSTANCE),
+            SecurityLevel.USER_SELF_NOT_BANNED);
 
     @Getter
     private final Command command;
