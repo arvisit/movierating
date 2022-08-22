@@ -29,8 +29,8 @@ public class ScoreDaoImpl implements ScoreDao {
             + "FROM scores s " //
             + "WHERE s.deleted = FALSE " //
             + "ORDER BY s.id LIMIT ? OFFSET ?";
-    private final static String CREATE = "INSERT INTO scores (id, film_id, user_id, value) " //
-            + "VALUES (?, ?, ?, ?)";
+    private final static String CREATE = "INSERT INTO scores (film_id, user_id, value) " //
+            + "VALUES (?, ?, ?)";
     private final static String UPDATE = "UPDATE scores SET value = ?, last_update = NOW() " //
             + "WHERE id = ? AND deleted = FALSE";
     private final static String DELETE = "UPDATE scores SET deleted = TRUE, last_update = NOW() " //
@@ -103,10 +103,9 @@ public class ScoreDaoImpl implements ScoreDao {
     public Score create(Score entity) {
         try (Connection connection = dataSource.getConnection()) {
             PreparedStatement statement = connection.prepareStatement(CREATE, Statement.RETURN_GENERATED_KEYS);
-            statement.setLong(1, entity.getId());
-            statement.setLong(2, entity.getFilm().getId());
-            statement.setLong(3, entity.getUser().getId());
-            statement.setInt(4, entity.getValue());
+            statement.setLong(1, entity.getFilm().getId());
+            statement.setLong(2, entity.getUser().getId());
+            statement.setInt(3, entity.getValue());
             statement.executeUpdate();
 
             ResultSet keys = statement.getGeneratedKeys();
