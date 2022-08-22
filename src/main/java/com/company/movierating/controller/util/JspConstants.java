@@ -11,6 +11,8 @@ public abstract class JspConstants {
     public static final String VIEW_FILM = "jsp/view/film.jsp";
     public static final String VIEW_FILMS = "jsp/view/films.jsp";
     public static final String VIEW_BANS = "jsp/view/bans.jsp";
+    public static final String VIEW_FILM_SCORES = "jsp/view/film_scores.jsp";
+    public static final String VIEW_USER_SCORES = "jsp/view/user_scores.jsp";
     public static final String MAIN_PAGE = "index.jsp";
     public static final String SIGN_IN_FORM = "jsp/sign_in/sign_in_form.jsp";
     public static final String CREATE_USER_FORM = "jsp/create/create_user_form.jsp";

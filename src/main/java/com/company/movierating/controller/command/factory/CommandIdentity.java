@@ -16,18 +16,21 @@ import com.company.movierating.controller.command.impl.EditUserCommand;
 import com.company.movierating.controller.command.impl.EditUserFormCommand;
 import com.company.movierating.controller.command.impl.ErrorCommand;
 import com.company.movierating.controller.command.impl.FilmCommand;
+import com.company.movierating.controller.command.impl.FilmScoresCommand;
 import com.company.movierating.controller.command.impl.FilmsCommand;
 import com.company.movierating.controller.command.impl.SignInCommand;
 import com.company.movierating.controller.command.impl.SignInFormCommand;
 import com.company.movierating.controller.command.impl.SignOutCommand;
 import com.company.movierating.controller.command.impl.UserBansCommand;
 import com.company.movierating.controller.command.impl.UserCommand;
+import com.company.movierating.controller.command.impl.UserScoresCommand;
 import com.company.movierating.controller.command.impl.UsersCommand;
 import com.company.movierating.controller.util.Paginator;
 import com.company.movierating.controller.util.ParametersPreparer;
 import com.company.movierating.controller.util.SecurityLevel;
 import com.company.movierating.service.BanService;
 import com.company.movierating.service.FilmService;
+import com.company.movierating.service.ScoreService;
 import com.company.movierating.service.UserService;
 import com.company.movierating.service.factory.ServiceFactory;
 
@@ -81,8 +84,13 @@ public enum CommandIdentity {
     EDIT_FILM_FORM(new EditFilmFormCommand(ServiceFactory.getInstance().getService(FilmService.class),
             ParametersPreparer.INSTANCE), SecurityLevel.ADMIN),
     EDIT_FILM(new EditFilmCommand(ServiceFactory.getInstance().getService(FilmService.class),
-            ParametersPreparer.INSTANCE), SecurityLevel.ADMIN);
-    
+            ParametersPreparer.INSTANCE), SecurityLevel.ADMIN),
+
+    FILM_SCORES(new FilmScoresCommand(ServiceFactory.getInstance().getService(ScoreService.class),
+            ParametersPreparer.INSTANCE, Paginator.INSTANCE), SecurityLevel.GUEST),
+    USER_SCORES(new UserScoresCommand(ServiceFactory.getInstance().getService(ScoreService.class),
+            ParametersPreparer.INSTANCE, Paginator.INSTANCE), SecurityLevel.GUEST);
+
     @Getter
     private final Command command;
     @Getter
