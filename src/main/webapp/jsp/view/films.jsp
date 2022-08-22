@@ -23,6 +23,7 @@
                         <th>Title</th>
                         <th>Release year</th>
                         <th>Age rating</th>
+                        <th>Average score</th>
                         </tr>
                         <c:forEach items="${films}" var="film">
                             <tr>
@@ -35,6 +36,7 @@
                                 </td>
                                 <td>${film.releaseYear}</td>
                                 <td>${film.ageRating.name}</td>
+                                <td>${film.averageScore}</td>
                             </tr>
                         </c:forEach>
                     </table>

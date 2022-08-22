@@ -20,6 +20,7 @@
             <p><b>Release year:</b> <c:out value="${film.releaseYear}"/></p>
             <p><b>Length:</b> <c:out value="${film.length}"/></p>
             <p><b>Age rating:</b> ${film.ageRating.name}</p>
+            <p><b>Average score:</b> ${film.averageScore}</p>
             <p><a href="controller?command=film_scores&id=${film.id}">All scores</a></p>
         </div>
         <%@ include file="/jsp/common/notification.jsp"%>
