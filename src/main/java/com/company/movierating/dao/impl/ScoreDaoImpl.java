@@ -29,6 +29,14 @@ public class ScoreDaoImpl implements ScoreDao {
             + "FROM scores s " //
             + "WHERE s.deleted = FALSE " //
             + "ORDER BY s.id LIMIT ? OFFSET ?";
+    private final static String GET_ALL_BY_FILM_ID_PARTIALLY = "SELECT s.id, s.film_id, s.user_id, s.value, s.publication_date "
+            + "FROM scores s " //
+            + "WHERE s.film_id = ? AND s.deleted = FALSE " //
+            + "ORDER BY s.id DESC LIMIT ? OFFSET ?";
+    private final static String GET_ALL_BY_USER_ID_PARTIALLY = "SELECT s.id, s.film_id, s.user_id, s.value, s.publication_date "
+            + "FROM scores s " //
+            + "WHERE s.user_id = ? AND s.deleted = FALSE " //
+            + "ORDER BY s.id DESC LIMIT ? OFFSET ?";
     private final static String CREATE = "INSERT INTO scores (film_id, user_id, value) " //
             + "VALUES (?, ?, ?)";
     private final static String UPDATE = "UPDATE scores SET value = ?, last_update = NOW() " //
@@ -36,8 +44,17 @@ public class ScoreDaoImpl implements ScoreDao {
     private final static String DELETE = "UPDATE scores SET deleted = TRUE, last_update = NOW() " //
             + "WHERE id = ? AND deleted = FALSE";
     private final static String COUNT = "SELECT COUNT(s.id) AS total " //
-            + "FROM scores s" //
+            + "FROM scores s " //
             + "WHERE s.deleted = FALSE";
+    private final static String COUNT_BY_FILM_ID = "SELECT COUNT(s.id) AS total " //
+            + "FROM scores s " //
+            + "WHERE s.film_id = ? AND s.deleted = FALSE";
+    private final static String COUNT_BY_USER_ID = "SELECT COUNT(s.id) AS total " //
+            + "FROM scores s " //
+            + "WHERE s.user_id = ? AND s.deleted = FALSE";
+    private final static String COUNT_FILM_AVERAGE_SCORE = "SELECT AVG(s.value) AS average " //
+            + "FROM scores s " //
+            + "WHERE s.film_id = ? AND s.deleted = FALSE";
 
     private final DataSource dataSource;
     private final FilmDao filmDao;
@@ -88,6 +105,44 @@ public class ScoreDaoImpl implements ScoreDao {
             PreparedStatement statement = connection.prepareStatement(GET_ALL_PARTIALLY);
             statement.setInt(1, limit);
             statement.setLong(2, offset);
+            ResultSet result = statement.executeQuery();
+
+            while (result.next()) {
+                scores.add(process(result));
+            }
+        } catch (SQLException e) {
+            log.error(e.getMessage(), e);
+        }
+        return scores;
+    }
+
+    @Override
+    public List<Score> getAllByFilm(Long id, int limit, long offset) {
+        List<Score> scores = new ArrayList<>();
+        try (Connection connection = dataSource.getConnection()) {
+            PreparedStatement statement = connection.prepareStatement(GET_ALL_BY_FILM_ID_PARTIALLY);
+            statement.setLong(1, id);
+            statement.setInt(2, limit);
+            statement.setLong(3, offset);
+            ResultSet result = statement.executeQuery();
+
+            while (result.next()) {
+                scores.add(process(result));
+            }
+        } catch (SQLException e) {
+            log.error(e.getMessage(), e);
+        }
+        return scores;
+    }
+
+    @Override
+    public List<Score> getAllByUser(Long id, int limit, long offset) {
+        List<Score> scores = new ArrayList<>();
+        try (Connection connection = dataSource.getConnection()) {
+            PreparedStatement statement = connection.prepareStatement(GET_ALL_BY_USER_ID_PARTIALLY);
+            statement.setLong(1, id);
+            statement.setInt(2, limit);
+            statement.setLong(3, offset);
             ResultSet result = statement.executeQuery();
 
             while (result.next()) {
@@ -163,6 +218,54 @@ public class ScoreDaoImpl implements ScoreDao {
         throw new RuntimeException("Couldn't count scores");
     }
 
+    @Override
+    public Long countByFilm(Long id) {
+        try (Connection connection = dataSource.getConnection()) {
+            PreparedStatement statement = connection.prepareStatement(COUNT_BY_FILM_ID);
+            statement.setLong(1, id);
+            ResultSet result = statement.executeQuery();
+
+            if (result.next()) {
+                return result.getLong("total");
+            }
+        } catch (SQLException e) {
+            log.error(e.getMessage(), e);
+        }
+        throw new RuntimeException("Couldn't count scores by film");
+    }
+
+    @Override
+    public Long countByUser(Long id) {
+        try (Connection connection = dataSource.getConnection()) {
+            PreparedStatement statement = connection.prepareStatement(COUNT_BY_USER_ID);
+            statement.setLong(1, id);
+            ResultSet result = statement.executeQuery();
+
+            if (result.next()) {
+                return result.getLong("total");
+            }
+        } catch (SQLException e) {
+            log.error(e.getMessage(), e);
+        }
+        throw new RuntimeException("Couldn't count scores by user");
+    }
+
+    @Override
+    public Double getFilmAverageScore(Long id) {
+        try (Connection connection = dataSource.getConnection()) {
+            PreparedStatement statement = connection.prepareStatement(COUNT_FILM_AVERAGE_SCORE);
+            statement.setLong(1, id);
+            ResultSet result = statement.executeQuery();
+
+            if (result.next()) {
+                return result.getDouble("average");
+            }
+        } catch (SQLException e) {
+            log.error(e.getMessage(), e);
+        }
+        throw new RuntimeException("Couldn't count film average score");
+    }
+
     private Score process(ResultSet result) throws SQLException {
         Score score = new Score();
         score.setId(result.getLong("id"));
@@ -174,4 +277,5 @@ public class ScoreDaoImpl implements ScoreDao {
 
         return score;
     }
+
 }
