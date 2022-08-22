@@ -260,10 +260,11 @@ public class BanDaoImpl implements BanDao {
             if (result.next()) {
                 return result.getLong("active_bans") > 0;
             }
+            return false;
         } catch (SQLException e) {
             log.error(e.getMessage(), e);
         }
-        return false;
+        throw new RuntimeException("Couldn't check if user banned");
     }
 
     private Ban process(ResultSet result) throws SQLException {
