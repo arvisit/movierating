@@ -55,6 +55,9 @@ public class ScoreDaoImpl implements ScoreDao {
     private final static String COUNT_FILM_AVERAGE_SCORE = "SELECT AVG(s.value) AS average " //
             + "FROM scores s " //
             + "WHERE s.film_id = ? AND s.deleted = FALSE";
+    private final static String IS_EXISTED = "SELECT COUNT(s.id) AS existed " //
+            + "FROM scores s " //
+            + "WHERE s.film_id = ? AND s.user_id = ? AND s.deleted = FALSE";
 
     private final DataSource dataSource;
     private final FilmDao filmDao;
@@ -276,6 +279,24 @@ public class ScoreDaoImpl implements ScoreDao {
                 result.getTimestamp("publication_date").toLocalDateTime().atZone(ZoneId.systemDefault()));
 
         return score;
+    }
+
+    @Override
+    public boolean isExisted(Long filmId, Long userId) {
+        try (Connection connection = dataSource.getConnection()) {
+            PreparedStatement statement = connection.prepareStatement(IS_EXISTED);
+            statement.setLong(1, filmId);
+            statement.setLong(2, userId);
+            ResultSet result = statement.executeQuery();
+
+            if (result.next()) {
+                return result.getLong("existed") == 1;
+            }
+            return false;
+        } catch (SQLException e) {
+            log.error(e.getMessage(), e);
+        }
+        throw new RuntimeException("Couldn't check if score exists");
     }
 
 }

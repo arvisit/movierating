@@ -1,19 +1,28 @@
 package com.company.movierating.service.util;
 
+import com.company.movierating.dao.ScoreDao;
+import com.company.movierating.dao.factory.DaoFactory;
 import com.company.movierating.exception.service.ValidationException;
 import com.company.movierating.service.dto.FilmDto;
 import com.company.movierating.service.dto.ScoreDto;
 import com.company.movierating.service.dto.UserDto;
 
 public enum ScoreValidator {
-    INSTANCE;
+    INSTANCE(DaoFactory.getInstance().getDao(ScoreDao.class));
 
     private static final String LINE_SEPARATOR = "<br>";
     private static final int MAX_NUMBER = 10;
+    
+    private final ScoreDao scoreDao;
+    
+    ScoreValidator(ScoreDao scoreDao){
+        this.scoreDao = scoreDao;
+    }
 
     public void validateScoreToCreate(ScoreDto dto) {
         StringBuilder sb = new StringBuilder();
 
+        checkIsExisted(dto.getFilm().getId(), dto.getUser().getId(), sb);
         checkFilm(dto.getFilm(), sb);
         checkUser(dto.getUser(), sb);
         checkValue(dto.getValue(), sb);
@@ -24,6 +33,7 @@ public enum ScoreValidator {
         }
     }
 
+
     public void validateScoreToUpdate(ScoreDto dto) {
         StringBuilder sb = new StringBuilder();
 
@@ -32,6 +42,19 @@ public enum ScoreValidator {
         if (sb.length() != 0) {
             sb.delete(sb.length() - LINE_SEPARATOR.length(), sb.length());
             throw new ValidationException(sb.toString());
+        }
+    }
+    
+    private void checkIsExisted(Long filmId, Long userId, StringBuilder sb) {
+        if (filmId == null) {
+            sb.append("Film id is empty").append(LINE_SEPARATOR);
+        }
+        if (userId == null) {
+            sb.append("User id is empty").append(LINE_SEPARATOR);
+            return;
+        }
+        if (scoreDao.isExisted(filmId, userId)) {
+            sb.append("Current user already scored current film").append(LINE_SEPARATOR);
         }
     }
 

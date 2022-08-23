@@ -14,4 +14,6 @@ public interface ScoreDao extends AbstractDao<Long, Score> {
     Long countByUser(Long id);
 
     Double countFilmAverageScore(Long id);
+
+    boolean isExisted(Long filmId, Long userId);
 }
