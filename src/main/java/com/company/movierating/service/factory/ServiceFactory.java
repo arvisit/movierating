@@ -7,6 +7,7 @@ import com.company.movierating.dao.BanDao;
 import com.company.movierating.dao.FilmDao;
 import com.company.movierating.dao.ScoreDao;
 import com.company.movierating.dao.UserDao;
+import com.company.movierating.dao.connection.ConfigurationManager;
 import com.company.movierating.dao.factory.DaoFactory;
 import com.company.movierating.service.BanService;
 import com.company.movierating.service.FilmService;
@@ -44,7 +45,7 @@ public class ServiceFactory {
         services.put(FilmService.class, new FilmServiceImpl(DaoFactory.getInstance().getDao(FilmDao.class),
                 ConverterFactory.getInstance().getConverter(FilmConverter.class), FilmValidator.INSTANCE));
         services.put(ReputationService.class, new ReputationServiceImpl(DaoFactory.getInstance().getDao(ScoreDao.class),
-                DaoFactory.getInstance().getDao(UserDao.class)));
+                DaoFactory.getInstance().getDao(UserDao.class), ConfigurationManager.getInstance()));
         services.put(ScoreService.class, new ScoreServiceImpl(DaoFactory.getInstance().getDao(ScoreDao.class), //
                 ConverterFactory.getInstance().getConverter(ScoreConverter.class), getService(ReputationService.class),
                 ScoreValidator.INSTANCE));
