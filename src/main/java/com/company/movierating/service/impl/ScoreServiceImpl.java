@@ -5,6 +5,7 @@ import java.util.List;
 import com.company.movierating.dao.ScoreDao;
 import com.company.movierating.dao.entity.Score;
 import com.company.movierating.exception.service.NoRecordFoundException;
+import com.company.movierating.service.ReputationService;
 import com.company.movierating.service.ScoreService;
 import com.company.movierating.service.converter.impl.ScoreConverter;
 import com.company.movierating.service.dto.ScoreDto;
@@ -16,11 +17,14 @@ import lombok.extern.log4j.Log4j2;
 public class ScoreServiceImpl implements ScoreService {
     private final ScoreDao scoreDao;
     private final ScoreConverter scoreConverter;
+    private final ReputationService reputationService;
     private final ScoreValidator scoreValidator;
 
-    public ScoreServiceImpl(ScoreDao scoreDao, ScoreConverter scoreConverter, ScoreValidator scoreValidator) {
+    public ScoreServiceImpl(ScoreDao scoreDao, ScoreConverter scoreConverter, ReputationService reputationService,
+            ScoreValidator scoreValidator) {
         this.scoreDao = scoreDao;
         this.scoreConverter = scoreConverter;
+        this.reputationService = reputationService;
         this.scoreValidator = scoreValidator;
     }
 
@@ -72,6 +76,7 @@ public class ScoreServiceImpl implements ScoreService {
         log.debug("Score service method _create_ was called");
         scoreValidator.validateScoreToCreate(dto);
         Score createdEntity = scoreDao.create(scoreConverter.toEntity(dto));
+        reputationService.updateReputation(createdEntity.getFilm());
         return scoreConverter.toDto(createdEntity);
     }
 
