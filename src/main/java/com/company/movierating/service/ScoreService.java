@@ -14,4 +14,6 @@ public interface ScoreService extends AbstractService<Long, ScoreDto> {
     Long countByUser(Long id);
 
     Double countFilmAverageScore(Long id);
+
+    boolean isExisted(Long filmId, Long userId);
 }

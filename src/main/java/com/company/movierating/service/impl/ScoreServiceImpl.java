@@ -118,4 +118,10 @@ public class ScoreServiceImpl implements ScoreService {
         return scoreDao.countFilmAverageScore(id);
     }
 
+    @Override
+    public boolean isExisted(Long filmId, Long userId) {
+        log.debug("Score service method _isExisted_ was called");
+        return scoreDao.isExisted(filmId, userId);
+    }
+
 }
