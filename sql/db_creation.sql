@@ -1,4 +1,5 @@
 /*
+DROP TABLE IF EXISTS reviews;
 DROP TABLE IF EXISTS scores;
 DROP TABLE IF EXISTS films;
 DROP TABLE IF EXISTS age_ratings;
@@ -57,6 +58,16 @@ CREATE TABLE IF NOT EXISTS scores (
     film_id BIGINT NOT NULL REFERENCES films(id),
     user_id BIGINT NOT NULL REFERENCES users(id),
     value SMALLINT NOT NULL,
+    publication_date TIMESTAMPTZ(3) NOT NULL DEFAULT NOW(),
+    last_update TIMESTAMPTZ(3) NOT NULL DEFAULT NOW(),
+    deleted BOOLEAN NOT NULL DEFAULT FALSE
+);
+
+CREATE TABLE IF NOT EXISTS reviews (
+    id BIGSERIAL PRIMARY KEY,
+    film_id BIGINT NOT NULL REFERENCES films(id),
+    user_id BIGINT NOT NULL REFERENCES users(id),
+    "content" TEXT NOT NULL,
     publication_date TIMESTAMPTZ(3) NOT NULL DEFAULT NOW(),
     last_update TIMESTAMPTZ(3) NOT NULL DEFAULT NOW(),
     deleted BOOLEAN NOT NULL DEFAULT FALSE
