@@ -62,6 +62,26 @@
     </filter-mapping>
     
     <filter>
+        <filter-name>ReviewNoScoreFilter</filter-name>
+        <filter-class>com.company.movierating.controller.filter.ReviewNoScoreFilter</filter-class>
+    </filter>
+    
+    <filter-mapping>
+        <filter-name>ReviewNoScoreFilter</filter-name>
+        <url-pattern>/controller</url-pattern>
+    </filter-mapping>
+    
+    <filter>
+        <filter-name>ExistedReviewFilter</filter-name>
+        <filter-class>com.company.movierating.controller.filter.ExistedReviewFilter</filter-class>
+    </filter>
+    
+    <filter-mapping>
+        <filter-name>ExistedReviewFilter</filter-name>
+        <url-pattern>/controller</url-pattern>
+    </filter-mapping>
+    
+    <filter>
         <filter-name>AdminLevelFilter</filter-name>
         <filter-class>com.company.movierating.controller.filter.AdminLevelFilter</filter-class>
     </filter>
