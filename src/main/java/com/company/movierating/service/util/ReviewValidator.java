@@ -1,6 +1,7 @@
 package com.company.movierating.service.util;
 
 import com.company.movierating.dao.ReviewDao;
+import com.company.movierating.dao.ScoreDao;
 import com.company.movierating.dao.connection.ConfigurationManager;
 import com.company.movierating.dao.factory.DaoFactory;
 import com.company.movierating.exception.service.ValidationException;
@@ -9,21 +10,25 @@ import com.company.movierating.service.dto.ReviewDto;
 import com.company.movierating.service.dto.UserDto;
 
 public enum ReviewValidator {
-    INSTANCE(DaoFactory.getInstance().getDao(ReviewDao.class), ConfigurationManager.getInstance());
+    INSTANCE(DaoFactory.getInstance().getDao(ReviewDao.class), DaoFactory.getInstance().getDao(ScoreDao.class),
+            ConfigurationManager.getInstance());
 
     private static final String LINE_SEPARATOR = "<br>";
     private final int maxLength;
 
     private final ReviewDao reviewDao;
+    private final ScoreDao scoreDao;
 
-    ReviewValidator(ReviewDao reviewDao, ConfigurationManager properties) {
+    ReviewValidator(ReviewDao reviewDao, ScoreDao scoreDao, ConfigurationManager properties) {
         this.reviewDao = reviewDao;
+        this.scoreDao = scoreDao;
         this.maxLength = properties.getReviewMaxLength();
     }
 
     public void validateReviewToCreate(ReviewDto dto) {
         StringBuilder sb = new StringBuilder();
 
+        checkIsScoreExisted(dto.getFilm().getId(), dto.getUser().getId(), sb);
         checkIsExisted(dto.getFilm().getId(), dto.getUser().getId(), sb);
         checkFilm(dto.getFilm(), sb);
         checkUser(dto.getUser(), sb);
@@ -46,6 +51,19 @@ public enum ReviewValidator {
         }
     }
 
+    private void checkIsScoreExisted(Long filmId, Long userId, StringBuilder sb) {
+        if (filmId == null) {
+            sb.append("Film id is empty").append(LINE_SEPARATOR);
+        }
+        if (userId == null) {
+            sb.append("User id is empty").append(LINE_SEPARATOR);
+            return;
+        }
+        if (!scoreDao.isExisted(filmId, userId)) {
+            sb.append("Current user didn't score current film").append(LINE_SEPARATOR);
+        }
+    }
+    
     private void checkIsExisted(Long filmId, Long userId, StringBuilder sb) {
         if (filmId == null) {
             sb.append("Film id is empty").append(LINE_SEPARATOR);
@@ -80,8 +98,7 @@ public enum ReviewValidator {
             return;
         }
         if (content.isBlank()) {
-            sb.append("Review should contain text and not to consit of whitespace characters")
-            .append(LINE_SEPARATOR);
+            sb.append("Review should contain text and not to consit of whitespace characters").append(LINE_SEPARATOR);
             return;
         }
         checkIfEmpty(content, sb);
