@@ -17,6 +17,7 @@
             </c:if>
             <c:if test="${sessionScope.user != null && sessionScope.user.role == 'USER'}">
                 <a class="edit" href="controller?command=create_score_form&id=${film.id}">(score)</a>
+                <a class="edit" href="controller?command=create_review_form&id=${film.id}">(review)</a>
             </c:if>
             <p><b>Title:</b> <c:out value="${film.title}"/></p>
             <p><b>Description:</b> <c:out value="${film.description}"/></p>
@@ -25,6 +26,7 @@
             <p><b>Age rating:</b> ${film.ageRating.name}</p>
             <p><b>Average score:</b> ${film.averageScore}</p>
             <p><a href="controller?command=film_scores&id=${film.id}">All scores</a></p>
+            <p><a href="controller?command=film_reviews&id=${film.id}">All reviews</a></p>
         </div>
         <%@ include file="/jsp/common/notification.jsp"%>
         <%@ include file="/jsp/common/footer.jsp"%>

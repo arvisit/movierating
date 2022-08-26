@@ -6,6 +6,8 @@ import com.company.movierating.controller.command.impl.CreateBanCommand;
 import com.company.movierating.controller.command.impl.CreateBanFormCommand;
 import com.company.movierating.controller.command.impl.CreateFilmCommand;
 import com.company.movierating.controller.command.impl.CreateFilmFormCommand;
+import com.company.movierating.controller.command.impl.CreateReviewCommand;
+import com.company.movierating.controller.command.impl.CreateReviewFormCommand;
 import com.company.movierating.controller.command.impl.CreateScoreCommand;
 import com.company.movierating.controller.command.impl.CreateScoreFormCommand;
 import com.company.movierating.controller.command.impl.CreateUserCommand;
@@ -18,6 +20,7 @@ import com.company.movierating.controller.command.impl.EditUserCommand;
 import com.company.movierating.controller.command.impl.EditUserFormCommand;
 import com.company.movierating.controller.command.impl.ErrorCommand;
 import com.company.movierating.controller.command.impl.FilmCommand;
+import com.company.movierating.controller.command.impl.FilmReviewsCommand;
 import com.company.movierating.controller.command.impl.FilmScoresCommand;
 import com.company.movierating.controller.command.impl.FilmsCommand;
 import com.company.movierating.controller.command.impl.SignInCommand;
@@ -25,6 +28,7 @@ import com.company.movierating.controller.command.impl.SignInFormCommand;
 import com.company.movierating.controller.command.impl.SignOutCommand;
 import com.company.movierating.controller.command.impl.UserBansCommand;
 import com.company.movierating.controller.command.impl.UserCommand;
+import com.company.movierating.controller.command.impl.UserReviewsCommand;
 import com.company.movierating.controller.command.impl.UserScoresCommand;
 import com.company.movierating.controller.command.impl.UsersCommand;
 import com.company.movierating.controller.util.Paginator;
@@ -32,6 +36,7 @@ import com.company.movierating.controller.util.ParametersPreparer;
 import com.company.movierating.controller.util.SecurityLevel;
 import com.company.movierating.service.BanService;
 import com.company.movierating.service.FilmService;
+import com.company.movierating.service.ReviewService;
 import com.company.movierating.service.ScoreService;
 import com.company.movierating.service.UserService;
 import com.company.movierating.service.factory.ServiceFactory;
@@ -96,6 +101,17 @@ public enum CommandIdentity {
     CREATE_SCORE_FORM(new CreateScoreFormCommand(ServiceFactory.getInstance().getService(FilmService.class),
             ParametersPreparer.INSTANCE), SecurityLevel.USER_SELF_NOT_BANNED),
     CREATE_SCORE(new CreateScoreCommand(ServiceFactory.getInstance().getService(ScoreService.class), //
+            ServiceFactory.getInstance().getService(FilmService.class), ParametersPreparer.INSTANCE),
+            SecurityLevel.USER_SELF_NOT_BANNED),
+    
+    FILM_REVIEWS(new FilmReviewsCommand(ServiceFactory.getInstance().getService(ReviewService.class),
+            ParametersPreparer.INSTANCE, Paginator.INSTANCE), SecurityLevel.GUEST),
+    USER_REVIEWS(new UserReviewsCommand(ServiceFactory.getInstance().getService(ReviewService.class),
+            ParametersPreparer.INSTANCE, Paginator.INSTANCE), SecurityLevel.GUEST),
+    
+    CREATE_REVIEW_FORM(new CreateReviewFormCommand(ServiceFactory.getInstance().getService(FilmService.class),
+            ParametersPreparer.INSTANCE), SecurityLevel.USER_SELF_NOT_BANNED),
+    CREATE_REVIEW(new CreateReviewCommand(ServiceFactory.getInstance().getService(ReviewService.class), //
             ServiceFactory.getInstance().getService(FilmService.class), ParametersPreparer.INSTANCE),
             SecurityLevel.USER_SELF_NOT_BANNED);
 
