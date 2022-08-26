@@ -110,4 +110,10 @@ public class BanServiceImpl implements BanService {
         return banDao.countByAdmin(id);
     }
 
+    @Override
+    public boolean isBanned(Long userId) {
+        log.debug("Ban service method _isBanned_ was called");
+        return banDao.isBanned(userId);
+    }
+
 }

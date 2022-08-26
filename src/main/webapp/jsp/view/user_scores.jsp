@@ -5,38 +5,32 @@
     <head>
         <meta charset="UTF-8">
         <link rel="stylesheet" type="text/css" href="css/style.css"/>
-        <title>Films</title>
+        <title>Scores</title>
     </head>
     <body>
         <%@ include file="/jsp/common/header.jsp"%>
         <%@ include file="/jsp/common/menu.jsp"%>
         <div class="main">
             <c:choose>
-                <c:when test="${films.size() == 0}">
-                    <h2>There is no films yet</h2>
+                <c:when test="${scores.size() == 0}">
+                    <h2>User has score no films yet</h2>
                 </c:when>
                 <c:otherwise>
-                    <h2>Films</h2>
+                    <h2>Scores</h2>
                     <%@ include file="/jsp/common/pagination.jsp" %>
                     <table class="list-center">
                         <tr>
-                        <th>Title</th>
-                        <th>Release year</th>
-                        <th>Age rating</th>
-                        <th>Average score</th>
+                        <th>Score</th>
+                        <th>Film</th>
+                        <th>Date</th>
                         </tr>
-                        <c:forEach items="${films}" var="film">
+                        <c:forEach items="${scores}" var="score">
                             <tr>
+                                <td><c:out value="${score.value}"/></td>
                                 <td>
-                                    <a href="controller?command=film&id=${film.id}"><c:out value="${film.title}"/></a>
-                                    <c:if test="${sessionScope.user != null && sessionScope.user.role == 'ADMIN'}">
-                                        <br>
-                                        <a class="edit" href="controller?command=edit_film_form&id=${film.id}">(edit)</a>
-                                    </c:if>
+                                    <a href="controller?command=film&id=${score.film.id}"><c:out value="${score.film.title}"/></a>
                                 </td>
-                                <td>${film.releaseYear}</td>
-                                <td>${film.ageRating.name}</td>
-                                <td>${film.averageScore}</td>
+                                <td>${score.publicationDate}</td>
                             </tr>
                         </c:forEach>
                     </table>

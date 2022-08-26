@@ -42,7 +42,7 @@ public class BanDaoImpl implements BanDao {
     private static final String UPDATE = "UPDATE bans SET end_date = ?, last_update = NOW() " //
             + "WHERE id = ? AND deleted = FALSE";
     private static final String DELETE = "UPDATE bans SET deleted = TRUE, last_update = NOW() " //
-            + "WHERE id = ?";
+            + "WHERE id = ? AND deleted = FALSE";
     private static final String COUNT = "SELECT COUNT(b.id) AS total " //
             + "FROM bans b " //
             + "WHERE b.deleted = FALSE";
@@ -260,10 +260,11 @@ public class BanDaoImpl implements BanDao {
             if (result.next()) {
                 return result.getLong("active_bans") > 0;
             }
+            return false;
         } catch (SQLException e) {
             log.error(e.getMessage(), e);
         }
-        return false;
+        throw new RuntimeException("Couldn't check if user banned");
     }
 
     private Ban process(ResultSet result) throws SQLException {

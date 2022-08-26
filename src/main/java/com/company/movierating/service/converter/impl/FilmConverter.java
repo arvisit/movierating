@@ -1,10 +1,16 @@
 package com.company.movierating.service.converter.impl;
 
+import com.company.movierating.dao.ScoreDao;
 import com.company.movierating.dao.entity.Film;
 import com.company.movierating.service.converter.Converter;
 import com.company.movierating.service.dto.FilmDto;
 
 public class FilmConverter implements Converter<Film, FilmDto> {
+    private final ScoreDao scoreDao;
+
+    public FilmConverter(ScoreDao scoreDao) {
+        this.scoreDao = scoreDao;
+    }
 
     @Override
     public FilmDto toDto(Film entity) {
@@ -15,6 +21,7 @@ public class FilmConverter implements Converter<Film, FilmDto> {
         dto.setReleaseYear(entity.getReleaseYear());
         dto.setLength(entity.getLength());
         dto.setAgeRating(FilmDto.AgeRating.valueOf(entity.getAgeRating().toString()));
+        dto.setAverageScore(scoreDao.countFilmAverageScore(entity.getId()));
         return dto;
     }
 

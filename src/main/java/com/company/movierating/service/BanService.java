@@ -12,4 +12,6 @@ public interface BanService extends AbstractService<Long, BanDto> {
     Long countByUser(Long id);
 
     Long countByAdmin(Long id);
+
+    boolean isBanned(Long userId);
 }
