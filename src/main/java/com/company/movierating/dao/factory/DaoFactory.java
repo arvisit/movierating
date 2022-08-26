@@ -5,11 +5,13 @@ import java.util.Map;
 
 import com.company.movierating.dao.BanDao;
 import com.company.movierating.dao.FilmDao;
+import com.company.movierating.dao.ReviewDao;
 import com.company.movierating.dao.ScoreDao;
 import com.company.movierating.dao.UserDao;
 import com.company.movierating.dao.connection.DataSource;
 import com.company.movierating.dao.impl.BanDaoImpl;
 import com.company.movierating.dao.impl.FilmDaoImpl;
+import com.company.movierating.dao.impl.ReviewDaoImpl;
 import com.company.movierating.dao.impl.ScoreDaoImpl;
 import com.company.movierating.dao.impl.UserDaoImpl;
 
@@ -27,6 +29,8 @@ public class DaoFactory {
         daos.put(FilmDao.class, new FilmDaoImpl(DataSource.getInstance()));
         daos.put(ScoreDao.class,
                 new ScoreDaoImpl(DataSource.getInstance(), getDao(FilmDao.class), getDao(UserDao.class)));
+        daos.put(ReviewDao.class,
+                new ReviewDaoImpl(DataSource.getInstance(), getDao(FilmDao.class), getDao(UserDao.class)));
     }
 
     public static DaoFactory getInstance() {
