@@ -67,15 +67,21 @@ public class BanDaoImpl implements BanDao {
     @Override
     public Ban getById(Long id) {
         try (Connection connection = dataSource.getConnection()) {
-            PreparedStatement statement = connection.prepareStatement(GET_BY_ID);
-            statement.setLong(1, id);
-            ResultSet result = statement.executeQuery();
-
-            if (result.next()) {
-                return process(result);
-            }
+            return getById(id, connection);
         } catch (SQLException e) {
             log.error(e.getMessage(), e);
+        }
+        return null;
+    }
+
+    @Override
+    public Ban getById(Long id, Connection connection) throws SQLException {
+        PreparedStatement statement = connection.prepareStatement(GET_BY_ID);
+        statement.setLong(1, id);
+        ResultSet result = statement.executeQuery();
+
+        if (result.next()) {
+            return process(result, connection);
         }
         return null;
     }
@@ -88,7 +94,7 @@ public class BanDaoImpl implements BanDao {
             ResultSet result = statement.executeQuery(GET_ALL);
 
             while (result.next()) {
-                bans.add(process(result));
+                bans.add(process(result, connection));
             }
         } catch (SQLException e) {
             log.error(e.getMessage(), e);
@@ -106,7 +112,7 @@ public class BanDaoImpl implements BanDao {
             ResultSet result = statement.executeQuery();
 
             while (result.next()) {
-                bans.add(process(result));
+                bans.add(process(result, connection));
             }
         } catch (SQLException e) {
             log.error(e.getMessage(), e);
@@ -125,7 +131,7 @@ public class BanDaoImpl implements BanDao {
             ResultSet result = statement.executeQuery();
 
             while (result.next()) {
-                bans.add(process(result));
+                bans.add(process(result, connection));
             }
         } catch (SQLException e) {
             log.error(e.getMessage(), e);
@@ -144,7 +150,7 @@ public class BanDaoImpl implements BanDao {
             ResultSet result = statement.executeQuery();
 
             while (result.next()) {
-                bans.add(process(result));
+                bans.add(process(result, connection));
             }
         } catch (SQLException e) {
             log.error(e.getMessage(), e);
@@ -166,7 +172,7 @@ public class BanDaoImpl implements BanDao {
             ResultSet keys = statement.getGeneratedKeys();
             if (keys.next()) {
                 Long id = keys.getLong("id");
-                return getById(id);
+                return getById(id, connection);
             }
         } catch (SQLException e) {
             log.error(e.getMessage(), e);
@@ -178,11 +184,11 @@ public class BanDaoImpl implements BanDao {
     public Ban update(Ban entity) {
         try (Connection connection = dataSource.getConnection()) {
             PreparedStatement statement = connection.prepareStatement(UPDATE);
-            statement.setTimestamp(1,Timestamp.from(entity.getEndDate().toInstant()));
+            statement.setTimestamp(1, Timestamp.from(entity.getEndDate().toInstant()));
             statement.setLong(2, entity.getId());
             statement.executeUpdate();
 
-            return getById(entity.getId());
+            return getById(entity.getId(), connection);
         } catch (SQLException e) {
             log.error(e.getMessage(), e);
         }
@@ -240,7 +246,7 @@ public class BanDaoImpl implements BanDao {
             PreparedStatement statement = connection.prepareStatement(COUNT_BY_ADMIN_ID);
             statement.setLong(1, id);
             ResultSet result = statement.executeQuery();
-            
+
             if (result.next()) {
                 return result.getLong("total");
             }
@@ -267,11 +273,11 @@ public class BanDaoImpl implements BanDao {
         throw new RuntimeException("Couldn't check if user banned");
     }
 
-    private Ban process(ResultSet result) throws SQLException {
+    private Ban process(ResultSet result, Connection connection) throws SQLException {
         Ban ban = new Ban();
         ban.setId(result.getLong("id"));
-        ban.setUser(userDao.getById(result.getLong("user_id")));
-        ban.setAdmin(userDao.getById(result.getLong("admin_id")));
+        ban.setUser(userDao.getById(result.getLong("user_id"), connection));
+        ban.setAdmin(userDao.getById(result.getLong("admin_id"), connection));
         ban.setStartDate(result.getTimestamp("start_date").toLocalDateTime().atZone(ZoneId.systemDefault()));
         ban.setEndDate(result.getTimestamp("end_date").toLocalDateTime().atZone(ZoneId.systemDefault()));
         ban.setReason(result.getString("reason"));
