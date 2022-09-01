@@ -69,15 +69,21 @@ public class ReviewDaoImpl implements ReviewDao {
     @Override
     public Review getById(Long id) {
         try (Connection connection = dataSource.getConnection()) {
-            PreparedStatement statement = connection.prepareStatement(GET_BY_ID);
-            statement.setLong(1, id);
-            ResultSet result = statement.executeQuery();
-
-            if (result.next()) {
-                return process(result);
-            }
+            return getById(id, connection);
         } catch (SQLException e) {
             log.error(e.getMessage(), e);
+        }
+        return null;
+    }
+    
+    @Override
+    public Review getById(Long id, Connection connection) throws SQLException {
+        PreparedStatement statement = connection.prepareStatement(GET_BY_ID);
+        statement.setLong(1, id);
+        ResultSet result = statement.executeQuery();
+        
+        if (result.next()) {
+            return process(result, connection);
         }
         return null;
     }
@@ -90,7 +96,7 @@ public class ReviewDaoImpl implements ReviewDao {
             ResultSet result = statement.executeQuery(GET_ALL);
 
             while (result.next()) {
-                reviews.add(process(result));
+                reviews.add(process(result, connection));
             }
         } catch (SQLException e) {
             log.error(e.getMessage(), e);
@@ -108,7 +114,7 @@ public class ReviewDaoImpl implements ReviewDao {
             ResultSet result = statement.executeQuery();
 
             while (result.next()) {
-                reviews.add(process(result));
+                reviews.add(process(result, connection));
             }
         } catch (SQLException e) {
             log.error(e.getMessage(), e);
@@ -127,7 +133,7 @@ public class ReviewDaoImpl implements ReviewDao {
             ResultSet result = statement.executeQuery();
 
             while (result.next()) {
-                reviews.add(process(result));
+                reviews.add(process(result, connection));
             }
         } catch (SQLException e) {
             log.error(e.getMessage(), e);
@@ -146,7 +152,7 @@ public class ReviewDaoImpl implements ReviewDao {
             ResultSet result = statement.executeQuery();
 
             while (result.next()) {
-                reviews.add(process(result));
+                reviews.add(process(result, connection));
             }
         } catch (SQLException e) {
             log.error(e.getMessage(), e);
@@ -166,7 +172,7 @@ public class ReviewDaoImpl implements ReviewDao {
             ResultSet keys = statement.getGeneratedKeys();
             if (keys.next()) {
                 Long id = keys.getLong("id");
-                return getById(id);
+                return getById(id, connection);
             }
         } catch (SQLException e) {
             log.error(e.getMessage(), e);
@@ -182,7 +188,7 @@ public class ReviewDaoImpl implements ReviewDao {
             statement.setLong(2, entity.getId());
             statement.executeUpdate();
 
-            return getById(entity.getId());
+            return getById(entity.getId(), connection);
         } catch (SQLException e) {
             log.error(e.getMessage(), e);
         }
@@ -250,11 +256,11 @@ public class ReviewDaoImpl implements ReviewDao {
         throw new RuntimeException("Couldn't count reviews by user");
     }
 
-    private Review process(ResultSet result) throws SQLException {
+    private Review process(ResultSet result, Connection connection) throws SQLException {
         Review review = new Review();
         review.setId(result.getLong("id"));
-        review.setFilm(filmDao.getById(result.getLong("film_id")));
-        review.setUser(userDao.getById(result.getLong("user_id")));
+        review.setFilm(filmDao.getById(result.getLong("film_id"), connection));
+        review.setUser(userDao.getById(result.getLong("user_id"), connection));
         review.setContent(result.getString("content"));
         review.setPublicationDate(
                 result.getTimestamp("publication_date").toLocalDateTime().atZone(ZoneId.systemDefault()));

@@ -47,15 +47,21 @@ public class FilmDaoImpl implements FilmDao {
     @Override
     public Film getById(Long id) {
         try (Connection connection = dataSource.getConnection()) {
-            PreparedStatement statement = connection.prepareStatement(GET_BY_ID);
-            statement.setLong(1, id);
-            ResultSet result = statement.executeQuery();
-
-            if (result.next()) {
-                return process(result);
-            }
+            return getById(id, connection);
         } catch (SQLException e) {
             log.error(e.getMessage(), e);
+        }
+        return null;
+    }
+
+    @Override
+    public Film getById(Long id, Connection connection) throws SQLException {
+        PreparedStatement statement = connection.prepareStatement(GET_BY_ID);
+        statement.setLong(1, id);
+        ResultSet result = statement.executeQuery();
+
+        if (result.next()) {
+            return process(result);
         }
         return null;
     }
@@ -108,7 +114,7 @@ public class FilmDaoImpl implements FilmDao {
             ResultSet keys = statement.getGeneratedKeys();
             if (keys.next()) {
                 Long id = keys.getLong("id");
-                return getById(id);
+                return getById(id, connection);
             }
         } catch (SQLException e) {
             log.error(e.getMessage(), e);
@@ -128,7 +134,7 @@ public class FilmDaoImpl implements FilmDao {
             statement.setLong(6, entity.getId());
             statement.executeUpdate();
 
-            return getById(entity.getId());
+            return getById(entity.getId(), connection);
         } catch (SQLException e) {
             log.error(e.getMessage(), e);
         }

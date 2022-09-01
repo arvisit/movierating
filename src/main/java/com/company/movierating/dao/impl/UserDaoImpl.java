@@ -52,15 +52,21 @@ public class UserDaoImpl implements UserDao {
     @Override
     public User getById(Long id) {
         try (Connection connection = dataSource.getConnection()) {
-            PreparedStatement statement = connection.prepareStatement(GET_BY_ID);
-            statement.setLong(1, id);
-            ResultSet result = statement.executeQuery();
-
-            if (result.next()) {
-                return process(result);
-            }
+            return getById(id, connection);
         } catch (SQLException e) {
             log.error(e.getMessage(), e);
+        }
+        return null;
+    }
+    
+    @Override
+    public User getById(Long id, Connection connection) throws SQLException {
+        PreparedStatement statement = connection.prepareStatement(GET_BY_ID);
+        statement.setLong(1, id);
+        ResultSet result = statement.executeQuery();
+        
+        if (result.next()) {
+            return process(result);
         }
         return null;
     }
@@ -134,6 +140,7 @@ public class UserDaoImpl implements UserDao {
     @Override
     public User create(User entity) {
         try (Connection connection = dataSource.getConnection()) {
+            connection.setAutoCommit(false);
             PreparedStatement statement = connection.prepareStatement(CREATE, Statement.RETURN_GENERATED_KEYS);
             statement.setString(1, entity.getEmail());
             statement.setString(2, entity.getLogin());
@@ -144,7 +151,7 @@ public class UserDaoImpl implements UserDao {
             ResultSet keys = statement.getGeneratedKeys();
             if (keys.next()) {
                 Long id = keys.getLong("id");
-                return getById(id);
+                return getById(id, connection);
             }
         } catch (SQLException e) {
             log.error(e.getMessage(), e);
@@ -165,7 +172,7 @@ public class UserDaoImpl implements UserDao {
             statement.setLong(7, entity.getId());
             statement.executeUpdate();
 
-            return getById(entity.getId());
+            return getById(entity.getId(), connection);
         } catch (SQLException e) {
             log.error(e.getMessage(), e);
         }

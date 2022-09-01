@@ -72,15 +72,21 @@ public class ScoreDaoImpl implements ScoreDao {
     @Override
     public Score getById(Long id) {
         try (Connection connection = dataSource.getConnection()) {
-            PreparedStatement statement = connection.prepareStatement(GET_BY_ID);
-            statement.setLong(1, id);
-            ResultSet result = statement.executeQuery();
-
-            if (result.next()) {
-                return process(result);
-            }
+            return getById(id, connection);
         } catch (SQLException e) {
             log.error(e.getMessage(), e);
+        }
+        return null;
+    }
+    
+    @Override
+    public Score getById(Long id, Connection connection) throws SQLException {
+        PreparedStatement statement = connection.prepareStatement(GET_BY_ID);
+        statement.setLong(1, id);
+        ResultSet result = statement.executeQuery();
+        
+        if (result.next()) {
+            return process(result, connection);
         }
         return null;
     }
@@ -93,7 +99,7 @@ public class ScoreDaoImpl implements ScoreDao {
             ResultSet result = statement.executeQuery(GET_ALL);
 
             while (result.next()) {
-                scores.add(process(result));
+                scores.add(process(result, connection));
             }
         } catch (SQLException e) {
             log.error(e.getMessage(), e);
@@ -111,7 +117,7 @@ public class ScoreDaoImpl implements ScoreDao {
             ResultSet result = statement.executeQuery();
 
             while (result.next()) {
-                scores.add(process(result));
+                scores.add(process(result, connection));
             }
         } catch (SQLException e) {
             log.error(e.getMessage(), e);
@@ -130,7 +136,7 @@ public class ScoreDaoImpl implements ScoreDao {
             ResultSet result = statement.executeQuery();
 
             while (result.next()) {
-                scores.add(process(result));
+                scores.add(process(result, connection));
             }
         } catch (SQLException e) {
             log.error(e.getMessage(), e);
@@ -149,7 +155,7 @@ public class ScoreDaoImpl implements ScoreDao {
             ResultSet result = statement.executeQuery();
 
             while (result.next()) {
-                scores.add(process(result));
+                scores.add(process(result, connection));
             }
         } catch (SQLException e) {
             log.error(e.getMessage(), e);
@@ -169,7 +175,7 @@ public class ScoreDaoImpl implements ScoreDao {
             ResultSet keys = statement.getGeneratedKeys();
             if (keys.next()) {
                 Long id = keys.getLong("id");
-                return getById(id);
+                return getById(id, connection);
             }
         } catch (SQLException e) {
             log.error(e.getMessage(), e);
@@ -185,7 +191,7 @@ public class ScoreDaoImpl implements ScoreDao {
             statement.setLong(2, entity.getId());
             statement.executeUpdate();
 
-            return getById(entity.getId());
+            return getById(entity.getId(), connection);
         } catch (SQLException e) {
             log.error(e.getMessage(), e);
         }
@@ -269,11 +275,11 @@ public class ScoreDaoImpl implements ScoreDao {
         throw new RuntimeException("Couldn't count film average score");
     }
 
-    private Score process(ResultSet result) throws SQLException {
+    private Score process(ResultSet result, Connection connection) throws SQLException {
         Score score = new Score();
         score.setId(result.getLong("id"));
-        score.setFilm(filmDao.getById(result.getLong("film_id")));
-        score.setUser(userDao.getById(result.getLong("user_id")));
+        score.setFilm(filmDao.getById(result.getLong("film_id"), connection));
+        score.setUser(userDao.getById(result.getLong("user_id"), connection));
         score.setValue(result.getInt("value"));
         score.setPublicationDate(
                 result.getTimestamp("publication_date").toLocalDateTime().atZone(ZoneId.systemDefault()));

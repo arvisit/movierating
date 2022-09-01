@@ -1,9 +1,13 @@
 package com.company.movierating.dao;
 
+import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.List;
 
 public interface AbstractDao<K, T> {
     T getById(K id);
+
+    T getById(K id, Connection connection) throws SQLException;
 
     List<T> getAll();
 
