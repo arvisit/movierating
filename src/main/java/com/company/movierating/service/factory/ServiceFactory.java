@@ -5,6 +5,7 @@ import java.util.Map;
 
 import com.company.movierating.dao.BanDao;
 import com.company.movierating.dao.FilmDao;
+import com.company.movierating.dao.ReviewDao;
 import com.company.movierating.dao.ScoreDao;
 import com.company.movierating.dao.UserDao;
 import com.company.movierating.dao.connection.ConfigurationManager;
@@ -12,20 +13,24 @@ import com.company.movierating.dao.factory.DaoFactory;
 import com.company.movierating.service.BanService;
 import com.company.movierating.service.FilmService;
 import com.company.movierating.service.ReputationService;
+import com.company.movierating.service.ReviewService;
 import com.company.movierating.service.ScoreService;
 import com.company.movierating.service.UserService;
 import com.company.movierating.service.converter.factory.ConverterFactory;
 import com.company.movierating.service.converter.impl.BanConverter;
 import com.company.movierating.service.converter.impl.FilmConverter;
+import com.company.movierating.service.converter.impl.ReviewConverter;
 import com.company.movierating.service.converter.impl.ScoreConverter;
 import com.company.movierating.service.converter.impl.UserConverter;
 import com.company.movierating.service.impl.BanServiceImpl;
 import com.company.movierating.service.impl.FilmServiceImpl;
 import com.company.movierating.service.impl.ReputationServiceImpl;
+import com.company.movierating.service.impl.ReviewServiceImpl;
 import com.company.movierating.service.impl.ScoreServiceImpl;
 import com.company.movierating.service.impl.UserServiceImpl;
 import com.company.movierating.service.util.BanValidator;
 import com.company.movierating.service.util.FilmValidator;
+import com.company.movierating.service.util.ReviewValidator;
 import com.company.movierating.service.util.ScoreValidator;
 import com.company.movierating.service.util.UserValidator;
 
@@ -49,6 +54,8 @@ public class ServiceFactory {
         services.put(ScoreService.class, new ScoreServiceImpl(DaoFactory.getInstance().getDao(ScoreDao.class), //
                 ConverterFactory.getInstance().getConverter(ScoreConverter.class), getService(ReputationService.class),
                 ScoreValidator.INSTANCE));
+        services.put(ReviewService.class, new ReviewServiceImpl(DaoFactory.getInstance().getDao(ReviewDao.class), //
+                ConverterFactory.getInstance().getConverter(ReviewConverter.class), ReviewValidator.INSTANCE));
     }
 
     public static ServiceFactory getInstance() {

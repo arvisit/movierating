@@ -28,6 +28,8 @@ public class ConfigurationManager {
     private final Integer scoresBeforeUpdate;
     @Getter
     private final List<LimitReward> rewardProperties;
+    @Getter
+    private final Integer reviewMaxLength;
     private static final String PROPERTIES_FILE = "/application.properties";
 
     private static class ConfigurationManagerHolder {
@@ -50,17 +52,19 @@ public class ConfigurationManager {
             driver = properties.getProperty("db.driver");
             poolSize = Integer.valueOf(properties.getProperty("pool.size"));
             scoresBeforeUpdate = Integer.valueOf(properties.getProperty("reputation.scores_before_update"));
-            
+
             String[] limitsStr = properties.getProperty("reputation.deviation_limits").split("#");
             List<Double> limits = Arrays.asList(limitsStr).stream().map(Double::parseDouble).toList();
             String[] rewardsStr = properties.getProperty("reputation.rewards").split("#");
             List<Integer> rewards = Arrays.asList(rewardsStr).stream().map(Integer::parseInt).toList();
-            
+
             rewardProperties = new ArrayList<>();
             for (int i = 0; i < limits.size(); i++) {
                 rewardProperties.add(new LimitReward(limits.get(i), rewards.get(i)));
             }
-            
+
+            reviewMaxLength = Integer.valueOf(properties.getProperty("review.max_length"));
+
             log.info("Configuration properties were loaded");
         } catch (IOException e) {
             throw new RuntimeException(e);

@@ -34,6 +34,7 @@
             <p><b>Info:</b> <c:out value="${user.info}"/></p>
             <c:if test="${user.role == 'USER'}">
                 <p><a href="controller?command=user_scores&id=${user.id}">My scores</a></p>
+                <p><a href="controller?command=user_reviews&id=${user.id}">My reviews</a></p>
             </c:if>
         </div>
         <%@ include file="/jsp/common/notification.jsp"%>

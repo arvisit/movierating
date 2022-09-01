@@ -7,6 +7,7 @@ import com.company.movierating.dao.ScoreDao;
 import com.company.movierating.dao.factory.DaoFactory;
 import com.company.movierating.service.converter.impl.BanConverter;
 import com.company.movierating.service.converter.impl.FilmConverter;
+import com.company.movierating.service.converter.impl.ReviewConverter;
 import com.company.movierating.service.converter.impl.ScoreConverter;
 import com.company.movierating.service.converter.impl.UserConverter;
 
@@ -24,6 +25,8 @@ public class ConverterFactory {
         converters.put(FilmConverter.class, new FilmConverter(DaoFactory.getInstance().getDao(ScoreDao.class)));
         converters.put(ScoreConverter.class,
                 new ScoreConverter(getConverter(FilmConverter.class), getConverter(UserConverter.class)));
+        converters.put(ReviewConverter.class,
+                new ReviewConverter(getConverter(FilmConverter.class), getConverter(UserConverter.class)));
     }
 
     public static ConverterFactory getInstance() {

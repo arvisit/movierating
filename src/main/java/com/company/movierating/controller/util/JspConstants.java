@@ -13,12 +13,15 @@ public abstract class JspConstants {
     public static final String VIEW_BANS = "jsp/view/bans.jsp";
     public static final String VIEW_FILM_SCORES = "jsp/view/film_scores.jsp";
     public static final String VIEW_USER_SCORES = "jsp/view/user_scores.jsp";
+    public static final String VIEW_FILM_REVIEWS = "jsp/view/film_reviews.jsp";
+    public static final String VIEW_USER_REVIEWS = "jsp/view/user_reviews.jsp";
     public static final String MAIN_PAGE = "index.jsp";
     public static final String SIGN_IN_FORM = "jsp/sign_in/sign_in_form.jsp";
     public static final String CREATE_USER_FORM = "jsp/create/create_user_form.jsp";
     public static final String CREATE_BAN_FORM = "jsp/create/create_ban_form.jsp";
     public static final String CREATE_FILM_FORM = "jsp/create/create_film_form.jsp";
     public static final String CREATE_SCORE_FORM = "jsp/create/create_score_form.jsp";
+    public static final String CREATE_REVIEW_FORM = "jsp/create/create_review_form.jsp";
     public static final String EDIT_USER_FORM = "jsp/edit/edit_user_form.jsp";
     public static final String EDIT_BAN_FORM = "jsp/edit/edit_ban_form.jsp";
     public static final String EDIT_FILM_FORM = "jsp/edit/edit_film_form.jsp";
