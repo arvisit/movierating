@@ -13,6 +13,7 @@ public class User {
     private Role role;
     private String info;
     private Integer reputation;
+    private String avatar;
     private ZonedDateTime registration;
 
     public enum Role {

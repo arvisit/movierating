@@ -112,6 +112,7 @@ public class UserServiceImpl implements UserService {
         dtoToUpdate.setInfo(dto.getInfo());
         dtoToUpdate.setReputation(dto.getReputation());
         dtoToUpdate.setRole(dto.getRole());
+        dtoToUpdate.setAvatar(dto.getAvatar());
 
         userValidator.validateUserToUpdate(dtoToUpdate);
         User updatedEntity = userDao.update(userConverter.toEntity(dtoToUpdate));

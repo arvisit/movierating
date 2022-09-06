@@ -18,29 +18,37 @@ import lombok.extern.log4j.Log4j2;
 
 @Log4j2
 public class UserDaoImpl implements UserDao {
-    private static final String GET_BY_ID = "SELECT u.id, u.email, u.login, u.password, u.registration, u.info, u.reputation, r.name AS role " //
-            + "FROM users u JOIN roles r ON u.role_id = r.id " //
-            + "WHERE u.id = ? AND u.deleted = FALSE";
-    private static final String GET_BY_EMAIL = "SELECT u.id, u.email, u.login, u.password, u.registration, u.info, u.reputation, r.name AS role " //
-            + "FROM users u JOIN roles r ON u.role_id = r.id " //
-            + "WHERE u.email = ? AND u.deleted = FALSE";
-    private static final String GET_BY_LOGIN = "SELECT u.id, u.email, u.login, u.password, u.registration, u.info, u.reputation, r.name AS role " //
-            + "FROM users u JOIN roles r ON u.role_id = r.id " //
-            + "WHERE u.login = ? AND u.deleted = FALSE";
-    private static final String GET_ALL = "SELECT u.id, u.email, u.login, u.password, u.registration, u.info, u.reputation, r.name AS role " //
-            + "FROM users u JOIN roles r ON u.role_id = r.id " //
-            + "WHERE u.deleted = FALSE";
-    private static final String GET_ALL_PARTIALLY = "SELECT u.id, u.email, u.login, u.password, u.registration, u.info, u.reputation, r.name AS role " //
-            + "FROM users u JOIN roles r ON u.role_id = r.id " //
-            + "WHERE u.deleted = FALSE " //
-            + "ORDER BY u.id LIMIT ? OFFSET ?";
-    private static final String CREATE = "INSERT INTO users (email, login, password, role_id) " //
-            + "VALUES (?, ?, ?, (SELECT id FROM roles WHERE name = ?))";
-    private static final String UPDATE = "UPDATE users SET email = ?, login = ?, password = ?, " //
-            + "role_id = (SELECT id FROM roles WHERE name = ?), info = ?, reputation = ?, last_update = NOW()" //
-            + "WHERE id = ? AND deleted = FALSE";
-    private static final String DELETE = "UPDATE users SET deleted = TRUE, last_update = NOW() " //
-            + "WHERE id = ? AND deleted = FALSE";
+    private static final String GET_BY_ID = """
+            SELECT u.id, u.email, u.login, u.password, u.registration, u.info, u.reputation, u.avatar, r.name AS role 
+            FROM users u JOIN roles r ON u.role_id = r.id 
+            WHERE u.id = ? AND u.deleted = FALSE""";
+    private static final String GET_BY_EMAIL = """
+            SELECT u.id, u.email, u.login, u.password, u.registration, u.info, u.reputation, u.avatar, r.name AS role 
+            FROM users u JOIN roles r ON u.role_id = r.id 
+            WHERE u.email = ? AND u.deleted = FALSE""";
+    private static final String GET_BY_LOGIN = """
+            SELECT u.id, u.email, u.login, u.password, u.registration, u.info, u.reputation, u.avatar, r.name AS role 
+            FROM users u JOIN roles r ON u.role_id = r.id 
+            WHERE u.login = ? AND u.deleted = FALSE""";
+    private static final String GET_ALL = """
+            SELECT u.id, u.email, u.login, u.password, u.registration, u.info, u.reputation, u.avatar, r.name AS role 
+            FROM users u JOIN roles r ON u.role_id = r.id 
+            WHERE u.deleted = FALSE""";
+    private static final String GET_ALL_PARTIALLY = """
+            SELECT u.id, u.email, u.login, u.password, u.registration, u.info, u.reputation, u.avatar, r.name AS role 
+            FROM users u JOIN roles r ON u.role_id = r.id 
+            WHERE u.deleted = FALSE 
+            ORDER BY u.id LIMIT ? OFFSET ?""";
+    private static final String CREATE = """
+            INSERT INTO users (email, login, password, role_id) 
+            VALUES (?, ?, ?, (SELECT id FROM roles WHERE name = ?))""";
+    private static final String UPDATE = """
+            UPDATE users SET email = ?, login = ?, password = ?, 
+            role_id = (SELECT id FROM roles WHERE name = ?), info = ?, reputation = ?, avatar = ?, last_update = NOW() 
+            WHERE id = ? AND deleted = FALSE""";
+    private static final String DELETE = """
+            UPDATE users SET deleted = TRUE, last_update = NOW() 
+            WHERE id = ? AND deleted = FALSE""";
     private static final String COUNT = "SELECT COUNT(u.id) AS total FROM users u WHERE u.deleted = FALSE";
 
     private DataSource dataSource;
@@ -169,7 +177,8 @@ public class UserDaoImpl implements UserDao {
             statement.setString(4, entity.getRole().toString());
             statement.setString(5, entity.getInfo());
             statement.setInt(6, entity.getReputation());
-            statement.setLong(7, entity.getId());
+            statement.setString(7, entity.getAvatar());
+            statement.setLong(8, entity.getId());
             statement.executeUpdate();
 
             return getById(entity.getId(), connection);
@@ -217,6 +226,7 @@ public class UserDaoImpl implements UserDao {
         user.setRole(Role.valueOf(result.getString("role")));
         user.setInfo(result.getString("info"));
         user.setReputation(result.getInt("reputation"));
+        user.setAvatar(result.getString("avatar"));
         user.setRegistration(result.getTimestamp("registration").toLocalDateTime().atZone(ZoneId.systemDefault()));
 
         return user;
