@@ -30,6 +30,12 @@ public class ConfigurationManager {
     private final List<LimitReward> rewardProperties;
     @Getter
     private final Integer reviewMaxLength;
+    @Getter
+    private final String imageRootPath;
+    @Getter
+    private final String imageDefaultAvatar;
+    @Getter
+    private final String imageDefaultPoster;
     private static final String PROPERTIES_FILE = "/application.properties";
 
     private static class ConfigurationManagerHolder {
@@ -64,6 +70,10 @@ public class ConfigurationManager {
             }
 
             reviewMaxLength = Integer.valueOf(properties.getProperty("review.max_length"));
+
+            imageRootPath = properties.getProperty("image.root");
+            imageDefaultAvatar = properties.getProperty("image.avatar.default");
+            imageDefaultPoster = properties.getProperty("image.poster.default");
 
             log.info("Configuration properties were loaded");
         } catch (IOException e) {
