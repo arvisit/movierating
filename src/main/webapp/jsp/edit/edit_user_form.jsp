@@ -15,7 +15,7 @@
             <p><b>Login:</b> <c:out value="${requestScope.user.login}"/></p>
             <p><b>Registration:</b> <c:out value="${requestScope.user.registration}"/></p>
             <h2>Edit user:</h2>
-            <form method="post" action="controller">
+            <form method="post" action="controller" enctype="multipart/form-data">
                 <input name="command" type="hidden" value="edit_user"/>
                 <input name="id" type="hidden" value="${requestScope.user.id}"/>
                 <label for="email">Email:</label>
@@ -46,6 +46,9 @@
                     <input name="reputation" type="hidden" value="${requestScope.user.reputation}"/>
                     <label for="info">Info:</label>
                     <textarea id="info" name="info">${requestScope.user.info}</textarea>
+                    <br>
+                    <label for="avatar">Choose image to upload</label>
+                    <input id="avatar" name="avatar" type="file" accept=".jpg, .jpeg, .png"/>
                     <br>
                 </c:if>
                 <input type="submit" value="Save changes"/>
