@@ -31,7 +31,7 @@ public class ConfigurationManager {
     @Getter
     private final Integer reviewMaxLength;
     @Getter
-    private final String imageRootPath;
+    private final String storageRootPath;
     @Getter
     private final String imageDefaultAvatar;
     @Getter
@@ -71,7 +71,7 @@ public class ConfigurationManager {
 
             reviewMaxLength = Integer.valueOf(properties.getProperty("review.max_length"));
 
-            imageRootPath = properties.getProperty("image.root");
+            storageRootPath = properties.getProperty("storage.root");
             imageDefaultAvatar = properties.getProperty("image.avatar.default");
             imageDefaultPoster = properties.getProperty("image.poster.default");
 
