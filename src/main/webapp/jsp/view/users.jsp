@@ -20,12 +20,14 @@
                     <%@ include file="/jsp/common/pagination.jsp" %>
                     <table class="list-center">
                         <tr>
+                        <th>Avatar</th>
                         <th>Login</th>
                         <th>Role</th>
                         <th>Reputation</th>
                         </tr>
                         <c:forEach items="${users}" var="user">
                             <tr>
+                                <td><img class="avatar" src="${user.avatar}" alt="${user.login}'s avatar"/></td>
                                 <td>
                                     <a href="controller?command=user&id=${user.id}"><c:out value="${user.login}"/></a>
                                     <c:if test="${sessionScope.user != null 
