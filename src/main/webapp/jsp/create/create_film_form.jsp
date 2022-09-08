@@ -12,7 +12,7 @@
         <%@ include file="/jsp/common/menu.jsp"%>
         <div class="main">
             <h2>Add new film</h2>
-            <form method="post" action="controller">
+            <form method="post" action="controller" enctype="multipart/form-data">
                 <input name="command" type="hidden" value="create_film"/>
                 <label for="title">Title:</label>
                 <input required="required" type="text" id="title" name="title"/>
@@ -36,6 +36,9 @@
                     <option value="R">R</option>
                     <option value="NC-17">NC-17</option>
                 </select>
+                <br>
+                <label for="poster">Choose image to upload</label>
+                <input id="poster" name="poster" type="file" accept=".jpg, .jpeg, .png"/>
                 <br>
                 <input type="submit" value="Add"/>
             </form>
