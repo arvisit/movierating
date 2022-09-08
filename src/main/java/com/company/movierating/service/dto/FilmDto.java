@@ -11,6 +11,7 @@ public class FilmDto {
     private Integer releaseYear;
     private Integer length;
     private AgeRating ageRating;
+    private String poster;
     private Double averageScore;
 
     public enum AgeRating {
