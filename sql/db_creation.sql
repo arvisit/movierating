@@ -49,6 +49,7 @@ CREATE TABLE IF NOT EXISTS films (
     description TEXT NOT NULL DEFAULT '',
     release_year SMALLINT NOT NULL,
     "length" SMALLINT NOT NULL,
+    poster TEXT,
     age_rating_id SMALLINT NOT NULL REFERENCES age_ratings(id),
     last_update TIMESTAMPTZ(3) NOT NULL DEFAULT NOW(),
     deleted BOOLEAN NOT NULL DEFAULT FALSE
