@@ -12,7 +12,7 @@
         <%@ include file="/jsp/common/menu.jsp"%>
         <div class="main">
             <h2>Edit film:</h2>
-            <form method="post" action="controller">
+            <form method="post" action="controller" enctype="multipart/form-data">
                 <input name="command" type="hidden" value="edit_film"/>
                 <input name="id" type="hidden" value="${requestScope.film.id}"/>
                 <label for="title">Title:</label>
@@ -37,6 +37,9 @@
                     <option ${(requestScope.film.ageRating.name == 'R' ? 'selected' : '')} value="R">R</option>
                     <option ${(requestScope.film.ageRating.name == 'NC-17' ? 'selected' : '')} value="NC-17">NC-17</option>
                 </select>
+                <br>
+                <label for="poster">Choose image to upload</label>
+                <input id="poster" name="poster" type="file" accept=".jpg, .jpeg, .png"/>
                 <br>
                 <input type="submit" value="Save changes"/>
             </form>
