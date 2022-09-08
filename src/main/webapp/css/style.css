@@ -109,3 +109,9 @@ div.notification p.errorMessage {
     height: 100px;
     object-fit: scale-down;
 }
+
+.poster {
+    width: 200px;
+    height: 200px;
+    object-fit: scale-down;
+}
