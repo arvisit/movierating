@@ -34,6 +34,7 @@ public class EditFilmCommand implements Command {
         String releaseYearStr = req.getParameter("releaseYear");
         String lengthStr = req.getParameter("length");
         String ageRatingStr = req.getParameter("ageRating");
+        String poster = req.getParameter("posterForm");
 
         FilmDto changed = new FilmDto();
 
@@ -45,8 +46,8 @@ public class EditFilmCommand implements Command {
         changed.setAgeRating(preparer.getAgeRating(ageRatingStr));
 
         try {
-            Part part = req.getPart("poster");
-            if (part != null) {
+            Part part = req.getPart("imgUploaded");
+            if (part != null && part.getSize() != 0) {
                 String initialFileName = part.getSubmittedFileName();
                 String extension = initialFileName.substring(initialFileName.lastIndexOf('.'));
                 String newFileName = UUID.randomUUID() + "_" + changed.getId() + extension;
@@ -60,6 +61,10 @@ public class EditFilmCommand implements Command {
             }
         } catch (IOException | ServletException e) {
             throw new RuntimeException(e);
+        }
+
+        if (changed.getPoster() == null) {
+            changed.setPoster(poster);
         }
 
         req.setAttribute(JspConstants.LAST_PAGE_ATTRIBUTE_NAME,
