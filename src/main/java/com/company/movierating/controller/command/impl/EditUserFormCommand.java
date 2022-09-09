@@ -1,5 +1,6 @@
 package com.company.movierating.controller.command.impl;
 
+import com.company.movierating.AppConstants;
 import com.company.movierating.controller.command.Command;
 import com.company.movierating.controller.util.JspConstants;
 import com.company.movierating.controller.util.ParametersPreparer;
@@ -21,6 +22,7 @@ public class EditUserFormCommand implements Command {
     public String execute(HttpServletRequest req) {
         UserDto user = service.getById(preparer.getLong(req.getParameter("id")));
         req.setAttribute("user", user);
+        req.setAttribute("defaultAvatar", AppConstants.DEFAULT_APP_AVATAR);
         return JspConstants.EDIT_USER_FORM;
     }
 

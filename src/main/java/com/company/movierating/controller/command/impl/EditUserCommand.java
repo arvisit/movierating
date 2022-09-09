@@ -34,6 +34,7 @@ public class EditUserCommand implements Command {
         String reputationStr = req.getParameter("reputation");
         String info = req.getParameter("info");
         String email = req.getParameter("email");
+        String avatar = req.getParameter("avatarForm");
 
         UserDto changed = new UserDto();
 
@@ -44,8 +45,8 @@ public class EditUserCommand implements Command {
         changed.setEmail(email);
 
         try {
-            Part part = req.getPart("avatar");
-            if (part != null) {
+            Part part = req.getPart("imgUploaded");
+            if (part != null && part.getSize() != 0) {
                 String initialFileName = part.getSubmittedFileName();
                 String extension = initialFileName.substring(initialFileName.lastIndexOf('.'));
                 String newFileName = UUID.randomUUID() + "_" + changed.getId() + extension;
@@ -59,6 +60,10 @@ public class EditUserCommand implements Command {
             }
         } catch (IOException | ServletException e) {
             throw new RuntimeException(e);
+        }
+
+        if (changed.getAvatar() == null) {
+            changed.setAvatar(avatar);
         }
 
         req.setAttribute(JspConstants.LAST_PAGE_ATTRIBUTE_NAME,

@@ -115,3 +115,7 @@ div.notification p.errorMessage {
     height: 200px;
     object-fit: scale-down;
 }
+
+.imgUploaded {
+    display: none;
+}
