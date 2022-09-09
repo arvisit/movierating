@@ -34,6 +34,7 @@ public class CreateFilmCommand implements Command {
         String releaseYearStr = req.getParameter("releaseYear");
         String lengthStr = req.getParameter("length");
         String ageRatingStr = req.getParameter("ageRating");
+        String poster = req.getParameter("posterForm");
 
         FilmDto film = new FilmDto();
         film.setTitle(title);
@@ -43,7 +44,7 @@ public class CreateFilmCommand implements Command {
         film.setAgeRating(preparer.getAgeRating(ageRatingStr));
 
         try {
-            Part part = req.getPart("poster");
+            Part part = req.getPart("imgUploaded");
             if (part != null) {
                 String initialFileName = part.getSubmittedFileName();
                 String extension = initialFileName.substring(initialFileName.lastIndexOf('.'));
@@ -58,6 +59,10 @@ public class CreateFilmCommand implements Command {
             }
         } catch (IOException | ServletException e) {
             throw new RuntimeException(e);
+        }
+
+        if (film.getPoster() == null) {
+            film.setPoster(poster);
         }
 
         req.setAttribute(JspConstants.LAST_PAGE_ATTRIBUTE_NAME, "redirect:controller?command=create_film_form");

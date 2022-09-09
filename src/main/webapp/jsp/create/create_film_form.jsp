@@ -5,6 +5,11 @@
     <head>
         <meta charset="UTF-8">
         <link rel="stylesheet" type="text/css" href="css/style.css"/>
+        <script>
+            var jsDefaultPoster = "${requestScope.defaultPoster}";
+        </script>
+        <script type="text/javascript" src="jsscript/image.js">
+        </script>
         <title>Add film</title>
     </head>
     <body>
@@ -12,8 +17,10 @@
         <%@ include file="/jsp/common/menu.jsp"%>
         <div class="main">
             <h2>Add new film</h2>
+            <p><img class="poster" id="posterImg" src="${requestScope.defaultPoster}" alt="Film's poster"/></p>
             <form method="post" action="controller" enctype="multipart/form-data">
                 <input name="command" type="hidden" value="create_film"/>
+                <input id="posterForm" name="posterForm" type="hidden" value="${requestScope.defaultPoster}"/>
                 <label for="title">Title:</label>
                 <input required="required" type="text" id="title" name="title"/>
                 <br>
@@ -37,8 +44,9 @@
                     <option value="NC-17">NC-17</option>
                 </select>
                 <br>
-                <label for="poster">Choose image to upload</label>
-                <input id="poster" name="poster" type="file" accept=".jpg, .jpeg, .png"/>
+                <input id="selectedImg" name="imgUploaded" class="imgUploaded" type="file" accept=".jpg, .jpeg, .png" onchange="loadImageTo('posterImg')"/>
+                <input type="button" value="Browse..." onclick="document.getElementById('selectedImg').click();"/>
+                <input type="button" onclick="deleteImage('posterForm', 'posterImg', jsDefaultPoster)" value="Delete"/>
                 <br>
                 <input type="submit" value="Add"/>
             </form>
