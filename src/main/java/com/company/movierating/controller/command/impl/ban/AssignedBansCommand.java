@@ -1,4 +1,4 @@
-package com.company.movierating.controller.command.impl;
+package com.company.movierating.controller.command.impl.ban;
 
 import java.util.List;
 
@@ -12,12 +12,13 @@ import com.company.movierating.service.dto.BanDto;
 
 import jakarta.servlet.http.HttpServletRequest;
 
-public class UserBansCommand implements Command {
+public class AssignedBansCommand implements Command {
     private final BanService banService;
     private final ParametersPreparer preparer;
     private final Paginator paginator;
-    
-    public UserBansCommand(BanService banService, ParametersPreparer preparer, Paginator paginator) {
+
+    public AssignedBansCommand(BanService banService, ParametersPreparer preparer,
+            Paginator paginator) {
         this.banService = banService;
         this.preparer = preparer;
         this.paginator = paginator;
@@ -25,13 +26,13 @@ public class UserBansCommand implements Command {
 
     @Override
     public String execute(HttpServletRequest req) {
+        long adminId = preparer.getLong(req.getParameter("id"));
         Paging paging = paginator.getPaging(req);
         int limit = paging.getLimit();
         long offset = paging.getOffset();
 
-        long userId = preparer.getLong(req.getParameter("id"));
-        List<BanDto> userBans = banService.getAllByUser(userId, limit, offset);
-        long totalEntities = banService.countByUser(userId);
+        List<BanDto> assignedBans = banService.getAllByAdmin(adminId, limit, offset);
+        long totalEntities = banService.countByAdmin(adminId);
         long fullFilledPages = totalEntities / limit;
         int partialFilledPage = (totalEntities % limit) > 0 ? 1 : 0;
         long totalPages = fullFilledPages + partialFilledPage;
@@ -39,11 +40,11 @@ public class UserBansCommand implements Command {
         long page = paging.getPage();
         page = (page > totalPages ? totalPages : page);
 
-        req.setAttribute("bans", userBans);
+        req.setAttribute("bans", assignedBans);
         req.setAttribute("currentPage", page);
         req.setAttribute("totalPages", totalPages);
         req.setAttribute("paginatedJsp", "bans");
-        req.setAttribute("title", "My Bans");
+        req.setAttribute("title", "Assigned Bans");
         return JspConstants.VIEW_BANS;
     }
 
