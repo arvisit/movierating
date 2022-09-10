@@ -22,7 +22,7 @@ public class SignInCommand implements Command {
         UserDto user = service.signIn(login, password);
         HttpSession session = req.getSession();
         session.setAttribute("user", user);
-        return JspConstants.MAIN_PAGE;
+        return JspConstants.REDIRECT_MAIN_PAGE;
     }
 
 }
