@@ -15,7 +15,6 @@ import com.company.movierating.service.dto.FilmDto;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpSession;
 import jakarta.servlet.http.Part;
 
 public class CreateFilmCommand implements Command {
@@ -65,13 +64,11 @@ public class CreateFilmCommand implements Command {
             film.setPoster(poster);
         }
 
-        req.setAttribute(JspConstants.LAST_PAGE_ATTRIBUTE_NAME, "redirect:controller?command=create_film_form");
+        req.setAttribute(JspConstants.LAST_PAGE_ATTRIBUTE_NAME, JspConstants.REDIRECT_CREATE_FILM_FORM_COMMAND);
         FilmDto created = service.create(film);
         req.setAttribute(JspConstants.SUCCESS_MESSAGE_ATTRIBUTE_NAME, "New film was successfully added");
-        req.setAttribute("film", created);
-        HttpSession session = req.getSession();
-        session.setAttribute("film", created);
-        return JspConstants.VIEW_FILM;
+
+        return JspConstants.REDIRECT_FILM_COMMAND + created.getId();
     }
 
 }

@@ -28,6 +28,8 @@ public abstract class JspConstants {
     public static final String DEFAULT_ERROR = "jsp/error/error.jsp";
 
     public static final String REDIRECT_CREATE_BAN_FORM_COMMAND = "redirect:controller?command=create_ban_form&id=";
+    public static final String REDIRECT_CREATE_FILM_FORM_COMMAND = "redirect:controller?command=create_film_form";
     public static final String REDIRECT_USER_COMMAND = "redirect:controller?command=user&id=";
+    public static final String REDIRECT_FILM_COMMAND = "redirect:controller?command=film&id=";
 
 }
