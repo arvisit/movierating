@@ -27,13 +27,13 @@ public class CreateUserCommand implements Command {
         user.setEmail(email);
         user.setPassword(password);
 
-        req.setAttribute(JspConstants.LAST_PAGE_ATTRIBUTE_NAME, "redirect:controller?command=create_user_form");
+        req.setAttribute(JspConstants.LAST_PAGE_ATTRIBUTE_NAME, JspConstants.REDIRECT_CREATE_USER_FORM_COMMAND);
         UserDto created = service.create(user, confirmedPassword);
         req.setAttribute(JspConstants.SUCCESS_MESSAGE_ATTRIBUTE_NAME, "New user was successfully registered");
-        req.setAttribute("user", created);
         HttpSession session = req.getSession();
         session.setAttribute("user", created);
-        return JspConstants.VIEW_USER;
+
+        return JspConstants.REDIRECT_USER_COMMAND + created.getId();
     }
 
 }
