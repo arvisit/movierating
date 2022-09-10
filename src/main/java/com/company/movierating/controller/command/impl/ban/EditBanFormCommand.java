@@ -1,4 +1,4 @@
-package com.company.movierating.controller.command.impl;
+package com.company.movierating.controller.command.impl.ban;
 
 import java.time.temporal.ChronoUnit;
 

@@ -1,36 +1,36 @@
 package com.company.movierating.controller.command.factory;
 
 import com.company.movierating.controller.command.Command;
-import com.company.movierating.controller.command.impl.AssignedBansCommand;
-import com.company.movierating.controller.command.impl.CreateBanCommand;
-import com.company.movierating.controller.command.impl.CreateBanFormCommand;
-import com.company.movierating.controller.command.impl.CreateFilmCommand;
-import com.company.movierating.controller.command.impl.CreateFilmFormCommand;
-import com.company.movierating.controller.command.impl.CreateReviewCommand;
-import com.company.movierating.controller.command.impl.CreateReviewFormCommand;
-import com.company.movierating.controller.command.impl.CreateScoreCommand;
-import com.company.movierating.controller.command.impl.CreateScoreFormCommand;
-import com.company.movierating.controller.command.impl.CreateUserCommand;
-import com.company.movierating.controller.command.impl.CreateUserFormCommand;
-import com.company.movierating.controller.command.impl.EditBanCommand;
-import com.company.movierating.controller.command.impl.EditBanFormCommand;
-import com.company.movierating.controller.command.impl.EditFilmCommand;
-import com.company.movierating.controller.command.impl.EditFilmFormCommand;
-import com.company.movierating.controller.command.impl.EditUserCommand;
-import com.company.movierating.controller.command.impl.EditUserFormCommand;
-import com.company.movierating.controller.command.impl.ErrorCommand;
-import com.company.movierating.controller.command.impl.FilmCommand;
-import com.company.movierating.controller.command.impl.FilmReviewsCommand;
-import com.company.movierating.controller.command.impl.FilmScoresCommand;
-import com.company.movierating.controller.command.impl.FilmsCommand;
+import com.company.movierating.controller.command.impl.NoSuchCommand;
 import com.company.movierating.controller.command.impl.SignInCommand;
 import com.company.movierating.controller.command.impl.SignInFormCommand;
 import com.company.movierating.controller.command.impl.SignOutCommand;
-import com.company.movierating.controller.command.impl.UserBansCommand;
-import com.company.movierating.controller.command.impl.UserCommand;
-import com.company.movierating.controller.command.impl.UserReviewsCommand;
-import com.company.movierating.controller.command.impl.UserScoresCommand;
-import com.company.movierating.controller.command.impl.UsersCommand;
+import com.company.movierating.controller.command.impl.ban.AssignedBansCommand;
+import com.company.movierating.controller.command.impl.ban.CreateBanCommand;
+import com.company.movierating.controller.command.impl.ban.CreateBanFormCommand;
+import com.company.movierating.controller.command.impl.ban.EditBanCommand;
+import com.company.movierating.controller.command.impl.ban.EditBanFormCommand;
+import com.company.movierating.controller.command.impl.ban.UserBansCommand;
+import com.company.movierating.controller.command.impl.film.CreateFilmCommand;
+import com.company.movierating.controller.command.impl.film.CreateFilmFormCommand;
+import com.company.movierating.controller.command.impl.film.EditFilmCommand;
+import com.company.movierating.controller.command.impl.film.EditFilmFormCommand;
+import com.company.movierating.controller.command.impl.film.FilmCommand;
+import com.company.movierating.controller.command.impl.film.FilmsCommand;
+import com.company.movierating.controller.command.impl.review.CreateReviewCommand;
+import com.company.movierating.controller.command.impl.review.CreateReviewFormCommand;
+import com.company.movierating.controller.command.impl.review.FilmReviewsCommand;
+import com.company.movierating.controller.command.impl.review.UserReviewsCommand;
+import com.company.movierating.controller.command.impl.score.CreateScoreCommand;
+import com.company.movierating.controller.command.impl.score.CreateScoreFormCommand;
+import com.company.movierating.controller.command.impl.score.FilmScoresCommand;
+import com.company.movierating.controller.command.impl.score.UserScoresCommand;
+import com.company.movierating.controller.command.impl.user.CreateUserCommand;
+import com.company.movierating.controller.command.impl.user.CreateUserFormCommand;
+import com.company.movierating.controller.command.impl.user.EditUserCommand;
+import com.company.movierating.controller.command.impl.user.EditUserFormCommand;
+import com.company.movierating.controller.command.impl.user.UserCommand;
+import com.company.movierating.controller.command.impl.user.UsersCommand;
 import com.company.movierating.controller.util.Paginator;
 import com.company.movierating.controller.util.ParametersPreparer;
 import com.company.movierating.controller.util.SecurityLevel;
@@ -44,7 +44,7 @@ import com.company.movierating.service.factory.ServiceFactory;
 import lombok.Getter;
 
 public enum CommandIdentity {
-    ERROR(new ErrorCommand(), SecurityLevel.GUEST),
+    NO_SUCH(new NoSuchCommand(), SecurityLevel.GUEST),
 
     USERS(new UsersCommand(ServiceFactory.getInstance().getService(UserService.class), Paginator.INSTANCE),
             SecurityLevel.GUEST),

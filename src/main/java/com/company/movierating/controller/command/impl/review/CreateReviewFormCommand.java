@@ -1,4 +1,4 @@
-package com.company.movierating.controller.command.impl;
+package com.company.movierating.controller.command.impl.review;
 
 import com.company.movierating.controller.command.Command;
 import com.company.movierating.controller.util.JspConstants;
@@ -8,11 +8,11 @@ import com.company.movierating.service.dto.FilmDto;
 
 import jakarta.servlet.http.HttpServletRequest;
 
-public class CreateScoreFormCommand implements Command {
+public class CreateReviewFormCommand implements Command {
     private final FilmService service;
     private final ParametersPreparer preparer;
 
-    public CreateScoreFormCommand(FilmService service, ParametersPreparer preparer) {
+    public CreateReviewFormCommand(FilmService service, ParametersPreparer preparer) {
         this.service = service;
         this.preparer = preparer;
     }
@@ -21,7 +21,7 @@ public class CreateScoreFormCommand implements Command {
     public String execute(HttpServletRequest req) {
         FilmDto film = service.getById(preparer.getLong(req.getParameter("id")));
         req.setAttribute("film", film);
-        return JspConstants.CREATE_SCORE_FORM;
+        return JspConstants.CREATE_REVIEW_FORM;
     }
 
 }

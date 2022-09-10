@@ -5,9 +5,9 @@ import com.company.movierating.exception.controller.UnsupportedCommandException;
 
 import jakarta.servlet.http.HttpServletRequest;
 
-public class ErrorCommand implements Command {
+public class NoSuchCommand implements Command {
 
-    public ErrorCommand() {
+    public NoSuchCommand() {
     }
 
     @Override

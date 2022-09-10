@@ -12,7 +12,7 @@ public class SignOutCommand implements Command {
     public String execute(HttpServletRequest req) {
         HttpSession session = req.getSession(false);
         session.invalidate();
-        return JspConstants.MAIN_PAGE;
+        return JspConstants.REDIRECT_MAIN_PAGE;
     }
     
 }

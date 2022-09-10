@@ -1,4 +1,4 @@
-package com.company.movierating.controller.command.impl;
+package com.company.movierating.controller.command.impl.score;
 
 import java.util.List;
 
@@ -7,32 +7,33 @@ import com.company.movierating.controller.util.JspConstants;
 import com.company.movierating.controller.util.Paginator;
 import com.company.movierating.controller.util.Paginator.Paging;
 import com.company.movierating.controller.util.ParametersPreparer;
-import com.company.movierating.service.BanService;
-import com.company.movierating.service.dto.BanDto;
+import com.company.movierating.service.ScoreService;
+import com.company.movierating.service.dto.ScoreDto;
 
 import jakarta.servlet.http.HttpServletRequest;
 
-public class AssignedBansCommand implements Command {
-    private final BanService banService;
+public class FilmScoresCommand implements Command {
+    private final ScoreService service;
     private final ParametersPreparer preparer;
     private final Paginator paginator;
 
-    public AssignedBansCommand(BanService banService, ParametersPreparer preparer,
-            Paginator paginator) {
-        this.banService = banService;
+    public FilmScoresCommand(ScoreService service, ParametersPreparer preparer, Paginator paginator) {
+        this.service = service;
         this.preparer = preparer;
         this.paginator = paginator;
     }
 
     @Override
     public String execute(HttpServletRequest req) {
-        long adminId = preparer.getLong(req.getParameter("id"));
+        String idStr = req.getParameter("id");
+        Long id = preparer.getLong(idStr);
+        
         Paging paging = paginator.getPaging(req);
         int limit = paging.getLimit();
         long offset = paging.getOffset();
 
-        List<BanDto> assignedBans = banService.getAllByAdmin(adminId, limit, offset);
-        long totalEntities = banService.countByAdmin(adminId);
+        List<ScoreDto> scores = service.getAllByFilm(id, limit, offset);
+        long totalEntities = service.count();
         long fullFilledPages = totalEntities / limit;
         int partialFilledPage = (totalEntities % limit) > 0 ? 1 : 0;
         long totalPages = fullFilledPages + partialFilledPage;
@@ -40,12 +41,10 @@ public class AssignedBansCommand implements Command {
         long page = paging.getPage();
         page = (page > totalPages ? totalPages : page);
 
-        req.setAttribute("bans", assignedBans);
+        req.setAttribute("scores", scores);
         req.setAttribute("currentPage", page);
         req.setAttribute("totalPages", totalPages);
-        req.setAttribute("paginatedJsp", "bans");
-        req.setAttribute("title", "Assigned Bans");
-        return JspConstants.VIEW_BANS;
+        req.setAttribute("paginatedJsp", "scores");
+        return JspConstants.VIEW_FILM_SCORES;
     }
-
 }

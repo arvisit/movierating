@@ -1,4 +1,4 @@
-package com.company.movierating.controller.command.impl;
+package com.company.movierating.controller.command.impl.score;
 
 import java.util.List;
 
@@ -7,17 +7,17 @@ import com.company.movierating.controller.util.JspConstants;
 import com.company.movierating.controller.util.Paginator;
 import com.company.movierating.controller.util.Paginator.Paging;
 import com.company.movierating.controller.util.ParametersPreparer;
-import com.company.movierating.service.ReviewService;
-import com.company.movierating.service.dto.ReviewDto;
+import com.company.movierating.service.ScoreService;
+import com.company.movierating.service.dto.ScoreDto;
 
 import jakarta.servlet.http.HttpServletRequest;
 
-public class FilmReviewsCommand implements Command {
-    private final ReviewService service;
+public class UserScoresCommand implements Command {
+    private final ScoreService service;
     private final ParametersPreparer preparer;
     private final Paginator paginator;
 
-    public FilmReviewsCommand(ReviewService service, ParametersPreparer preparer, Paginator paginator) {
+    public UserScoresCommand(ScoreService service, ParametersPreparer preparer, Paginator paginator) {
         this.service = service;
         this.preparer = preparer;
         this.paginator = paginator;
@@ -32,7 +32,7 @@ public class FilmReviewsCommand implements Command {
         int limit = paging.getLimit();
         long offset = paging.getOffset();
 
-        List<ReviewDto> reviews = service.getAllByFilm(id, limit, offset);
+        List<ScoreDto> scores = service.getAllByUser(id, limit, offset);
         long totalEntities = service.count();
         long fullFilledPages = totalEntities / limit;
         int partialFilledPage = (totalEntities % limit) > 0 ? 1 : 0;
@@ -41,10 +41,10 @@ public class FilmReviewsCommand implements Command {
         long page = paging.getPage();
         page = (page > totalPages ? totalPages : page);
 
-        req.setAttribute("reviews", reviews);
+        req.setAttribute("scores", scores);
         req.setAttribute("currentPage", page);
         req.setAttribute("totalPages", totalPages);
-        req.setAttribute("paginatedJsp", "reviews");
-        return JspConstants.VIEW_FILM_REVIEWS;
+        req.setAttribute("paginatedJsp", "scores");
+        return JspConstants.VIEW_USER_SCORES;
     }
 }

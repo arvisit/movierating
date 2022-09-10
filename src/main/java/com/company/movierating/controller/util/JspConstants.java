@@ -27,4 +27,17 @@ public abstract class JspConstants {
     public static final String EDIT_FILM_FORM = "jsp/edit/edit_film_form.jsp";
     public static final String DEFAULT_ERROR = "jsp/error/error.jsp";
 
+    public static final String REDIRECT_CREATE_BAN_FORM_COMMAND = "redirect:controller?command=create_ban_form&id=";
+    public static final String REDIRECT_CREATE_FILM_FORM_COMMAND = "redirect:controller?command=create_film_form";
+    public static final String REDIRECT_CREATE_REVIEW_FORM_COMMAND = "redirect:controller?command=create_review_form&id=";
+    public static final String REDIRECT_CREATE_SCORE_FORM_COMMAND = "redirect:controller?command=create_score_form&id=";
+    public static final String REDIRECT_CREATE_USER_FORM_COMMAND = "redirect:controller?command=create_user_form";
+    public static final String REDIRECT_EDIT_BAN_FORM_COMMAND = "redirect:controller?command=edit_ban_form&id=";
+    public static final String REDIRECT_EDIT_FILM_FORM_COMMAND = "redirect:controller?command=edit_film_form&id=";
+    public static final String REDIRECT_EDIT_USER_FORM_COMMAND = "redirect:controller?command=edit_user_form&id=";
+    public static final String REDIRECT_SIGN_IN_FORM_COMMAND = "redirect:controller?command=sign_in_form";
+    public static final String REDIRECT_USER_COMMAND = "redirect:controller?command=user&id=";
+    public static final String REDIRECT_FILM_COMMAND = "redirect:controller?command=film&id=";
+    public static final String REDIRECT_MAIN_PAGE = "redirect:.";
+
 }

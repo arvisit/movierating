@@ -1,4 +1,4 @@
-package com.company.movierating.controller.command.impl;
+package com.company.movierating.controller.command.impl.review;
 
 import com.company.movierating.controller.command.Command;
 import com.company.movierating.controller.util.JspConstants;
@@ -29,18 +29,18 @@ public class CreateReviewCommand implements Command {
 
         FilmDto film = filmService.getById(preparer.getLong(filmIdStr));
         UserDto user = (UserDto) req.getSession(false).getAttribute("user");
-        
+
         ReviewDto review = new ReviewDto();
         review.setFilm(film);
         review.setUser(user);
         review.setContent(content);
 
         req.setAttribute(JspConstants.LAST_PAGE_ATTRIBUTE_NAME,
-                "redirect:controller?command=create_review_form&id=" + filmIdStr);
-        ReviewDto created = reviewService.create(review);
+                JspConstants.REDIRECT_CREATE_REVIEW_FORM_COMMAND + filmIdStr);
+        reviewService.create(review);
         req.setAttribute(JspConstants.SUCCESS_MESSAGE_ATTRIBUTE_NAME, "Film was successfully reviewed");
-        req.setAttribute("film", created.getFilm());
-        return JspConstants.VIEW_FILM;
+
+        return JspConstants.REDIRECT_FILM_COMMAND + filmIdStr;
     }
 
 }

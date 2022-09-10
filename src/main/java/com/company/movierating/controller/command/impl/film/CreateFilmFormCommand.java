@@ -1,4 +1,4 @@
-package com.company.movierating.controller.command.impl;
+package com.company.movierating.controller.command.impl.film;
 
 import com.company.movierating.AppConstants;
 import com.company.movierating.controller.command.Command;
