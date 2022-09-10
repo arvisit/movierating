@@ -66,12 +66,11 @@ public class EditUserCommand implements Command {
             changed.setAvatar(avatar);
         }
 
-        req.setAttribute(JspConstants.LAST_PAGE_ATTRIBUTE_NAME,
-                "redirect:controller?command=edit_user_form&id=" + idStr);
-        UserDto updated = service.update(changed);
+        req.setAttribute(JspConstants.LAST_PAGE_ATTRIBUTE_NAME, JspConstants.REDIRECT_EDIT_USER_FORM_COMMAND + idStr);
+        service.update(changed);
         req.setAttribute(JspConstants.SUCCESS_MESSAGE_ATTRIBUTE_NAME, "Parameters were updated successfully");
-        req.setAttribute("user", updated);
-        return JspConstants.VIEW_USER;
+
+        return JspConstants.REDIRECT_USER_COMMAND + idStr;
     }
 
 }
