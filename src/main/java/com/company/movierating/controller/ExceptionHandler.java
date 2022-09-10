@@ -31,7 +31,7 @@ public enum ExceptionHandler {
         } else if (e instanceof RegisterPasswordConfirmationException) {
             status = 400;
             message = e.getMessage();
-            page = JspConstants.CREATE_USER_FORM;
+            page = JspConstants.REDIRECT_CREATE_USER_FORM_COMMAND;
         } else if (e instanceof ValidationException) {
             status = 400;
             message = e.getMessage();
@@ -39,11 +39,11 @@ public enum ExceptionHandler {
         } else if (e instanceof NonAuthorizedException) {
             status = 401;
             message = e.getMessage();
-            page = JspConstants.SIGN_IN_FORM;
+            page = JspConstants.REDIRECT_SIGN_IN_FORM_COMMAND;
         } else if (e instanceof ForbiddenPageException) {
             status = 403;
             message = e.getMessage();
-            page = JspConstants.MAIN_PAGE;
+            page = JspConstants.REDIRECT_MAIN_PAGE;
         } else if (e instanceof NoRecordFoundException) {
             status = 404;
             message = "Page not found";

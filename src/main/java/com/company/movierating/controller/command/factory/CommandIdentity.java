@@ -18,7 +18,7 @@ import com.company.movierating.controller.command.impl.EditFilmCommand;
 import com.company.movierating.controller.command.impl.EditFilmFormCommand;
 import com.company.movierating.controller.command.impl.EditUserCommand;
 import com.company.movierating.controller.command.impl.EditUserFormCommand;
-import com.company.movierating.controller.command.impl.ErrorCommand;
+import com.company.movierating.controller.command.impl.NoSuchCommand;
 import com.company.movierating.controller.command.impl.FilmCommand;
 import com.company.movierating.controller.command.impl.FilmReviewsCommand;
 import com.company.movierating.controller.command.impl.FilmScoresCommand;
@@ -44,7 +44,7 @@ import com.company.movierating.service.factory.ServiceFactory;
 import lombok.Getter;
 
 public enum CommandIdentity {
-    ERROR(new ErrorCommand(), SecurityLevel.GUEST),
+    NO_SUCH(new NoSuchCommand(), SecurityLevel.GUEST),
 
     USERS(new UsersCommand(ServiceFactory.getInstance().getService(UserService.class), Paginator.INSTANCE),
             SecurityLevel.GUEST),

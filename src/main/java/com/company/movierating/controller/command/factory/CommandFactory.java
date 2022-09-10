@@ -14,9 +14,14 @@ public class CommandFactory {
     }
 
     public CommandIdentity getCommandIdentity(String command) {
-        CommandIdentity commandIdentity = CommandIdentity.valueOf(command.toUpperCase());
+        CommandIdentity commandIdentity;
+        try {
+            commandIdentity = CommandIdentity.valueOf(command.toUpperCase());
+        } catch (IllegalArgumentException e) {
+            commandIdentity = CommandIdentity.valueOf("NO_SUCH");
+        }
         if (commandIdentity == null) {
-            commandIdentity = CommandIdentity.valueOf("ERROR");
+            commandIdentity = CommandIdentity.valueOf("NO_SUCH");
         }
         return commandIdentity;
     }
