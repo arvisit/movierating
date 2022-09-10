@@ -1,4 +1,4 @@
-package com.company.movierating.controller.command.impl;
+package com.company.movierating.controller.command.impl.user;
 
 import java.util.List;
 
