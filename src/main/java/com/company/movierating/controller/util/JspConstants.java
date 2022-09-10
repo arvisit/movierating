@@ -33,6 +33,7 @@ public abstract class JspConstants {
     public static final String REDIRECT_CREATE_SCORE_FORM_COMMAND = "redirect:controller?command=create_score_form&id=";
     public static final String REDIRECT_CREATE_USER_FORM_COMMAND = "redirect:controller?command=create_user_form";
     public static final String REDIRECT_EDIT_BAN_FORM_COMMAND = "redirect:controller?command=edit_ban_form&id=";
+    public static final String REDIRECT_EDIT_FILM_FORM_COMMAND = "redirect:controller?command=edit_film_form&id=";
     public static final String REDIRECT_USER_COMMAND = "redirect:controller?command=user&id=";
     public static final String REDIRECT_FILM_COMMAND = "redirect:controller?command=film&id=";
 

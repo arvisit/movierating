@@ -67,12 +67,11 @@ public class EditFilmCommand implements Command {
             changed.setPoster(poster);
         }
 
-        req.setAttribute(JspConstants.LAST_PAGE_ATTRIBUTE_NAME,
-                "redirect:controller?command=edit_film_form&id=" + idStr);
-        FilmDto updated = service.update(changed);
+        req.setAttribute(JspConstants.LAST_PAGE_ATTRIBUTE_NAME, JspConstants.REDIRECT_EDIT_FILM_FORM_COMMAND + idStr);
+        service.update(changed);
         req.setAttribute(JspConstants.SUCCESS_MESSAGE_ATTRIBUTE_NAME, "Parameters were updated successfully");
-        req.setAttribute("film", updated);
-        return JspConstants.VIEW_FILM;
+
+        return JspConstants.REDIRECT_FILM_COMMAND + idStr;
     }
 
 }
