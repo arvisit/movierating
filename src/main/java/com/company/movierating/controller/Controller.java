@@ -8,6 +8,7 @@ import com.company.movierating.controller.util.JspConstants;
 import com.company.movierating.dao.connection.DataSource;
 
 import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.MultipartConfig;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
@@ -17,9 +18,11 @@ import lombok.extern.log4j.Log4j2;
 
 @Log4j2
 @WebServlet("/controller")
+@MultipartConfig(maxFileSize = Controller.MB * 2, maxRequestSize = Controller.MB * 10)
 public class Controller extends HttpServlet {
     private final ExceptionHandler exceptionHandler = ExceptionHandler.INSTANCE;
 
+    public static final int MB = 1024 * 1024;
     private static final String REDIRECT = "redirect:";
 
     @Override

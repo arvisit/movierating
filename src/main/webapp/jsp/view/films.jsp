@@ -20,6 +20,7 @@
                     <%@ include file="/jsp/common/pagination.jsp" %>
                     <table class="list-center">
                         <tr>
+                        <th>Poster</th>
                         <th>Title</th>
                         <th>Release year</th>
                         <th>Age rating</th>
@@ -27,6 +28,7 @@
                         </tr>
                         <c:forEach items="${films}" var="film">
                             <tr>
+                                <td><img class="poster" src="${film.poster}" alt="${film.title}'s poster"/></td>
                                 <td>
                                     <a href="controller?command=film&id=${film.id}"><c:out value="${film.title}"/></a>
                                     <c:if test="${sessionScope.user != null && sessionScope.user.role == 'ADMIN'}">

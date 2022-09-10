@@ -103,3 +103,19 @@ div.notification p.errorMessage {
     background-color: lightcoral;
     color: white;
 }
+
+.avatar {
+    width: 100px;
+    height: 100px;
+    object-fit: scale-down;
+}
+
+.poster {
+    width: 200px;
+    height: 200px;
+    object-fit: scale-down;
+}
+
+.imgUploaded {
+    display: none;
+}

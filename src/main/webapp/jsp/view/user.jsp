@@ -19,6 +19,7 @@
             <c:if test="${sessionScope.user != null && (sessionScope.user.role == 'ADMIN' && user.role != 'ADMIN')}">
                 <a class="ban" href="controller?command=create_ban_form&id=${user.id}">(ban)</a>
             </c:if>
+            <p><img class="avatar" src="${user.avatar}" alt="${user.login}'s avatar"/></p>
             <p><b>Login:</b> <c:out value="${user.login}"/></p>
             <c:if test="${sessionScope.user != null && ((sessionScope.user.role == 'ADMIN' && user.role != 'ADMIN') 
                     || sessionScope.user.id == user.id)}">

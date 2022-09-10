@@ -17,26 +17,33 @@ import lombok.extern.log4j.Log4j2;
 
 @Log4j2
 public class FilmDaoImpl implements FilmDao {
-    private static final String GET_BY_ID = "SELECT f.id, f.title, f.description, f.release_year, f.length, a.name AS age_rating "
-            + "FROM films f JOIN age_ratings a ON f.age_rating_id = a.id " //
-            + "WHERE f.id = ? AND f.deleted = FALSE";
-    private static final String GET_ALL = "SELECT f.id, f.title, f.description, f.release_year, f.length, a.name AS age_rating "
-            + "FROM films f JOIN age_ratings a ON f.age_rating_id = a.id " //
-            + "WHERE f.deleted = FALSE";
-    private static final String GET_ALL_PARTIALLY = "SELECT f.id, f.title, f.description, f.release_year, f.length, a.name AS age_rating "
-            + "FROM films f JOIN age_ratings a ON f.age_rating_id = a.id " //
-            + "WHERE f.deleted = FALSE " //
-            + "ORDER BY f.id LIMIT ? OFFSET ?";
-    private static final String CREATE = "INSERT INTO films (title, description, release_year, length, age_rating_id) "
-            + "VALUES (?, ?, ?, ?, (SELECT id FROM age_ratings WHERE name = ?))";
-    private static final String UPDATE = "UPDATE films SET title = ?, description = ?, release_year = ?, length = ?, "
-            + "age_rating_id = (SELECT id FROM age_ratings WHERE name = ?), last_update = NOW() " //
-            + "WHERE id = ? AND DELETED = FALSE";
-    private static final String DELETE = "UPDATE films SET deleted = TRUE, last_update = NOW() " //
-            + "WHERE id = ? AND deleted = FALSE";
-    private static final String COUNT = "SELECT COUNT(f.id) AS total " //
-            + "FROM films f " //
-            + "WHERE deleted = FALSE";
+    private static final String GET_BY_ID = """
+            SELECT f.id, f.title, f.description, f.release_year, f.length, f.poster, a.name AS age_rating 
+            FROM films f JOIN age_ratings a ON f.age_rating_id = a.id 
+            WHERE f.id = ? AND f.deleted = FALSE""";
+    private static final String GET_ALL = """
+            SELECT f.id, f.title, f.description, f.release_year, f.length, f.poster, a.name AS age_rating 
+            FROM films f JOIN age_ratings a ON f.age_rating_id = a.id 
+            WHERE f.deleted = FALSE""";
+    private static final String GET_ALL_PARTIALLY = """
+            SELECT f.id, f.title, f.description, f.release_year, f.length, f.poster, a.name AS age_rating 
+            FROM films f JOIN age_ratings a ON f.age_rating_id = a.id 
+            WHERE f.deleted = FALSE 
+            ORDER BY f.id LIMIT ? OFFSET ?""";
+    private static final String CREATE = """
+            INSERT INTO films (title, description, release_year, length, age_rating_id, poster) 
+            VALUES (?, ?, ?, ?, (SELECT id FROM age_ratings WHERE name = ?), ?)""";
+    private static final String UPDATE = """
+            UPDATE films SET title = ?, description = ?, release_year = ?, length = ?, 
+            age_rating_id = (SELECT id FROM age_ratings WHERE name = ?), poster = ?, last_update = NOW() 
+            WHERE id = ? AND DELETED = FALSE""";
+    private static final String DELETE = """
+            UPDATE films SET deleted = TRUE, last_update = NOW() 
+            WHERE id = ? AND deleted = FALSE""";
+    private static final String COUNT = """
+            SELECT COUNT(f.id) AS total 
+            FROM films f 
+            WHERE deleted = FALSE""";
 
     private final DataSource dataSource;
 
@@ -109,6 +116,7 @@ public class FilmDaoImpl implements FilmDao {
             statement.setInt(3, entity.getReleaseYear());
             statement.setInt(4, entity.getLength());
             statement.setString(5, entity.getAgeRating().toString().replace('_', '-'));
+            statement.setString(6, entity.getPoster());
             statement.executeUpdate();
 
             ResultSet keys = statement.getGeneratedKeys();
@@ -131,7 +139,8 @@ public class FilmDaoImpl implements FilmDao {
             statement.setInt(3, entity.getReleaseYear());
             statement.setInt(4, entity.getLength());
             statement.setString(5, entity.getAgeRating().toString().replace('_', '-'));
-            statement.setLong(6, entity.getId());
+            statement.setString(6, entity.getPoster());
+            statement.setLong(7, entity.getId());
             statement.executeUpdate();
 
             return getById(entity.getId(), connection);
@@ -178,6 +187,7 @@ public class FilmDaoImpl implements FilmDao {
         film.setReleaseYear(result.getInt("release_year"));
         film.setLength(result.getInt("length"));
         film.setAgeRating(AgeRating.valueOf(result.getString("age_rating").replace('-', '_')));
+        film.setPoster(result.getString("poster"));
 
         return film;
     }

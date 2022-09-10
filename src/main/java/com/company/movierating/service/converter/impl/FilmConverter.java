@@ -1,5 +1,6 @@
 package com.company.movierating.service.converter.impl;
 
+import com.company.movierating.AppConstants;
 import com.company.movierating.dao.ScoreDao;
 import com.company.movierating.dao.entity.Film;
 import com.company.movierating.service.converter.Converter;
@@ -22,6 +23,7 @@ public class FilmConverter implements Converter<Film, FilmDto> {
         dto.setLength(entity.getLength());
         dto.setAgeRating(FilmDto.AgeRating.valueOf(entity.getAgeRating().toString()));
         dto.setAverageScore(scoreDao.countFilmAverageScore(entity.getId()));
+        dto.setPoster(posterToDto(entity.getPoster()));
         return dto;
     }
 
@@ -34,7 +36,22 @@ public class FilmConverter implements Converter<Film, FilmDto> {
         entity.setReleaseYear(dto.getReleaseYear());
         entity.setLength(dto.getLength());
         entity.setAgeRating(Film.AgeRating.valueOf(dto.getAgeRating().toString()));
+        entity.setPoster(posterToEntity(dto.getPoster()));
         return entity;
+    }
+
+    private String posterToDto(String img) {
+        if (img == null) {
+            return AppConstants.DEFAULT_APP_POSTER;
+        }
+        return AppConstants.IMAGE_APP_POSTER + "/" + img;
+    }
+
+    private String posterToEntity(String img) {
+        if (AppConstants.DEFAULT_APP_POSTER.equals(img)) {
+            return null;
+        }
+        return img.substring(img.lastIndexOf('/') + 1);
     }
 
 }

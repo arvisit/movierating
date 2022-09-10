@@ -19,6 +19,7 @@
                 <a class="edit" href="controller?command=create_score_form&id=${film.id}">(score)</a>
                 <a class="edit" href="controller?command=create_review_form&id=${film.id}">(review)</a>
             </c:if>
+            <p><img class="poster" src="${film.poster}" alt="${film.title}'s poster"/></p>
             <p><b>Title:</b> <c:out value="${film.title}"/></p>
             <p><b>Description:</b> <c:out value="${film.description}"/></p>
             <p><b>Release year:</b> <c:out value="${film.releaseYear}"/></p>

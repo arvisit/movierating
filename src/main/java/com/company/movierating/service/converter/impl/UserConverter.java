@@ -1,5 +1,6 @@
 package com.company.movierating.service.converter.impl;
 
+import com.company.movierating.AppConstants;
 import com.company.movierating.dao.entity.User;
 import com.company.movierating.service.converter.Converter;
 import com.company.movierating.service.dto.UserDto;
@@ -17,6 +18,7 @@ public class UserConverter implements Converter<User, UserDto> {
         dto.setRegistration(entity.getRegistration());
         dto.setInfo(entity.getInfo());
         dto.setReputation(entity.getReputation());
+        dto.setAvatar(avatarToDto(entity.getAvatar()));
         return dto;
     }
 
@@ -31,7 +33,22 @@ public class UserConverter implements Converter<User, UserDto> {
         entity.setRegistration(dto.getRegistration());
         entity.setInfo(dto.getInfo());
         entity.setReputation(dto.getReputation());
+        entity.setAvatar(avatarToEntity(dto.getAvatar()));
         return entity;
+    }
+
+    private String avatarToDto(String img) {
+        if (img == null) {
+            return AppConstants.DEFAULT_APP_AVATAR;
+        }
+        return AppConstants.IMAGE_APP_AVATAR + "/" + img;
+    }
+
+    private String avatarToEntity(String img) {
+        if (AppConstants.DEFAULT_APP_AVATAR.equals(img)) {
+            return null;
+        }
+        return img.substring(img.lastIndexOf('/') + 1);
     }
 
 }
