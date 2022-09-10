@@ -1,4 +1,4 @@
-package com.company.movierating.controller.command.impl;
+package com.company.movierating.controller.command.impl.film;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -17,18 +17,17 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.Part;
 
-public class EditFilmCommand implements Command {
+public class CreateFilmCommand implements Command {
     private final FilmService service;
     private final ParametersPreparer preparer;
 
-    public EditFilmCommand(FilmService service, ParametersPreparer preparer) {
+    public CreateFilmCommand(FilmService service, ParametersPreparer preparer) {
         this.service = service;
         this.preparer = preparer;
     }
 
     @Override
     public String execute(HttpServletRequest req) {
-        String idStr = req.getParameter("id");
         String title = req.getParameter("title");
         String description = req.getParameter("description");
         String releaseYearStr = req.getParameter("releaseYear");
@@ -36,42 +35,40 @@ public class EditFilmCommand implements Command {
         String ageRatingStr = req.getParameter("ageRating");
         String poster = req.getParameter("posterForm");
 
-        FilmDto changed = new FilmDto();
-
-        changed.setId(preparer.getLong(idStr));
-        changed.setTitle(title);
-        changed.setDescription(description);
-        changed.setReleaseYear(preparer.getInt(releaseYearStr));
-        changed.setLength(preparer.getInt(lengthStr));
-        changed.setAgeRating(preparer.getAgeRating(ageRatingStr));
+        FilmDto film = new FilmDto();
+        film.setTitle(title);
+        film.setDescription(description);
+        film.setReleaseYear(preparer.getInt(releaseYearStr));
+        film.setLength(preparer.getInt(lengthStr));
+        film.setAgeRating(preparer.getAgeRating(ageRatingStr));
 
         try {
             Part part = req.getPart("imgUploaded");
-            if (part != null && part.getSize() != 0) {
+            if (part != null) {
                 String initialFileName = part.getSubmittedFileName();
                 String extension = initialFileName.substring(initialFileName.lastIndexOf('.'));
-                String newFileName = UUID.randomUUID() + "_" + changed.getId() + extension;
+                String newFileName = UUID.randomUUID() + "_" + film.getId() + extension;
                 String filePath = AppConstants.IMAGE_STORAGE_POSTER + "/" + newFileName;
                 Path path = Paths.get(filePath);
                 if (Files.notExists(path)) {
                     path = Files.createDirectories(path);
                 }
                 part.write(path.toString());
-                changed.setPoster(filePath);
+                film.setPoster(filePath);
             }
         } catch (IOException | ServletException e) {
             throw new RuntimeException(e);
         }
 
-        if (changed.getPoster() == null) {
-            changed.setPoster(poster);
+        if (film.getPoster() == null) {
+            film.setPoster(poster);
         }
 
-        req.setAttribute(JspConstants.LAST_PAGE_ATTRIBUTE_NAME, JspConstants.REDIRECT_EDIT_FILM_FORM_COMMAND + idStr);
-        service.update(changed);
-        req.setAttribute(JspConstants.SUCCESS_MESSAGE_ATTRIBUTE_NAME, "Parameters were updated successfully");
+        req.setAttribute(JspConstants.LAST_PAGE_ATTRIBUTE_NAME, JspConstants.REDIRECT_CREATE_FILM_FORM_COMMAND);
+        FilmDto created = service.create(film);
+        req.setAttribute(JspConstants.SUCCESS_MESSAGE_ATTRIBUTE_NAME, "New film was successfully added");
 
-        return JspConstants.REDIRECT_FILM_COMMAND + idStr;
+        return JspConstants.REDIRECT_FILM_COMMAND + created.getId();
     }
 
 }
