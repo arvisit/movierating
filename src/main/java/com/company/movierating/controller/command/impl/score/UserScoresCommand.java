@@ -1,4 +1,4 @@
-package com.company.movierating.controller.command.impl;
+package com.company.movierating.controller.command.impl.score;
 
 import java.util.List;
 
@@ -12,12 +12,12 @@ import com.company.movierating.service.dto.ScoreDto;
 
 import jakarta.servlet.http.HttpServletRequest;
 
-public class FilmScoresCommand implements Command {
+public class UserScoresCommand implements Command {
     private final ScoreService service;
     private final ParametersPreparer preparer;
     private final Paginator paginator;
 
-    public FilmScoresCommand(ScoreService service, ParametersPreparer preparer, Paginator paginator) {
+    public UserScoresCommand(ScoreService service, ParametersPreparer preparer, Paginator paginator) {
         this.service = service;
         this.preparer = preparer;
         this.paginator = paginator;
@@ -32,7 +32,7 @@ public class FilmScoresCommand implements Command {
         int limit = paging.getLimit();
         long offset = paging.getOffset();
 
-        List<ScoreDto> scores = service.getAllByFilm(id, limit, offset);
+        List<ScoreDto> scores = service.getAllByUser(id, limit, offset);
         long totalEntities = service.count();
         long fullFilledPages = totalEntities / limit;
         int partialFilledPage = (totalEntities % limit) > 0 ? 1 : 0;
@@ -45,6 +45,6 @@ public class FilmScoresCommand implements Command {
         req.setAttribute("currentPage", page);
         req.setAttribute("totalPages", totalPages);
         req.setAttribute("paginatedJsp", "scores");
-        return JspConstants.VIEW_FILM_SCORES;
+        return JspConstants.VIEW_USER_SCORES;
     }
 }

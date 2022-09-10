@@ -1,19 +1,15 @@
 package com.company.movierating.controller.command.factory;
 
 import com.company.movierating.controller.command.Command;
-import com.company.movierating.controller.command.impl.CreateScoreCommand;
-import com.company.movierating.controller.command.impl.CreateScoreFormCommand;
 import com.company.movierating.controller.command.impl.CreateUserCommand;
 import com.company.movierating.controller.command.impl.CreateUserFormCommand;
 import com.company.movierating.controller.command.impl.EditUserCommand;
 import com.company.movierating.controller.command.impl.EditUserFormCommand;
 import com.company.movierating.controller.command.impl.NoSuchCommand;
-import com.company.movierating.controller.command.impl.FilmScoresCommand;
 import com.company.movierating.controller.command.impl.SignInCommand;
 import com.company.movierating.controller.command.impl.SignInFormCommand;
 import com.company.movierating.controller.command.impl.SignOutCommand;
 import com.company.movierating.controller.command.impl.UserCommand;
-import com.company.movierating.controller.command.impl.UserScoresCommand;
 import com.company.movierating.controller.command.impl.UsersCommand;
 import com.company.movierating.controller.command.impl.ban.AssignedBansCommand;
 import com.company.movierating.controller.command.impl.ban.CreateBanCommand;
@@ -31,6 +27,10 @@ import com.company.movierating.controller.command.impl.review.CreateReviewComman
 import com.company.movierating.controller.command.impl.review.CreateReviewFormCommand;
 import com.company.movierating.controller.command.impl.review.FilmReviewsCommand;
 import com.company.movierating.controller.command.impl.review.UserReviewsCommand;
+import com.company.movierating.controller.command.impl.score.CreateScoreCommand;
+import com.company.movierating.controller.command.impl.score.CreateScoreFormCommand;
+import com.company.movierating.controller.command.impl.score.FilmScoresCommand;
+import com.company.movierating.controller.command.impl.score.UserScoresCommand;
 import com.company.movierating.controller.util.Paginator;
 import com.company.movierating.controller.util.ParametersPreparer;
 import com.company.movierating.controller.util.SecurityLevel;

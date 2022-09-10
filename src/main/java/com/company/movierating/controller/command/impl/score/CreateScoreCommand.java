@@ -1,4 +1,4 @@
-package com.company.movierating.controller.command.impl;
+package com.company.movierating.controller.command.impl.score;
 
 import com.company.movierating.controller.command.Command;
 import com.company.movierating.controller.util.JspConstants;
