@@ -30,18 +30,18 @@ public class CreateScoreCommand implements Command {
         FilmDto film = filmService.getById(preparer.getLong(filmIdStr));
         UserDto user = (UserDto) req.getSession(false).getAttribute("user");
         Integer value = preparer.getInt(valueStr);
-        
+
         ScoreDto score = new ScoreDto();
         score.setFilm(film);
         score.setUser(user);
         score.setValue(value);
 
         req.setAttribute(JspConstants.LAST_PAGE_ATTRIBUTE_NAME,
-                "redirect:controller?command=create_score_form&id=" + filmIdStr);
-        ScoreDto created = scoreService.create(score);
+                JspConstants.REDIRECT_CREATE_SCORE_FORM_COMMAND + filmIdStr);
+        scoreService.create(score);
         req.setAttribute(JspConstants.SUCCESS_MESSAGE_ATTRIBUTE_NAME, "Film was successfully scored");
-        req.setAttribute("film", created.getFilm());
-        return JspConstants.VIEW_FILM;
+
+        return JspConstants.REDIRECT_FILM_COMMAND + filmIdStr;
     }
 
 }
