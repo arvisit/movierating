@@ -3,12 +3,14 @@ package com.company.movierating.service.dto;
 import java.time.ZonedDateTime;
 
 import lombok.Data;
+import lombok.ToString;
 
 @Data
 public class UserDto {
     private Long id;
     private String login;
     private String email;
+    @ToString.Exclude
     private String password;
     private Role role;
     private String info;
@@ -18,11 +20,5 @@ public class UserDto {
 
     public enum Role {
         ADMIN, USER
-    }
-
-    @Override
-    public String toString() {
-        return "UserDto [id=" + id + ", login=" + login + ", email=" + email + ", role=" + role + ", info=" + info
-                + ", reputation=" + reputation + ", registration=" + registration + "]";
     }
 }
