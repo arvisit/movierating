@@ -15,7 +15,7 @@
                 <c:when test="${films.size() == 0}">
                     <c:choose>
                         <c:when test="${param.title != null}">
-                            <h2>There is no films matching your search</h2>
+                            <h2>There is no films with title: <i>${param.title}</i></h2>
                         </c:when>
                         <c:otherwise>
                             <h2>There is no films yet</h2>
