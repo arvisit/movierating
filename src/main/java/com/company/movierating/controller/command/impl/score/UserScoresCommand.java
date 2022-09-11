@@ -44,7 +44,7 @@ public class UserScoresCommand implements Command {
         req.setAttribute("scores", scores);
         req.setAttribute("currentPage", page);
         req.setAttribute("totalPages", totalPages);
-        req.setAttribute("paginatedCommand", "user_scores&id=" + id);
+        req.setAttribute(JspConstants.PAGINATED_COMMAND_ATTRIBUTE_NAME, "user_scores&id=" + id);
         return JspConstants.VIEW_USER_SCORES;
     }
 }

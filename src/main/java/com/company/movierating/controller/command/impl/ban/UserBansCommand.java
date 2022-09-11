@@ -42,7 +42,7 @@ public class UserBansCommand implements Command {
         req.setAttribute("bans", userBans);
         req.setAttribute("currentPage", page);
         req.setAttribute("totalPages", totalPages);
-        req.setAttribute("paginatedCommand", "user_bans&id=" + userId);
+        req.setAttribute(JspConstants.PAGINATED_COMMAND_ATTRIBUTE_NAME, "user_bans&id=" + userId);
         req.setAttribute("title", "My Bans");
         return JspConstants.VIEW_BANS;
     }

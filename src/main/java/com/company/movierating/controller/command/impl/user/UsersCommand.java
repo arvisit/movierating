@@ -38,7 +38,7 @@ public class UsersCommand implements Command {
         req.setAttribute("users", users);
         req.setAttribute("currentPage", page);
         req.setAttribute("totalPages", totalPages);
-        req.setAttribute("paginatedCommand", "users");
+        req.setAttribute(JspConstants.PAGINATED_COMMAND_ATTRIBUTE_NAME, "users");
         return JspConstants.VIEW_USERS;
     }
 }

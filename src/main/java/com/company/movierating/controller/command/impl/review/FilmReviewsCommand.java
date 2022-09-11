@@ -44,7 +44,7 @@ public class FilmReviewsCommand implements Command {
         req.setAttribute("reviews", reviews);
         req.setAttribute("currentPage", page);
         req.setAttribute("totalPages", totalPages);
-        req.setAttribute("paginatedCommand", "film_reviews&id=" + id);
+        req.setAttribute(JspConstants.PAGINATED_COMMAND_ATTRIBUTE_NAME, "film_reviews&id=" + id);
         return JspConstants.VIEW_FILM_REVIEWS;
     }
 }

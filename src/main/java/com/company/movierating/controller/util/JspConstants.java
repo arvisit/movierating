@@ -5,6 +5,7 @@ public abstract class JspConstants {
     public static final String ERROR_MESSAGE_ATTRIBUTE_NAME = "errorMessage";
     public static final String SUCCESS_MESSAGE_ATTRIBUTE_NAME = "successMessage";
     public static final String LAST_PAGE_ATTRIBUTE_NAME = "lastPage";
+    public static final String PAGINATED_COMMAND_ATTRIBUTE_NAME = "paginatedCommand";
 
     public static final String VIEW_USER = "jsp/view/user.jsp";
     public static final String VIEW_USERS = "jsp/view/users.jsp";

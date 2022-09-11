@@ -43,7 +43,7 @@ public class AssignedBansCommand implements Command {
         req.setAttribute("bans", assignedBans);
         req.setAttribute("currentPage", page);
         req.setAttribute("totalPages", totalPages);
-        req.setAttribute("paginatedCommand", "assigned_bans&id=" + adminId);
+        req.setAttribute(JspConstants.PAGINATED_COMMAND_ATTRIBUTE_NAME, "assigned_bans&id=" + adminId);
         req.setAttribute("title", "Assigned Bans");
         return JspConstants.VIEW_BANS;
     }
