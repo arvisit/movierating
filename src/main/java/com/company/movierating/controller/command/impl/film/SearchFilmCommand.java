@@ -39,7 +39,7 @@ public class SearchFilmCommand implements Command {
         req.setAttribute("films", films);
         req.setAttribute("currentPage", page);
         req.setAttribute("totalPages", totalPages);
-        req.setAttribute("paginatedJsp", "search_film&title=" + title);
+        req.setAttribute("paginatedCommand", "search_film&title=" + title);
         return JspConstants.VIEW_FILMS;
     }
 }

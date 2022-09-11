@@ -33,7 +33,7 @@ public class UserScoresCommand implements Command {
         long offset = paging.getOffset();
 
         List<ScoreDto> scores = service.getAllByUser(id, limit, offset);
-        long totalEntities = service.count();
+        long totalEntities = service.countByUser(id);
         long fullFilledPages = totalEntities / limit;
         int partialFilledPage = (totalEntities % limit) > 0 ? 1 : 0;
         long totalPages = fullFilledPages + partialFilledPage;
@@ -44,7 +44,7 @@ public class UserScoresCommand implements Command {
         req.setAttribute("scores", scores);
         req.setAttribute("currentPage", page);
         req.setAttribute("totalPages", totalPages);
-        req.setAttribute("paginatedJsp", "scores");
+        req.setAttribute("paginatedCommand", "user_scores&id=" + id);
         return JspConstants.VIEW_USER_SCORES;
     }
 }
