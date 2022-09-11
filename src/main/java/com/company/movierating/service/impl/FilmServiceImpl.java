@@ -17,7 +17,7 @@ public class FilmServiceImpl implements FilmService {
     private final FilmDao filmDao;
     private final FilmConverter filmConverter;
     private final FilmValidator filmValidator;
-    
+
     public FilmServiceImpl(FilmDao filmDao, FilmConverter filmConverter, FilmValidator filmValidator) {
         this.filmDao = filmDao;
         this.filmConverter = filmConverter;
@@ -51,6 +51,14 @@ public class FilmServiceImpl implements FilmService {
     }
 
     @Override
+    public List<FilmDto> searchByTitle(String title, int limit, long offset) {
+        log.debug("Film service method _searchByTitle_ (paged) was called");
+        return filmDao.searchByTitle(title, limit, offset).stream() //
+                .map(filmConverter::toDto) //
+                .toList();
+    }
+
+    @Override
     public FilmDto create(FilmDto dto) {
         log.debug("Film service method _create_ was called");
         filmValidator.validateFilm(dto);
@@ -78,6 +86,12 @@ public class FilmServiceImpl implements FilmService {
     public Long count() {
         log.debug("Film service method _count_ was called");
         return filmDao.count();
+    }
+
+    @Override
+    public Long count(String title) {
+        log.debug("Film service method _count_ (by title) was called");
+        return filmDao.count(title);
     }
 
 }

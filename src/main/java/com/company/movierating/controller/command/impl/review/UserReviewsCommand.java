@@ -33,7 +33,7 @@ public class UserReviewsCommand implements Command {
         long offset = paging.getOffset();
 
         List<ReviewDto> reviews = service.getAllByUser(id, limit, offset);
-        long totalEntities = service.count();
+        long totalEntities = service.countByUser(id);
         long fullFilledPages = totalEntities / limit;
         int partialFilledPage = (totalEntities % limit) > 0 ? 1 : 0;
         long totalPages = fullFilledPages + partialFilledPage;
@@ -44,7 +44,7 @@ public class UserReviewsCommand implements Command {
         req.setAttribute("reviews", reviews);
         req.setAttribute("currentPage", page);
         req.setAttribute("totalPages", totalPages);
-        req.setAttribute("paginatedJsp", "reviews");
+        req.setAttribute(JspConstants.PAGINATED_COMMAND_ATTRIBUTE_NAME, "user_reviews&id=" + id);
         return JspConstants.VIEW_USER_REVIEWS;
     }
 }

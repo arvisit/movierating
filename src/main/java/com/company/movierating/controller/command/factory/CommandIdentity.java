@@ -17,6 +17,7 @@ import com.company.movierating.controller.command.impl.film.EditFilmCommand;
 import com.company.movierating.controller.command.impl.film.EditFilmFormCommand;
 import com.company.movierating.controller.command.impl.film.FilmCommand;
 import com.company.movierating.controller.command.impl.film.FilmsCommand;
+import com.company.movierating.controller.command.impl.film.SearchFilmCommand;
 import com.company.movierating.controller.command.impl.review.CreateReviewCommand;
 import com.company.movierating.controller.command.impl.review.CreateReviewFormCommand;
 import com.company.movierating.controller.command.impl.review.FilmReviewsCommand;
@@ -80,6 +81,8 @@ public enum CommandIdentity {
             SecurityLevel.ADMIN),
 
     FILMS(new FilmsCommand(ServiceFactory.getInstance().getService(FilmService.class), Paginator.INSTANCE),
+            SecurityLevel.GUEST),
+    SEARCH_FILM(new SearchFilmCommand(ServiceFactory.getInstance().getService(FilmService.class), Paginator.INSTANCE),
             SecurityLevel.GUEST),
     FILM(new FilmCommand(ServiceFactory.getInstance().getService(FilmService.class), ParametersPreparer.INSTANCE),
             SecurityLevel.GUEST),
