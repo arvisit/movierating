@@ -18,32 +18,41 @@ import lombok.extern.log4j.Log4j2;
 @Log4j2
 public class FilmDaoImpl implements FilmDao {
     private static final String GET_BY_ID = """
-            SELECT f.id, f.title, f.description, f.release_year, f.length, f.poster, a.name AS age_rating 
-            FROM films f JOIN age_ratings a ON f.age_rating_id = a.id 
+            SELECT f.id, f.title, f.description, f.release_year, f.length, f.poster, a.name AS age_rating
+            FROM films f JOIN age_ratings a ON f.age_rating_id = a.id
             WHERE f.id = ? AND f.deleted = FALSE""";
     private static final String GET_ALL = """
-            SELECT f.id, f.title, f.description, f.release_year, f.length, f.poster, a.name AS age_rating 
-            FROM films f JOIN age_ratings a ON f.age_rating_id = a.id 
+            SELECT f.id, f.title, f.description, f.release_year, f.length, f.poster, a.name AS age_rating
+            FROM films f JOIN age_ratings a ON f.age_rating_id = a.id
             WHERE f.deleted = FALSE""";
     private static final String GET_ALL_PARTIALLY = """
-            SELECT f.id, f.title, f.description, f.release_year, f.length, f.poster, a.name AS age_rating 
-            FROM films f JOIN age_ratings a ON f.age_rating_id = a.id 
-            WHERE f.deleted = FALSE 
+            SELECT f.id, f.title, f.description, f.release_year, f.length, f.poster, a.name AS age_rating
+            FROM films f JOIN age_ratings a ON f.age_rating_id = a.id
+            WHERE f.deleted = FALSE
+            ORDER BY f.id LIMIT ? OFFSET ?""";
+    private static final String SEARCH_BY_TITLE_PARTIALLY = """
+            SELECT f.id, f.title, f.description, f.release_year, f.length, f.poster, a.name AS age_rating
+            FROM films f JOIN age_ratings a ON f.age_rating_id = a.id
+            WHERE f.deleted = FALSE AND UPPER(f.title) LIKE UPPER(?)
             ORDER BY f.id LIMIT ? OFFSET ?""";
     private static final String CREATE = """
-            INSERT INTO films (title, description, release_year, length, age_rating_id, poster) 
+            INSERT INTO films (title, description, release_year, length, age_rating_id, poster)
             VALUES (?, ?, ?, ?, (SELECT id FROM age_ratings WHERE name = ?), ?)""";
     private static final String UPDATE = """
-            UPDATE films SET title = ?, description = ?, release_year = ?, length = ?, 
-            age_rating_id = (SELECT id FROM age_ratings WHERE name = ?), poster = ?, last_update = NOW() 
+            UPDATE films SET title = ?, description = ?, release_year = ?, length = ?,
+            age_rating_id = (SELECT id FROM age_ratings WHERE name = ?), poster = ?, last_update = NOW()
             WHERE id = ? AND DELETED = FALSE""";
     private static final String DELETE = """
-            UPDATE films SET deleted = TRUE, last_update = NOW() 
+            UPDATE films SET deleted = TRUE, last_update = NOW()
             WHERE id = ? AND deleted = FALSE""";
     private static final String COUNT = """
-            SELECT COUNT(f.id) AS total 
-            FROM films f 
+            SELECT COUNT(f.id) AS total
+            FROM films f
             WHERE deleted = FALSE""";
+    private static final String COUNT_BY_TITLE = """
+            SELECT COUNT(f.id) AS total
+            FROM films f
+            WHERE deleted = FALSE AND UPPER(f.title) LIKE UPPER(?)""";
 
     private final DataSource dataSource;
 
@@ -96,6 +105,25 @@ public class FilmDaoImpl implements FilmDao {
             PreparedStatement statement = connection.prepareStatement(GET_ALL_PARTIALLY);
             statement.setInt(1, limit);
             statement.setLong(2, offset);
+            ResultSet result = statement.executeQuery();
+
+            while (result.next()) {
+                films.add(process(result));
+            }
+        } catch (SQLException e) {
+            log.error(e.getMessage(), e);
+        }
+        return films;
+    }
+
+    @Override
+    public List<Film> searchByTitle(String title, int limit, long offset) {
+        List<Film> films = new ArrayList<>();
+        try (Connection connection = dataSource.getConnection()) {
+            PreparedStatement statement = connection.prepareStatement(SEARCH_BY_TITLE_PARTIALLY);
+            statement.setString(1, formatForSearch(title));
+            statement.setInt(2, limit);
+            statement.setLong(3, offset);
             ResultSet result = statement.executeQuery();
 
             while (result.next()) {
@@ -179,6 +207,22 @@ public class FilmDaoImpl implements FilmDao {
         throw new RuntimeException("Couldn't count films");
     }
 
+    @Override
+    public Long count(String title) {
+        try (Connection connection = dataSource.getConnection()) {
+            PreparedStatement statement = connection.prepareStatement(COUNT_BY_TITLE);
+            statement.setString(1, formatForSearch(title));
+            ResultSet result = statement.executeQuery();
+
+            if (result.next()) {
+                return result.getLong("total");
+            }
+        } catch (SQLException e) {
+            log.error(e.getMessage(), e);
+        }
+        throw new RuntimeException("Couldn't count films");
+    }
+
     private Film process(ResultSet result) throws SQLException {
         Film film = new Film();
         film.setId(result.getLong("id"));
@@ -190,6 +234,10 @@ public class FilmDaoImpl implements FilmDao {
         film.setPoster(result.getString("poster"));
 
         return film;
+    }
+
+    private String formatForSearch(String str) {
+        return "%" + str + "%";
     }
 
 }
