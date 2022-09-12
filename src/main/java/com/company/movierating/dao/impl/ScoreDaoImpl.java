@@ -22,7 +22,7 @@ public class ScoreDaoImpl implements ScoreDao {
     private final static String GET_BY_ID = "SELECT s.id, s.film_id, s.user_id, s.value, s.publication_date " //
             + "FROM scores s " //
             + "WHERE s.id = ? AND s.deleted = FALSE";
-    private final static String GET_ALL = "SELECT s.id, s.film_is, s.user_id, s.value, s.publication_date " //
+    private final static String GET_ALL = "SELECT s.id, s.film_id, s.user_id, s.value, s.publication_date " //
             + "FROM scores s " //
             + "WHERE s.deleted = FALSE";
     private final static String GET_ALL_PARTIALLY = "SELECT s.id, s.film_id, s.user_id, s.value, s.publication_date " //
