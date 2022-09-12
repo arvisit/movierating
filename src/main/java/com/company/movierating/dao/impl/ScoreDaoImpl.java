@@ -19,45 +19,58 @@ import lombok.extern.log4j.Log4j2;
 
 @Log4j2
 public class ScoreDaoImpl implements ScoreDao {
-    private final static String GET_BY_ID = "SELECT s.id, s.film_id, s.user_id, s.value, s.publication_date " //
-            + "FROM scores s " //
-            + "WHERE s.id = ? AND s.deleted = FALSE";
-    private final static String GET_ALL = "SELECT s.id, s.film_id, s.user_id, s.value, s.publication_date " //
-            + "FROM scores s " //
-            + "WHERE s.deleted = FALSE";
-    private final static String GET_ALL_PARTIALLY = "SELECT s.id, s.film_id, s.user_id, s.value, s.publication_date " //
-            + "FROM scores s " //
-            + "WHERE s.deleted = FALSE " //
-            + "ORDER BY s.id LIMIT ? OFFSET ?";
-    private final static String GET_ALL_BY_FILM_ID_PARTIALLY = "SELECT s.id, s.film_id, s.user_id, s.value, s.publication_date "
-            + "FROM scores s " //
-            + "WHERE s.film_id = ? AND s.deleted = FALSE " //
-            + "ORDER BY s.id DESC LIMIT ? OFFSET ?";
-    private final static String GET_ALL_BY_USER_ID_PARTIALLY = "SELECT s.id, s.film_id, s.user_id, s.value, s.publication_date "
-            + "FROM scores s " //
-            + "WHERE s.user_id = ? AND s.deleted = FALSE " //
-            + "ORDER BY s.id DESC LIMIT ? OFFSET ?";
-    private final static String CREATE = "INSERT INTO scores (film_id, user_id, value) " //
-            + "VALUES (?, ?, ?)";
-    private final static String UPDATE = "UPDATE scores SET value = ?, last_update = NOW() " //
-            + "WHERE id = ? AND deleted = FALSE";
-    private final static String DELETE = "UPDATE scores SET deleted = TRUE, last_update = NOW() " //
-            + "WHERE id = ? AND deleted = FALSE";
-    private final static String COUNT = "SELECT COUNT(s.id) AS total " //
-            + "FROM scores s " //
-            + "WHERE s.deleted = FALSE";
-    private final static String COUNT_BY_FILM_ID = "SELECT COUNT(s.id) AS total " //
-            + "FROM scores s " //
-            + "WHERE s.film_id = ? AND s.deleted = FALSE";
-    private final static String COUNT_BY_USER_ID = "SELECT COUNT(s.id) AS total " //
-            + "FROM scores s " //
-            + "WHERE s.user_id = ? AND s.deleted = FALSE";
-    private final static String COUNT_FILM_AVERAGE_SCORE = "SELECT AVG(s.value) AS average " //
-            + "FROM scores s " //
-            + "WHERE s.film_id = ? AND s.deleted = FALSE";
-    private final static String IS_EXISTED = "SELECT COUNT(s.id) AS existed " //
-            + "FROM scores s " //
-            + "WHERE s.film_id = ? AND s.user_id = ? AND s.deleted = FALSE";
+    private final static String GET_BY_ID = """
+            SELECT s.id, s.film_id, s.user_id, s.value, s.publication_date 
+            FROM scores s 
+            WHERE s.id = ? AND s.deleted = FALSE""";
+    private final static String GET_ALL = """
+            SELECT s.id, s.film_id, s.user_id, s.value, s.publication_date 
+            FROM scores s 
+            WHERE s.deleted = FALSE""";
+    private final static String GET_ALL_PARTIALLY = """
+            SELECT s.id, s.film_id, s.user_id, s.value, s.publication_date 
+            FROM scores s 
+            WHERE s.deleted = FALSE 
+            ORDER BY s.id LIMIT ? OFFSET ?""";
+    private final static String GET_ALL_BY_FILM_ID_PARTIALLY = """
+            SELECT s.id, s.film_id, s.user_id, s.value, s.publication_date 
+            FROM scores s 
+            WHERE s.film_id = ? AND s.deleted = FALSE 
+            ORDER BY s.id DESC LIMIT ? OFFSET ?""";
+    private final static String GET_ALL_BY_USER_ID_PARTIALLY = """
+            SELECT s.id, s.film_id, s.user_id, s.value, s.publication_date 
+            FROM scores s 
+            WHERE s.user_id = ? AND s.deleted = FALSE 
+            ORDER BY s.id DESC LIMIT ? OFFSET ?""";
+    private final static String CREATE = """
+            INSERT INTO scores (film_id, user_id, value) 
+            VALUES (?, ?, ?)""";
+    private final static String UPDATE = """
+            UPDATE scores SET value = ?, last_update = NOW() 
+            WHERE id = ? AND deleted = FALSE""";
+    private final static String DELETE = """
+            UPDATE scores SET deleted = TRUE, last_update = NOW() 
+            WHERE id = ? AND deleted = FALSE""";
+    private final static String COUNT = """
+            SELECT COUNT(s.id) AS total 
+            FROM scores s 
+            WHERE s.deleted = FALSE""";
+    private final static String COUNT_BY_FILM_ID = """
+            SELECT COUNT(s.id) AS total 
+            FROM scores s 
+            WHERE s.film_id = ? AND s.deleted = FALSE""";
+    private final static String COUNT_BY_USER_ID = """
+            SELECT COUNT(s.id) AS total 
+            FROM scores s 
+            WHERE s.user_id = ? AND s.deleted = FALSE""";
+    private final static String COUNT_FILM_AVERAGE_SCORE = """
+            SELECT AVG(s.value) AS average 
+            FROM scores s 
+            WHERE s.film_id = ? AND s.deleted = FALSE""";
+    private final static String IS_EXISTED = """
+            SELECT COUNT(s.id) AS existed 
+            FROM scores s 
+            WHERE s.film_id = ? AND s.user_id = ? AND s.deleted = FALSE""";
 
     private final DataSource dataSource;
     private final FilmDao filmDao;
