@@ -19,42 +19,54 @@ import lombok.extern.log4j.Log4j2;
 
 @Log4j2
 public class BanDaoImpl implements BanDao {
-    private static final String GET_BY_ID = "SELECT b.id, b.user_id, b.admin_id, b.start_date, b.end_date, b.reason " //
-            + "FROM bans b " //
-            + "WHERE b.id = ? AND b.deleted = FALSE";
-    private static final String GET_ALL = "SELECT b.id, b.user_id, b.admin_id, b.start_date, b.end_date, b.reason " //
-            + "FROM bans b " //
-            + "WHERE b.deleted = FALSE";
-    private static final String GET_ALL_PARTIALLY = "SELECT b.id, b.user_id, b.admin_id, b.start_date, b.end_date, b.reason " //
-            + "FROM bans b " //
-            + "WHERE b.deleted = FALSE " //
-            + "ORDER BY b.id LIMIT ? OFFSET ?";
-    private static final String GET_ALL_BY_USER_ID_PARTIALLY = "SELECT b.id, b.user_id, b.admin_id, b.start_date, b.end_date, b.reason " //
-            + "FROM bans b " //
-            + "WHERE b.user_id = ? AND b.deleted = FALSE " //
-            + "ORDER BY b.id LIMIT ? OFFSET ?";
-    private static final String GET_ALL_BY_ADMIN_ID_PARTIALLY = "SELECT b.id, b.user_id, b.admin_id, b.start_date, b.end_date, b.reason " //
-            + "FROM bans b " //
-            + "WHERE b.admin_id = ? AND b.deleted = FALSE " //
-            + "ORDER BY b.id LIMIT ? OFFSET ?";
-    private static final String CREATE = "INSERT INTO bans (user_id, admin_id, start_date, end_date, reason) " //
-            + "VALUES (?, ?, ?, ?, ?)";
-    private static final String UPDATE = "UPDATE bans SET end_date = ?, last_update = NOW() " //
-            + "WHERE id = ? AND deleted = FALSE";
-    private static final String DELETE = "UPDATE bans SET deleted = TRUE, last_update = NOW() " //
-            + "WHERE id = ? AND deleted = FALSE";
-    private static final String COUNT = "SELECT COUNT(b.id) AS total " //
-            + "FROM bans b " //
-            + "WHERE b.deleted = FALSE";
-    private static final String COUNT_BY_USER_ID = "SELECT COUNT(b.id) AS total " //
-            + "FROM bans b " //
-            + "WHERE b.deleted = FALSE AND b.user_id = ?";
-    private static final String COUNT_BY_ADMIN_ID = "SELECT COUNT(b.id) AS total " //
-            + "FROM bans b " //
-            + "WHERE b.deleted = FALSE AND b.admin_id = ?";
-    private static final String IS_BANNED = "SELECT COUNT(b.id) AS active_bans " //
-            + "FROM bans b " //
-            + "WHERE b.user_id = ? AND b.deleted = FALSE AND b.end_date > NOW()";
+    private static final String GET_BY_ID = """
+            SELECT b.id, b.user_id, b.admin_id, b.start_date, b.end_date, b.reason 
+            FROM bans b 
+            WHERE b.id = ? AND b.deleted = FALSE""";
+    private static final String GET_ALL = """
+            SELECT b.id, b.user_id, b.admin_id, b.start_date, b.end_date, b.reason 
+            FROM bans b 
+            WHERE b.deleted = FALSE""";
+    private static final String GET_ALL_PARTIALLY = """
+            SELECT b.id, b.user_id, b.admin_id, b.start_date, b.end_date, b.reason 
+            FROM bans b 
+            WHERE b.deleted = FALSE 
+            ORDER BY b.id LIMIT ? OFFSET ?""";
+    private static final String GET_ALL_BY_USER_ID_PARTIALLY = """
+            SELECT b.id, b.user_id, b.admin_id, b.start_date, b.end_date, b.reason 
+            FROM bans b 
+            WHERE b.user_id = ? AND b.deleted = FALSE 
+            ORDER BY b.id LIMIT ? OFFSET ?""";
+    private static final String GET_ALL_BY_ADMIN_ID_PARTIALLY = """
+            SELECT b.id, b.user_id, b.admin_id, b.start_date, b.end_date, b.reason 
+            FROM bans b 
+            WHERE b.admin_id = ? AND b.deleted = FALSE 
+            ORDER BY b.id LIMIT ? OFFSET ?""";
+    private static final String CREATE = """
+            INSERT INTO bans (user_id, admin_id, start_date, end_date, reason) 
+            VALUES (?, ?, ?, ?, ?)""";
+    private static final String UPDATE = """
+            UPDATE bans SET end_date = ?, last_update = NOW() 
+            WHERE id = ? AND deleted = FALSE""";
+    private static final String DELETE = """
+            UPDATE bans SET deleted = TRUE, last_update = NOW() 
+            WHERE id = ? AND deleted = FALSE""";
+    private static final String COUNT = """
+            SELECT COUNT(b.id) AS total 
+            FROM bans b 
+            WHERE b.deleted = FALSE""";
+    private static final String COUNT_BY_USER_ID = """
+            SELECT COUNT(b.id) AS total 
+            FROM bans b 
+            WHERE b.deleted = FALSE AND b.user_id = ?""";
+    private static final String COUNT_BY_ADMIN_ID = """
+            SELECT COUNT(b.id) AS total 
+            FROM bans b 
+            WHERE b.deleted = FALSE AND b.admin_id = ?""";
+    private static final String IS_BANNED = """
+            SELECT COUNT(b.id) AS active_bans 
+            FROM bans b 
+            WHERE b.user_id = ? AND b.deleted = FALSE AND b.end_date > NOW()""";
 
     private DataSource dataSource;
     private UserDao userDao;
