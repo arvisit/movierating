@@ -19,42 +19,54 @@ import lombok.extern.log4j.Log4j2;
 
 @Log4j2
 public class ReviewDaoImpl implements ReviewDao {
-    private final static String GET_BY_ID = "SELECT r.id, r.film_id, r.user_id, r.content, r.publication_date " //
-            + "FROM reviews r " //
-            + "WHERE r.id = ? AND r.deleted = FALSE";
-    private final static String GET_ALL = "SELECT r.id, r.film_id, r.user_id, r.content, r.publication_date " //
-            + "FROM reviews r " //
-            + "WHERE r.deleted = FALSE";
-    private final static String GET_ALL_PARTIALLY = "SELECT r.id, r.film_id, r.user_id, r.content, r.publication_date "
-            + "FROM reviews r " //
-            + "WHERE r.deleted = FALSE " //
-            + "ORDER BY r.id LIMIT ? OFFSET ?";
-    private final static String GET_ALL_BY_FILM_ID_PARTIALLY = "SELECT r.id, r.film_id, r.user_id, r.content, r.publication_date "
-            + "FROM reviews r " //
-            + "WHERE r.film_id = ? AND r.deleted = FALSE " //
-            + "ORDER BY r.id DESC LIMIT ? OFFSET ?";
-    private final static String GET_ALL_BY_USER_ID_PARTIALLY = "SELECT r.id, r.film_id, r.user_id, r.content, r.publication_date "
-            + "FROM reviews r " //
-            + "WHERE r.user_id = ? AND r.deleted = FALSE " //
-            + "ORDER BY r.id DESC LIMIT ? OFFSET ?";
-    private final static String CREATE = "INSERT INTO reviews (film_id, user_id, content) " //
-            + "VALUES (?, ?, ?)";
-    private final static String UPDATE = "UPDATE reviews SET content = ?, last_update = NOW() " //
-            + "WHERE id = ? AND deleted = FALSE";
-    private final static String DELETE = "UPDATE reviews SET deleted = TRUE, last_update = NOW() " //
-            + "WHERE id = ? AND deleted = FALSE";
-    private final static String COUNT = "SELECT COUNT(r.id) AS total " //
-            + "FROM reviews r " //
-            + "WHERE r.deleted = FALSE";
-    private final static String COUNT_BY_FILM_ID = "SELECT COUNT(r.id) AS total " //
-            + "FROM reviews r " //
-            + "WHERE r.film_id = ? AND r.deleted = FALSE";
-    private final static String COUNT_BY_USER_ID = "SELECT COUNT(r.id) AS total " //
-            + "FROM reviews r " //
-            + "WHERE r.user_id = ? AND r.deleted = FALSE";
-    private final static String IS_EXISTED = "SELECT COUNT(r.id) AS existed " //
-            + "FROM reviews r " //
-            + "WHERE r.film_id = ? AND r.user_id = ? AND r.deleted = FALSE";
+    private final static String GET_BY_ID = """
+            SELECT r.id, r.film_id, r.user_id, r.content, r.publication_date 
+            FROM reviews r 
+            WHERE r.id = ? AND r.deleted = FALSE""";
+    private final static String GET_ALL = """
+            SELECT r.id, r.film_id, r.user_id, r.content, r.publication_date 
+            FROM reviews r 
+            WHERE r.deleted = FALSE""";
+    private final static String GET_ALL_PARTIALLY = """
+            SELECT r.id, r.film_id, r.user_id, r.content, r.publication_date 
+            FROM reviews r 
+            WHERE r.deleted = FALSE 
+            ORDER BY r.id LIMIT ? OFFSET ?""";
+    private final static String GET_ALL_BY_FILM_ID_PARTIALLY = """
+            SELECT r.id, r.film_id, r.user_id, r.content, r.publication_date 
+            FROM reviews r 
+            WHERE r.film_id = ? AND r.deleted = FALSE 
+            ORDER BY r.id DESC LIMIT ? OFFSET ?""";
+    private final static String GET_ALL_BY_USER_ID_PARTIALLY = """
+            SELECT r.id, r.film_id, r.user_id, r.content, r.publication_date 
+            FROM reviews r 
+            WHERE r.user_id = ? AND r.deleted = FALSE 
+            ORDER BY r.id DESC LIMIT ? OFFSET ?""";
+    private final static String CREATE = """
+            INSERT INTO reviews (film_id, user_id, content) 
+            VALUES (?, ?, ?)""";
+    private final static String UPDATE = """
+            UPDATE reviews SET content = ?, last_update = NOW() 
+            WHERE id = ? AND deleted = FALSE""";
+    private final static String DELETE = """
+            UPDATE reviews SET deleted = TRUE, last_update = NOW() 
+            WHERE id = ? AND deleted = FALSE""";
+    private final static String COUNT = """
+            SELECT COUNT(r.id) AS total 
+            FROM reviews r 
+            WHERE r.deleted = FALSE""";
+    private final static String COUNT_BY_FILM_ID = """
+            SELECT COUNT(r.id) AS total 
+            FROM reviews r 
+            WHERE r.film_id = ? AND r.deleted = FALSE""";
+    private final static String COUNT_BY_USER_ID = """
+            SELECT COUNT(r.id) AS total 
+            FROM reviews r 
+            WHERE r.user_id = ? AND r.deleted = FALSE""";
+    private final static String IS_EXISTED = """
+            SELECT COUNT(r.id) AS existed 
+            FROM reviews r 
+            WHERE r.film_id = ? AND r.user_id = ? AND r.deleted = FALSE""";
 
     private final DataSource dataSource;
     private final FilmDao filmDao;
