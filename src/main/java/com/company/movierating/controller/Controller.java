@@ -55,7 +55,7 @@ public class Controller extends HttpServlet {
     }
 
     private void setMessagesToRedirect(HttpServletRequest req) {
-        HttpSession session = req.getSession(false);
+        HttpSession session = req.getSession();
         session.setAttribute(JspConstants.ERROR_MESSAGE_ATTRIBUTE_NAME,
                 req.getAttribute(JspConstants.ERROR_MESSAGE_ATTRIBUTE_NAME));
         session.setAttribute(JspConstants.SUCCESS_MESSAGE_ATTRIBUTE_NAME,
