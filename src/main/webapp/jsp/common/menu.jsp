@@ -9,7 +9,7 @@
     <div class="menu-right">
         <form method="get" action="controller">
             <input name="command" type="hidden" value="search_film"/>
-            <input name="title" type="search" minlength="1" maxlength="100" placeholder="<fmt:message key='msg.menu.search.placeholder'/>"/>
+            <input required="required" name="title" type="search" minlength="1" maxlength="100" placeholder="<fmt:message key='msg.menu.search.placeholder'/>"/>
         </form>
         <a href="."><fmt:message key="msg.menu.home"/></a>
         <a href="controller?command=films"><fmt:message key="msg.menu.films"/></a>
