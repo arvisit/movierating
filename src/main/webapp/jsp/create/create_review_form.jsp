@@ -1,27 +1,42 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<fmt:setBundle basename="messages"/>
+<c:if test="${sessionScope.language != null}">
+    <fmt:setLocale value="${sessionScope.language}"/>
+</c:if>
 <!DOCTYPE html>
 <html>
     <head>
         <meta charset="UTF-8">
         <link rel="stylesheet" type="text/css" href="css/style.css"/>
-        <title>Review film</title>
+        <title><fmt:message key="msg.create_review_form.title"/></title>
     </head>
     <body>
         <%@ include file="/jsp/common/header.jsp"%>
         <%@ include file="/jsp/common/menu.jsp"%>
         <div class="main">
-            <h2>The Film:</h2>
-            <p><b>Title:</b> <c:out value="${requestScope.film.title}"/></p>
-            <p><b>Description:</b> <c:out value="${requestScope.film.description}"/></p>
-            <h2>Review film:</h2>
+            <table>
+                <tr>
+                    <td>
+                        <img class="poster" src="${requestScope.film.poster}" alt="${requestScope.film.title}'s poster"/>
+                    </td>
+                    <td>
+                        <b><c:out value="${requestScope.film.title}"/></b>
+                        <br>
+                        <br>
+                        <c:out value="${requestScope.film.description}"/>
+                    </td>
+                </tr>
+            </table>
+            <h2><fmt:message key="msg.create_review_form.review_header"/></h2>
             <form method="post" action="controller">
                 <input name="command" type="hidden" value="create_review"/>
                 <input name="id" type="hidden" value="${requestScope.film.id}"/>
-                <label for="content">Review content:</label>
-                <textarea id="content" name="content"></textarea>
+                <textarea id="content" name="content" 
+                        placeholder="<fmt:message key='msg.create_review_form.form.content.placeholder'/>"></textarea>
                 <br>
-                <input type="submit" value="Post review"/>
+                <input type="submit" value="<fmt:message key='msg.create_film_form.form.button.post_review.value'/>"/>
             </form>
         </div>
         <%@ include file="/jsp/common/notification.jsp"%>
