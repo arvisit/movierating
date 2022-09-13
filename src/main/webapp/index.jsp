@@ -1,4 +1,10 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<fmt:setBundle basename="messages"/>
+<c:if test="${sessionScope.language != null}">
+    <fmt:setLocale value="${sessionScope.language}"/>
+</c:if>
 <!DOCTYPE html>
 <html>
     <head>
@@ -10,8 +16,8 @@
         <%@ include file="/jsp/common/header.jsp"%>
         <%@ include file="/jsp/common/menu.jsp"%>
         <div class="main">
-            <h2>Welcome to the MovieRating!</h2>
-            <p>From the menu you can list all users</p>
+            <h2><fmt:message key="msg.main.welcome"/></h2>
+            <p><fmt:message key="msg.main.description"/></p>
         </div>
         <%@ include file="/jsp/common/notification.jsp"%>
         <%@ include file="/jsp/common/footer.jsp"%>
