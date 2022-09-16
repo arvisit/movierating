@@ -23,11 +23,11 @@ public enum ExceptionHandler {
         if (e instanceof UnsupportedCommandException) {
             status = 400;
             message = e.getMessage();
-            page = JspConstants.DEFAULT_ERROR;
+            page = JspConstants.REDIRECT_ERROR;
         } else if (e instanceof BadParameterException) {
             status = 400;
             message = e.getMessage();
-            page = JspConstants.DEFAULT_ERROR;
+            page = JspConstants.REDIRECT_ERROR;
         } else if (e instanceof RegisterPasswordConfirmationException) {
             status = 400;
             message = e.getMessage();
@@ -47,11 +47,11 @@ public enum ExceptionHandler {
         } else if (e instanceof NoRecordFoundException) {
             status = 404;
             message = "Page not found";
-            page = JspConstants.DEFAULT_ERROR;
+            page = JspConstants.REDIRECT_ERROR;
         } else {
             status = 500;
             message = "Internal server error";
-            page = JspConstants.DEFAULT_ERROR;
+            page = JspConstants.REDIRECT_ERROR;
         }
 
         req.setAttribute("errorStatus", status);
