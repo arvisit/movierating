@@ -19,7 +19,7 @@
             <table class="list-center">
                 <tr>
                     <td>
-                        <img class="avatar" src="${requestScope.user.avatar}" alt="${user.login}'s avatar"/>
+                        <img class="avatar" src="${requestScope.user.avatar}" alt="${requestScope.user.login}'s avatar"/>
                         <br>
                         <a href="controller?command=user&id=${requestScope.user.id}">
                             <c:out value="${requestScope.user.login}"/>
