@@ -40,5 +40,6 @@ public abstract class JspConstants {
     public static final String REDIRECT_USER_COMMAND = "redirect:controller?command=user&id=";
     public static final String REDIRECT_FILM_COMMAND = "redirect:controller?command=film&id=";
     public static final String REDIRECT_MAIN_PAGE = "redirect:.";
+    public static final String REDIRECT_ERROR = "redirect:controller?command=error";
 
 }
