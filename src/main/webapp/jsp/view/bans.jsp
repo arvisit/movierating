@@ -1,5 +1,10 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<fmt:setBundle basename="messages"/>
+<c:if test="${sessionScope.language != null}">
+    <fmt:setLocale value="${sessionScope.language}"/>
+</c:if>
 <!DOCTYPE html>
 <html>
     <head>
@@ -13,7 +18,7 @@
         <div class="main">
             <c:choose>
                 <c:when test="${bans.size() == 0}">
-                    <h2>There is no bans yet</h2>
+                    <h2><fmt:message key="msg.view.bans.no_bans"/></h2>
                 </c:when>
                 <c:otherwise>
                     <h2>${requestScope.title}</h2>
@@ -23,24 +28,24 @@
                             <tr>
                                 <td>
                                     <c:if test="${sessionScope.user.role == 'ADMIN' }">
-                                        <b>User: </b>
+                                        <b><fmt:message key="msg.view.bans.user"/> </b>
                                         <a href="controller?command=user&id=${ban.user.id}">
                                             <c:out value="${ban.user.login}"/>
                                         </a>
                                         <br>
-                                        <a href="controller?command=edit_ban_form&id=${ban.id}">(edit)</a>
-                                        <br>
                                     </c:if>
-                                    <b>Start date: </b>${ban.startDate}
+                                    <b><fmt:message key="msg.view.bans.start_date"/> </b>${ban.startDate}
                                     <br>
-                                    <b>End date: </b>${ban.endDate}
+                                    <b><fmt:message key="msg.view.bans.end_date"/> </b>${ban.endDate}
                                     <br>
-                                    <b>Assigned by: </b>
+                                    <b><fmt:message key="msg.view.bans.assigned"/> </b>
                                     <a href="controller?command=user&id=${ban.admin.id}">
                                         <c:out value="${ban.admin.login}"/>
                                     </a>
                                     <br>
-                                    <b>Reason: </b><c:out value="${ban.reason}"/>
+                                    <b><fmt:message key="msg.view.bans.reason"/> </b><c:out value="${ban.reason}"/>
+                                    <br>
+                                    <a href="controller?command=edit_ban_form&id=${ban.id}"><fmt:message key="msg.view.bans.edit"/></a>
                                 </td>
                             </tr>
                         </c:forEach>
