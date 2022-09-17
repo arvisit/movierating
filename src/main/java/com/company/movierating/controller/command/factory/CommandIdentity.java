@@ -46,8 +46,7 @@ import com.company.movierating.service.factory.ServiceFactory;
 import lombok.Getter;
 
 public enum CommandIdentity {
-    NO_SUCH(new NoSuchCommand(), SecurityLevel.GUEST),
-    ERROR(new ErrorCommand(), SecurityLevel.GUEST),
+    NO_SUCH(new NoSuchCommand(), SecurityLevel.GUEST), ERROR(new ErrorCommand(), SecurityLevel.GUEST),
 
     USERS(new UsersCommand(ServiceFactory.getInstance().getService(UserService.class), Paginator.INSTANCE),
             SecurityLevel.GUEST),
@@ -108,12 +107,13 @@ public enum CommandIdentity {
     CREATE_SCORE(new CreateScoreCommand(ServiceFactory.getInstance().getService(ScoreService.class), //
             ServiceFactory.getInstance().getService(FilmService.class), ParametersPreparer.INSTANCE),
             SecurityLevel.USER_SELF_NOT_BANNED),
-    
+
     FILM_REVIEWS(new FilmReviewsCommand(ServiceFactory.getInstance().getService(ReviewService.class),
-            ParametersPreparer.INSTANCE, Paginator.INSTANCE), SecurityLevel.GUEST),
+            ServiceFactory.getInstance().getService(FilmService.class), ParametersPreparer.INSTANCE,
+            Paginator.INSTANCE), SecurityLevel.GUEST),
     USER_REVIEWS(new UserReviewsCommand(ServiceFactory.getInstance().getService(ReviewService.class),
             ParametersPreparer.INSTANCE, Paginator.INSTANCE), SecurityLevel.GUEST),
-    
+
     CREATE_REVIEW_FORM(new CreateReviewFormCommand(ServiceFactory.getInstance().getService(FilmService.class),
             ParametersPreparer.INSTANCE), SecurityLevel.USER_SELF_NOT_BANNED),
     CREATE_REVIEW(new CreateReviewCommand(ServiceFactory.getInstance().getService(ReviewService.class), //
