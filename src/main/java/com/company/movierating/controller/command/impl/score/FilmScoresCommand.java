@@ -7,18 +7,22 @@ import com.company.movierating.controller.util.JspConstants;
 import com.company.movierating.controller.util.Paginator;
 import com.company.movierating.controller.util.Paginator.Paging;
 import com.company.movierating.controller.util.ParametersPreparer;
+import com.company.movierating.service.FilmService;
 import com.company.movierating.service.ScoreService;
+import com.company.movierating.service.dto.FilmDto;
 import com.company.movierating.service.dto.ScoreDto;
 
 import jakarta.servlet.http.HttpServletRequest;
 
 public class FilmScoresCommand implements Command {
-    private final ScoreService service;
+    private final ScoreService scoreService;
+    private final FilmService filmService;
     private final ParametersPreparer preparer;
     private final Paginator paginator;
 
-    public FilmScoresCommand(ScoreService service, ParametersPreparer preparer, Paginator paginator) {
-        this.service = service;
+    public FilmScoresCommand(ScoreService scoreService, FilmService filmService, ParametersPreparer preparer, Paginator paginator) {
+        this.scoreService = scoreService;
+        this.filmService = filmService;
         this.preparer = preparer;
         this.paginator = paginator;
     }
@@ -32,8 +36,9 @@ public class FilmScoresCommand implements Command {
         int limit = paging.getLimit();
         long offset = paging.getOffset();
 
-        List<ScoreDto> scores = service.getAllByFilm(id, limit, offset);
-        long totalEntities = service.countByFilm(id);
+        List<ScoreDto> scores = scoreService.getAllByFilm(id, limit, offset);
+        FilmDto film = filmService.getById(id);
+        long totalEntities = scoreService.countByFilm(id);
         long fullFilledPages = totalEntities / limit;
         int partialFilledPage = (totalEntities % limit) > 0 ? 1 : 0;
         long totalPages = fullFilledPages + partialFilledPage;
@@ -41,6 +46,7 @@ public class FilmScoresCommand implements Command {
         long page = paging.getPage();
         page = (page > totalPages ? totalPages : page);
 
+        req.setAttribute("film", film);
         req.setAttribute("scores", scores);
         req.setAttribute("currentPage", page);
         req.setAttribute("totalPages", totalPages);

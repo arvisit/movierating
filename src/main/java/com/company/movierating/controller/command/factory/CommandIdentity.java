@@ -98,7 +98,8 @@ public enum CommandIdentity {
             ParametersPreparer.INSTANCE), SecurityLevel.ADMIN),
 
     FILM_SCORES(new FilmScoresCommand(ServiceFactory.getInstance().getService(ScoreService.class),
-            ParametersPreparer.INSTANCE, Paginator.INSTANCE), SecurityLevel.GUEST),
+            ServiceFactory.getInstance().getService(FilmService.class), ParametersPreparer.INSTANCE,
+            Paginator.INSTANCE), SecurityLevel.GUEST),
     USER_SCORES(new UserScoresCommand(ServiceFactory.getInstance().getService(ScoreService.class),
             ParametersPreparer.INSTANCE, Paginator.INSTANCE), SecurityLevel.GUEST),
 
