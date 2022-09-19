@@ -1,11 +1,16 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<fmt:setBundle basename="messages"/>
+<c:if test="${sessionScope.language != null}">
+    <fmt:setLocale value="${sessionScope.language}"/>
+</c:if>
 <!DOCTYPE html>
 <html>
     <head>
         <meta charset="UTF-8">
         <link rel="stylesheet" type="text/css" href="css/style.css"/>
-        <title>Reviews</title>
+        <title><fmt:message key="msg.view.user_reviews.title"/></title>
     </head>
     <body>
         <%@ include file="/jsp/common/header.jsp"%>
@@ -13,10 +18,10 @@
         <div class="main">
             <c:choose>
                 <c:when test="${reviews.size() == 0}">
-                    <h2>User has reviewed no films yet</h2>
+                    <h2><fmt:message key="msg.view.user_reviews.no_reviews"/></h2>
                 </c:when>
                 <c:otherwise>
-                    <h2>Reviews</h2>
+                    <h2><fmt:message key="msg.view.user_reviews.reviews_header"/></h2>
                     <%@ include file="/jsp/common/pagination.jsp" %>
                     <table class="list-center">
                         <c:forEach items="${reviews}" var="review">
