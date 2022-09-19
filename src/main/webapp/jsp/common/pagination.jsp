@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <div class="pagination">
     <c:if test="${requestScope.totalPages != 1}">
         <c:choose>
@@ -12,7 +13,7 @@
                 <a role="link" aria-disabled="true">&lsaquo;</a>
             </c:otherwise>
         </c:choose>
-        <a role="link" aria-disabled="true">Page ${requestScope.currentPage} / ${requestScope.totalPages}</a>
+        <a role="link" aria-disabled="true"><fmt:message key="msg.common.pagination.page"/> ${requestScope.currentPage} / ${requestScope.totalPages}</a>
         <c:choose>
             <c:when test="${requestScope.currentPage != requestScope.totalPages}">
                 <a href="controller?command=${requestScope.paginatedCommand}&page=${requestScope.currentPage + 1}">&rsaquo;</a>
