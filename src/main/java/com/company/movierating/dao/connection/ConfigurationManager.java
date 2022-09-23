@@ -36,6 +36,8 @@ public class ConfigurationManager {
     private final String imageDefaultAvatar;
     @Getter
     private final String imageDefaultPoster;
+    @Getter
+    private final List<String> languages;
     private static final String PROPERTIES_FILE = "/application.properties";
 
     private static class ConfigurationManagerHolder {
@@ -74,6 +76,9 @@ public class ConfigurationManager {
             storageRootPath = properties.getProperty("storage.root");
             imageDefaultAvatar = properties.getProperty("image.avatar.default");
             imageDefaultPoster = properties.getProperty("image.poster.default");
+
+            String[] languagesStr = properties.getProperty("localization.languages").split("#");
+            languages = Arrays.asList(languagesStr);
 
             log.info("Configuration properties were loaded");
         } catch (IOException e) {

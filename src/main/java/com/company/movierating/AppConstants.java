@@ -1,5 +1,7 @@
 package com.company.movierating;
 
+import java.util.List;
+
 import com.company.movierating.dao.connection.ConfigurationManager;
 
 public class AppConstants {
@@ -18,4 +20,6 @@ public class AppConstants {
     public static final String IMAGE_APP_POSTER = IMAGE_APP_ROOT + "/poster";
     public static final String DEFAULT_APP_AVATAR = IMAGE_APP_AVATAR + "/" + DEFAULT_AVATAR_NAME;
     public static final String DEFAULT_APP_POSTER = IMAGE_APP_POSTER + "/" + DEFAULT_POSTER_NAME;
+    
+    public static final List<String> AVAILABLE_LANGUAGES = ConfigurationManager.getInstance().getLanguages();
 }
