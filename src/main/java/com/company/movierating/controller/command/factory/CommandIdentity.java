@@ -1,6 +1,7 @@
 package com.company.movierating.controller.command.factory;
 
 import com.company.movierating.controller.command.Command;
+import com.company.movierating.controller.command.impl.ChangeLanguageCommand;
 import com.company.movierating.controller.command.impl.ErrorCommand;
 import com.company.movierating.controller.command.impl.NoSuchCommand;
 import com.company.movierating.controller.command.impl.SignInCommand;
@@ -46,7 +47,9 @@ import com.company.movierating.service.factory.ServiceFactory;
 import lombok.Getter;
 
 public enum CommandIdentity {
-    NO_SUCH(new NoSuchCommand(), SecurityLevel.GUEST), ERROR(new ErrorCommand(), SecurityLevel.GUEST),
+    NO_SUCH(new NoSuchCommand(), SecurityLevel.GUEST), //
+    ERROR(new ErrorCommand(), SecurityLevel.GUEST), //
+    CHANGE_LANGUAGE(new ChangeLanguageCommand(), SecurityLevel.GUEST), //
 
     USERS(new UsersCommand(ServiceFactory.getInstance().getService(UserService.class), Paginator.INSTANCE),
             SecurityLevel.GUEST),

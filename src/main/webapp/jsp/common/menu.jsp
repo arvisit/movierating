@@ -1,5 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <fmt:setBundle basename="messages"/>
 <div class="menu">
@@ -25,5 +25,14 @@
             <a href="controller?command=user&id=${sessionScope.user.id}"><fmt:message key="msg.menu.my_profile"/></a>
             <a href="controller?command=sign_out"><fmt:message key="msg.menu.sign_out"/></a>
         </c:if>
+        <c:set var="localeCode" value="${pageContext.response.locale}"/>
+        <form method="get" action="controller">
+            <input name="command" type="hidden" value="change_language"/>
+            <input name="lastPage" type="hidden" value="controller?${pageContext.request.queryString}"/>
+            <select required="required" name="language" size="1" onchange="this.form.submit()">
+                <option ${(localeCode == 'en' ? 'selected' : '')} value="en">EN</option>
+                <option ${(localeCode == 'ru' ? 'selected' : '')} value="ru">RU</option>
+            </select>
+        </form>
     </div>
 </div>
