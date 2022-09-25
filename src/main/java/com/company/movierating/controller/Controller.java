@@ -1,6 +1,7 @@
 package com.company.movierating.controller;
 
 import java.io.IOException;
+import java.util.Locale;
 
 import com.company.movierating.controller.command.Command;
 import com.company.movierating.controller.command.factory.CommandFactory;
@@ -47,10 +48,29 @@ public class Controller extends HttpServlet {
             page = exceptionHandler.handleException(req, resp, e);
         }
         if (page.startsWith(REDIRECT)) {
+            localizeMessages(req);
             setMessagesToRedirect(req);
             resp.sendRedirect(req.getContextPath() + "/" + page.substring(REDIRECT.length()));
         } else {
             req.getRequestDispatcher(page).forward(req, resp);
+        }
+    }
+
+    private void localizeMessages(HttpServletRequest req) {
+        HttpSession session = req.getSession(false);
+        Locale locale = (session != null && session.getAttribute("language") != null)
+                ? new Locale((String) session.getAttribute("language"))
+                : req.getLocale();
+
+        MessageManager messageManager = new MessageManager(locale);
+        String errorMessage = (String) req.getAttribute(JspConstants.ERROR_MESSAGE_ATTRIBUTE_NAME);
+        if (errorMessage != null) {
+            req.setAttribute(JspConstants.ERROR_MESSAGE_ATTRIBUTE_NAME, messageManager.localize(errorMessage));
+        }
+
+        String successMessage = (String) req.getAttribute(JspConstants.SUCCESS_MESSAGE_ATTRIBUTE_NAME);
+        if (successMessage != null) {
+            req.setAttribute(JspConstants.SUCCESS_MESSAGE_ATTRIBUTE_NAME, messageManager.localize(successMessage));
         }
     }
 
