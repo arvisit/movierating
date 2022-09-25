@@ -2,6 +2,7 @@ package com.company.movierating.service.impl;
 
 import java.util.List;
 
+import com.company.movierating.AppMessageKeys;
 import com.company.movierating.dao.FilmDao;
 import com.company.movierating.dao.entity.Film;
 import com.company.movierating.exception.service.NoRecordFoundException;
@@ -29,7 +30,7 @@ public class FilmServiceImpl implements FilmService {
         log.debug("Film service method _getById_ was called");
         Film entity = filmDao.getById(id);
         if (entity == null) {
-            throw new NoRecordFoundException("There is no film with id= " + id);
+            throw new NoRecordFoundException(AppMessageKeys.FILM_SERVICE_NO_RECORD);
         }
         return filmConverter.toDto(entity);
     }
