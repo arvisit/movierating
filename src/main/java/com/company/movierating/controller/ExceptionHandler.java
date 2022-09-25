@@ -46,7 +46,7 @@ public enum ExceptionHandler {
             page = JspConstants.REDIRECT_MAIN_PAGE;
         } else if (e instanceof NoRecordFoundException) {
             status = 404;
-            message = "Page not found";
+            message = e.getMessage();
             page = JspConstants.REDIRECT_ERROR;
         } else {
             status = 500;
